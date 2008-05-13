@@ -22,6 +22,8 @@ function teaTimer()
 	const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
 	var teatimerCountdown=null;
 	var self=this;
+	var countdownInterval=null;
+	var statusbarAlertInterval=null;
 	
 	/**
 	 * The public init method of teaTimer. 
@@ -38,18 +40,93 @@ function teaTimer()
 	 **/
 	this.startCountdown=function()
 	{
-		//window.setInterval(teaTimerInstance.pulse,1000);
+		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
 		//window.setTimeout(teaTimerInstance.pulse,1000);
 	}
 	
+	/**
+	 * This public method reloads the countdown in the statusbar.
+	 **/
+	this.reloadCountdown=function()
+	{
+		clearInterval(statusbarAlertInterval);
+		teatimerCountdown.removeAttribute("class");
+		resetCountdown();
+		teatimerCountdown.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
+		teatimerCountdown.addEventListener("click",teaTimerInstance.startCountdown,false);
+	}
+	
+	/**
+	 * This public method should be called every time, when the countdown 'beats' and does everything, that should be done in every interval cycle
+	 **/
 	this.pulse=function()
 	{
 		var currentTime=getCurrentCountdownTime();
 		currentTime--;
-		log(currentTime);
+		//log(currentTime);
 		setCountdown(currentTime);
+		if(currentTime<=0)
+		{
+			brewingComplete();
+		}
 	}
 	
+	/**
+	 * This method is called, when the countdown is done. 
+	 **/
+	var brewingComplete=function()
+	{
+		clearInterval(countdownInterval);
+		shootAlerts();
+		teatimerCountdown.removeEventListener("click",teaTimerInstance.startCountdown,false);
+		teatimerCountdown.addEventListener("click",teaTimerInstance.reloadCountdown,false);
+	}
+	
+	/**
+	 * This method fires all alerts.
+	 **/
+	var shootAlerts=function()
+	{
+		doStatusbarAlert();
+		doPopupAlert();
+	}
+	
+	/**
+	 * This method generates and fires the 'tea-ready'-popup.
+	 **/
+	var doPopupAlert=function()
+	{
+		alert("TeaTimer says:\n\tBrewing complete.\n\tEnjoy your tea. :-)");
+	}
+	
+	/**
+	 * This method generates and fires the 'tea-ready'-statusbar-alert.
+	 **/
+	var doStatusbarAlert=function()
+	{
+		teatimerCountdown.setAttribute("value","Ready!");
+		teatimerCountdown.setAttribute("class","readyAlert");
+		statusbarAlertInterval=window.setInterval(teaTimerInstance.toggleStatusbarAlertStyle,400);
+	}
+	
+	/**
+	 * This method is capable for toggling the correct CSS classes for the 'blinking'-statusbar-alert.
+	 **/
+	this.toggleStatusbarAlertStyle=function()
+	{
+		if(teatimerCountdown.getAttribute("class").indexOf("invisible")>0)
+		{
+			teatimerCountdown.setAttribute("class","readyAlert");
+		}
+		else
+		{
+			teatimerCountdown.setAttribute("class","readyAlert invisible");
+		}
+	}
+	
+	/**
+	 * @returns integer the currentdown time in seconds
+	 **/
 	var getCurrentCountdownTime=function()
 	{
 		var parts=teatimerCountdown.getAttribute("value").split(":");
@@ -75,7 +152,7 @@ function teaTimer()
 	 **/
 	var getBrewingTimeOfCurrentTea=function()
 	{
-		return 60;
+		return 5;
 	}
 	
 	/**
@@ -85,7 +162,7 @@ function teaTimer()
 	var setCountdown=function(time)
 	{
 		var timeStr="";
-		var seconds=(60%time);
+		var seconds=(time%60);
 		timeStr=parseInt(time/60)+":"+((seconds<10)?"0":"")+seconds;
 		teatimerCountdown.setAttribute("value",timeStr);
 	}

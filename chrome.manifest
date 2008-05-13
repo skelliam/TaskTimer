@@ -17,3 +17,5 @@
 content		teatimer	chrome/content/
 overlay		chrome://browser/content/browser.xul	        chrome://teatimer/content/teatimer.xul
 
+skin	        teatimer	classic/1.0	chrome/skin/
+style	        chrome://browser/content/browser.xul            chrome://teatimer/skin/style.css

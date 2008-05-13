@@ -1,0 +1,9 @@
+#teatimer-countdown.invisible
+{
+    visibility: hidden;
+}
+
+#teatimer-countdown.readyAlert
+{
+    color: #090;
+}
