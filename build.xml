@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<project name="teamTimer" default="createxpi">
+	<target name="createjar">
+		<zip destfile="chrome/teaTimer.jar" basedir="chrome" includes="content/teatimer.js content/teatimer.xul skin/style.css" /> 
+	</target>
+
+	<target name="createxpi" depends="createjar">
+		<zip destfile="teaTimer.xpi">
+			<zipfileset dir="chrome/" includes="teaTimer.jar" prefix="chrome" />
+			<zipfileset dir="." includes="install.rdf chrome.manifest license.txt" />
+		</zip>
+	</target>
+</project>
