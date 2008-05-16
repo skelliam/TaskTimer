@@ -18,8 +18,11 @@
 <overlay id="teatimer-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script type="application/x-javascript" src="chrome://teatimer/content/teatimer.js" />
 	<statusbar id="status-bar">
-		<statusbarpanel id="teatimer-panel">
+		<statusbarpanel id="teatimer-panel" context="teatimer-contextMenu">
 			<label id="teatimer-countdown" value="TeaTimer" />
+			<popup id="teatimer-contextMenu" position="before_end">
+				<menuitem id="teatimer-quicktimer" label="Quick Timer..."/>
+			</popup>
 		</statusbarpanel>
 	</statusbar>
 </overlay>

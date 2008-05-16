@@ -20,7 +20,10 @@ function teaTimer()
 	var debug=true;
 	const thisClassName="teaTimer"; // needed in debug output
 	const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-	var teatimerCountdown=null;
+	
+	var teatimerCountdown=null; //container for quick timer XUL element reference 'teatimer-countdown' (label)
+	var quicktimer=null; //container for quick timer XUL element reference 'teatimer-quicktimer' (menuitem)
+	
 	var self=this;
 	var countdownInterval=null;
 	var statusbarAlertInterval=null;
@@ -32,7 +35,84 @@ function teaTimer()
 	{
 		teatimerCountdown=document.getElementById("teatimer-countdown");
 		teatimerCountdown.addEventListener("click",teaTimerInstance.startCountdown,false);
+		quicktimer=document.getElementById("teatimer-quicktimer");
+		quicktimer.addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
 		resetCountdown();
+	}
+	
+	/**
+	 * This method is called, when the quick timer menu item is acivated (clicked).
+	 * It prompts for an input and 
+	 **/
+	this.quicktimerMenuitemCommand=function()
+	{
+		var ok=false;
+		do
+		{
+			var input=prompt("Please enter the custom countdown time:");
+			if(input!==null)
+			{
+				try
+				{
+					var time=validateEnteredTime(input);
+					ok=true;
+					setCountdown(time);
+				}
+				catch(e)
+				{
+					var errorMsg="";
+					if(e.name==="teaTimerQuickTimerInputToShortException")
+					{
+						errorMsg="Your input was to short.";
+					}
+					else
+					{
+						errorMsg="Your input was in the wrong format."
+					}
+					
+					errorMsg+="\nYou should enter the time in seconds (130 for example) or as minute:seconds (2:10 for example).\nPlease try again or hit the cancel button.";
+					alert(errorMsg);
+				}
+			}
+			else
+			{
+				ok=true;
+			}
+		}while(ok===false)
+	}
+	
+	var validateEnteredTime=function(input)
+	{
+		input=trim(input);
+		if(input.length<=0)
+		{
+			throw new teaTimerQuickTimerInputToShortException("Invalid quick timer input. Input is to short.");
+		}
+		
+		var time=null;
+		var validFormat1=/^[0-9]+$/; //allow inputs in seconds (example: 60)
+		var validFormat2=/^[0-9]+:[0-5][0-9]$/; //allow input in minute:seconds (example: 1:20)
+		var validFormat3=/^[0-9]+:[0-9]$/; //allow input in minute:seconds with one digit second (example: 1:9)
+		
+		if(validFormat1.test(input))
+		{
+			time=parseInt(input);
+		}
+		else if(validFormat2.test(input) || validFormat3.test(input))
+		{
+			time=getTimeFromTimeString(input);
+		}
+		else
+		{
+			throw new teaTimerQuickTimerInvalidInputException("Invalid quick timer input.");
+		}
+		
+		if(time<=0)
+		{
+			throw new teaTimerInvalidTimeException("Entered QuickTimer Time is smaller or equal 0. That's of course an invalid time.");
+		}
+		
+		return time;
 	}
 	
 	/**
@@ -129,11 +209,7 @@ function teaTimer()
 	 **/
 	var getCurrentCountdownTime=function()
 	{
-		var parts=teatimerCountdown.getAttribute("value").split(":");
-		var minutes=parseInt(parts[0]);
-		var seconds=parseInt(parts[1]);
-		
-		return minutes*60+seconds;
+		return getTimeFromTimeString(teatimerCountdown.getAttribute("value"));
 	}
 	
 	
@@ -181,14 +257,82 @@ function teaTimer()
 		
 		return true;
 	}
+	
+	/*
+		=========================
+		| string helper methods |
+		=========================
+	*/
+	
+	var getTimeFromTimeString=function(str)
+	{
+		var parts=str.split(":");
+		if(parts.length!==2)
+		{
+			throw new teaTimerInvalidTimeStringException("getTimeFromTimeString: '"+str+"' is not a valid time string.");
+		}
+		
+		var minutes=parseInt(parts[0]);
+		var seconds=parseInt(parts[1]);
+		
+		return minutes*60+seconds;
+	}
+	
+	/**
+	 * Returns a text without whitespaces in front.
+	 * @param string text2ltrim
+	 * @returns string trimmed text
+	 **/
+	var ltrim=function(text)
+	{
+		return text.replace(/^\s+/,"");
+	}
+	
+	/**
+	 * Returns a text without whitespaces at the end.
+	 * @param string text2rtrim
+	 * @returns string trimmed text
+	 **/
+	var rtrim=function(text)
+	{
+		return text.replace(/\s+$/,"");
+	}
+	
+	/**
+	 * The famous trim function.
+	 * @param string text2trim
+	 * @returns string trimmed text
+	 **/
+	var trim=function(text)
+	{
+		return ltrim(rtrim(text));
+	}
 }
 
-/*
-function teaTimerExampleException(msg)
+
+function teaTimerQuickTimerInputToShortException(msg)
 {
-	this.name="teaTimerExampleException";
+	this.name="teaTimerQuickTimerInputToShortException";
 	this.message=((msg===undefined)?null:msg);
 }
-*/
+
+function teaTimerQuickTimerInvalidInputException(msg)
+{
+	this.name="teaTimerQuickTimerInvalidInputException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidTimeException(msg)
+{
+	this.name="teaTimerInvalidTimeException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidTimeStringException(msg)
+{
+	this.name="teaTimerInvalidTimeStringException";
+	this.message=((msg===undefined)?null:msg);
+}
+
 var teaTimerInstance=new teaTimer();
 window.addEventListener("load",teaTimerInstance.init,false);
