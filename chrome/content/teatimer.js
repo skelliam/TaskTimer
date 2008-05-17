@@ -86,10 +86,13 @@ function teaTimer()
 	/**
 	 * This public method starts the countdown for the currently choosen tea.
 	 **/
-	this.startCountdown=function()
+	this.startCountdown=function(mouseEvent)
 	{
-		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
-		//window.setTimeout(teaTimerInstance.pulse,1000);
+		if(mouseEvent.button===0) //left click
+		{
+			countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
+			//window.setTimeout(teaTimerInstance.pulse,1000);
+		}
 	}
 	
 	/**
