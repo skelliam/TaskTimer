@@ -22,13 +22,13 @@
     
     <vbox>
 	<label control="teaTimer-qtTime" value="Please enter the custom countdown time:" />
-        <textbox id="teaTimer-qtTime" maxlength="6" />
+        <textbox id="teaTimer-qtTime" maxlength="6" accesskey="t" />
     </vbox>
     
-    <checkbox id="teaTimer-qtChkStartCountdown" checked="true" label="Start countdown immediately after clicking OK." />
+    <checkbox id="teaTimer-qtChkStartCountdown" checked="true" label="Start countdown immediately after clicking OK." accesskey="s" />
     
     <hbox align="right">
-        <button label="Cancel" id="teaTimer-qtBtnCancel" />
-        <button label="OK" id="teaTimer-qtBtnOk" />
+        <button label="Cancel" id="teaTimer-qtBtnCancel" accesskey="c" />
+        <button label="OK" id="teaTimer-qtBtnOk" accesskey="o" />
     </hbox>
 </window>
