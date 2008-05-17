@@ -19,13 +19,30 @@ function teaTimerQuickTimer()
     this.init=function()
     {
         document.getElementById("teaTimer-qtTime").focus();
+	document.getElementById("teaTimer-qtTime").addEventListener("keypress",teaTimerQtInstance.timeKeypress,false);
         document.getElementById("teaTimer-qtBtnCancel").addEventListener("command",teaTimerQtInstance.cancelButtonCommand,false);
         document.getElementById("teaTimer-qtBtnOk").addEventListener("command",teaTimerQtInstance.okButtonCommand,false);
     }
     
+    this.timeKeypress=function(event)
+    {
+	//dump(event.keyCode+"\n");
+	switch(event.keyCode)
+	{
+	    case 13: //enter
+		handleTimeInput();
+		break;
+	}
+    }
+    
     this.okButtonCommand=function()
     {
-        var ok=false;
+        handleTimeInput();
+    }
+    
+    var handleTimeInput=function()
+    {
+	var ok=false;
         var input=document.getElementById("teaTimer-qtTime").value;
 	try
 	{
@@ -54,10 +71,10 @@ function teaTimerQuickTimer()
             alert(errorMsg);
         }
         
-        if(ok)
-        {
-            window.close();
-        }
+	if(ok)
+	{
+	    window.close();
+	}
     }
     
     this.cancelButtonCommand=function()

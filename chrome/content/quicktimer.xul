@@ -15,15 +15,19 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://teatimer/skin/quicktimer.css" type="text/css"?>
 <window title="TeaTimer - Quick Timer" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <script type="application/x-javascript" src="chrome://teatimer/content/quicktimer.js" />
     
-    <label control="teaTimer-qtTime" value="Please enter the custom countdown time:" />
-    <textbox id="teaTimer-qtTime" maxlength="6" />
+    <vbox>
+	<label control="teaTimer-qtTime" value="Please enter the custom countdown time:" />
+        <textbox id="teaTimer-qtTime" maxlength="6" />
+    </vbox>
     
-    <checkbox id="teaTimer-qtChkStartCountdown" label="Start countdown immediately after clicking OK." />
+    <checkbox id="teaTimer-qtChkStartCountdown" checked="true" label="Start countdown immediately after clicking OK." />
     
-    <hbox align="center">
+    <hbox align="right">
         <button label="Cancel" id="teaTimer-qtBtnCancel" />
         <button label="OK" id="teaTimer-qtBtnOk" />
     </hbox>

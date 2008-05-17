@@ -46,7 +46,7 @@ function teaTimer()
 	 **/
 	this.quicktimerMenuitemCommand=function()
 	{
-		window.openDialog("chrome://teatimer/content/quicktimer.xul","","centerscreen,chrome,dialog,modal");	
+		window.openDialog("chrome://teatimer/content/quicktimer.xul","","centerscreen,dialog,modal,resizable,scrollbars,dependent");
 	}
 	
 	this.validateEnteredTime=function(input)
