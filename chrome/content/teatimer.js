@@ -240,10 +240,9 @@ function teaTimer()
 			throw new teaTimerInvalidTimeStringException("getTimeFromTimeString: '"+str+"' is not a valid time string.");
 		}
 		
-		var minutes=parseInt(parts[0]);
-		var seconds=parseInt(parts[1]);
-		//go on here
-		log("m:"+minutes+" s:"+seconds+"\n");
+		var minutes=parseInt(parts[0],10);
+		var seconds=parseInt(parts[1],10);
+		
 		return minutes*60+seconds;
 	}
 	
