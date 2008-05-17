@@ -46,42 +46,10 @@ function teaTimer()
 	 **/
 	this.quicktimerMenuitemCommand=function()
 	{
-		var ok=false;
-		do
-		{
-			var input=prompt("Please enter the custom countdown time:");
-			if(input!==null)
-			{
-				try
-				{
-					var time=validateEnteredTime(input);
-					ok=true;
-					setCountdown(time);
-				}
-				catch(e)
-				{
-					var errorMsg="";
-					if(e.name==="teaTimerQuickTimerInputToShortException")
-					{
-						errorMsg="Your input was to short.";
-					}
-					else
-					{
-						errorMsg="Your input was in the wrong format."
-					}
-					
-					errorMsg+="\nYou should enter the time in seconds (130 for example) or as minute:seconds (2:10 for example).\nPlease try again or hit the cancel button.";
-					alert(errorMsg);
-				}
-			}
-			else
-			{
-				ok=true;
-			}
-		}while(ok===false)
+		window.openDialog("chrome://teatimer/content/quicktimer.xul","","centerscreen,chrome,dialog,modal");	
 	}
 	
-	var validateEnteredTime=function(input)
+	this.validateEnteredTime=function(input)
 	{
 		input=trim(input);
 		if(input.length<=0)
@@ -144,7 +112,7 @@ function teaTimer()
 		var currentTime=getCurrentCountdownTime();
 		currentTime--;
 		//log(currentTime);
-		setCountdown(currentTime);
+		self.setCountdown(currentTime);
 		if(currentTime<=0)
 		{
 			brewingComplete();
@@ -218,7 +186,7 @@ function teaTimer()
 	 **/
 	var resetCountdown=function()
 	{
-		setCountdown(getBrewingTimeOfCurrentTea());
+		self.setCountdown(getBrewingTimeOfCurrentTea());
 	}
 	
 	/**
@@ -228,14 +196,14 @@ function teaTimer()
 	 **/
 	var getBrewingTimeOfCurrentTea=function()
 	{
-		return 5;
+		return 10;
 	}
 	
 	/**
-	 * This private can be used to set a countdown.
+	 * This public method can be used to set a countdown.
 	 * @param integer time in seconds
 	 **/
-	var setCountdown=function(time)
+	this.setCountdown=function(time)
 	{
 		var timeStr="";
 		var seconds=(time%60);
@@ -274,7 +242,8 @@ function teaTimer()
 		
 		var minutes=parseInt(parts[0]);
 		var seconds=parseInt(parts[1]);
-		
+		//go on here
+		log("m:"+minutes+" s:"+seconds+"\n");
 		return minutes*60+seconds;
 	}
 	
@@ -307,19 +276,6 @@ function teaTimer()
 	{
 		return ltrim(rtrim(text));
 	}
-}
-
-
-function teaTimerQuickTimerInputToShortException(msg)
-{
-	this.name="teaTimerQuickTimerInputToShortException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function teaTimerQuickTimerInvalidInputException(msg)
-{
-	this.name="teaTimerQuickTimerInvalidInputException";
-	this.message=((msg===undefined)?null:msg);
 }
 
 function teaTimerInvalidTimeException(msg)
