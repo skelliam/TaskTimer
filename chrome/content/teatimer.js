@@ -34,7 +34,7 @@ function teaTimer()
 	this.init=function()
 	{
 		teatimerCountdown=document.getElementById("teatimer-countdown");
-		teatimerCountdown.addEventListener("click",teaTimerInstance.startCountdown,false);
+		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		quicktimer=document.getElementById("teatimer-quicktimer");
 		quicktimer.addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
 		resetCountdown();
@@ -83,28 +83,37 @@ function teaTimer()
 		return time;
 	}
 	
-	/**
-	 * This public method starts the countdown for the currently choosen tea.
-	 **/
-	this.startCountdown=function(mouseEvent)
+	this.countdownAreaClicked=function(mouseEvent)
 	{
 		if(mouseEvent.button===0) //left click
 		{
-			countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
-			//window.setTimeout(teaTimerInstance.pulse,1000);
+			self.startCountdown();
 		}
+	}
+	
+	/**
+	 * This public method starts the countdown for the currently choosen tea.
+	 **/
+	this.startCountdown=function()
+	{
+		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
+		//window.setTimeout(teaTimerInstance.pulse,1000);
 	}
 	
 	/**
 	 * This public method reloads the countdown in the statusbar.
 	 **/
-	this.reloadCountdown=function()
+	this.reloadCountdown=function(reset)
 	{
+		reset===(reset===true)?true:false;
 		clearInterval(statusbarAlertInterval);
 		teatimerCountdown.removeAttribute("class");
-		resetCountdown();
+		if(reset) // go on here
+		{
+			resetCountdown();
+		}
 		teatimerCountdown.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
-		teatimerCountdown.addEventListener("click",teaTimerInstance.startCountdown,false);
+		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 	}
 	
 	/**

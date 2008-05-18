@@ -44,12 +44,12 @@ function teaTimerQuickTimer()
     {
 	var ok=false;
         var input=document.getElementById("teaTimer-qtTime").value;
+	
 	try
 	{
             var time=window.opener.teaTimerInstance.validateEnteredTime(input);
             ok=true;
             window.opener.teaTimerInstance.setCountdown(time);
-            
             if(document.getElementById("teaTimer-qtChkStartCountdown").checked)
             {
                 window.opener.teaTimerInstance.startCountdown();
@@ -66,7 +66,7 @@ function teaTimerQuickTimer()
             {
                 errorMsg="Your input was in the wrong format."
             }
-		    
+	      
             errorMsg+="\nYou should enter the time in seconds (130 for example) or as minute:seconds (2:10 for example).\nPlease try again or hit the cancel button.";
             alert(errorMsg);
         }
