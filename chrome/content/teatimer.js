@@ -111,6 +111,7 @@ function teaTimer()
 	{
 		//dump("GOOOOO");
 		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		teatimerCountdown.setAttribute("tooltiptext","Currently steeping...");
 		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
 		//window.setTimeout(teaTimerInstance.pulse,1000);
 	}
@@ -219,6 +220,7 @@ function teaTimer()
 	{
 		teatimerCountdown.setAttribute("value","Ready!");
 		teatimerCountdown.setAttribute("class","readyAlert");
+		teatimerCountdown.setAttribute("tooltiptext","Tea ready. Click here to cancel alert.")
 		statusbarAlertInterval=window.setInterval(teaTimerInstance.toggleStatusbarAlertStyle,400);
 	}
 	
@@ -251,6 +253,7 @@ function teaTimer()
 	 **/
 	var resetCountdown=function()
 	{
+		teatimerCountdown.setAttribute("tooltiptext","Click here to start tea timer.");
 		self.setCountdown(getBrewingTimeOfCurrentTea());
 	}
 	
