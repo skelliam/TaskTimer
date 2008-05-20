@@ -103,8 +103,8 @@ function teaTimer()
 		{
 			if(countdownInProgress===true)
 			{
-				teatimerCountdown.setAttribute("tooltiptext","Timer paused. Click to proceed.");
 				self.stopCountdown();
+				teatimerCountdown.setAttribute("tooltiptext","Timer paused. Click to proceed.");
 			}
 			else
 			{
@@ -118,6 +118,7 @@ function teaTimer()
 	 **/
 	this.startCountdown=function()
 	{
+		//teatimerCountdown.removeEventListener("dblclick",teaTimerInstance.stopCountdown,false);
 		teatimerCountdown.setAttribute("tooltiptext","Currently steeping... Click to pause the countdown.");
 		countdownInProgress=true;
 		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
@@ -201,6 +202,7 @@ function teaTimer()
 		self.stopCountdown();
 		shootAlerts();
 		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		teatimerCountdown.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
 		teatimerCountdown.addEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
 	
