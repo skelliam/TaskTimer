@@ -56,6 +56,7 @@ function teaTimerQuickTimer()
             var time=window.opener.teaTimerInstance.validateEnteredTime(input);
             ok=true;
             window.opener.teaTimerInstance.stopCountdown();
+            window.opener.teaTimerInstance.reloadCountdown();
             window.opener.teaTimerInstance.setCountdown(time);
             if(document.getElementById("teaTimer-qtChkStartCountdown").checked)
             {
