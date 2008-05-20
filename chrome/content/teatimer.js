@@ -28,6 +28,7 @@ function teaTimer()
 	var countdownInterval=null; //container for the countdown interval ressource
 	var statusbarAlertInterval=null; //container for the statusbar alert ('blink-blink') interval ressource
 	var ts=null; //timestamp
+	var countdownInProgress=false; //flag
 	
 	/**
 	 * The public init method of teaTimer. 
@@ -100,7 +101,15 @@ function teaTimer()
 	{
 		if(mouseEvent.button===0) //left click
 		{
-			self.startCountdown();
+			if(countdownInProgress===true)
+			{
+				teatimerCountdown.setAttribute("tooltiptext","Timer paused. Click to proceed.");
+				self.stopCountdown();
+			}
+			else
+			{
+				self.startCountdown();
+			}
 		}
 	}
 	
@@ -109,11 +118,9 @@ function teaTimer()
 	 **/
 	this.startCountdown=function()
 	{
-		//dump("GOOOOO");
-		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
-		teatimerCountdown.setAttribute("tooltiptext","Currently steeping...");
+		teatimerCountdown.setAttribute("tooltiptext","Currently steeping... Click to pause the countdown.");
+		countdownInProgress=true;
 		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
-		//window.setTimeout(teaTimerInstance.pulse,1000);
 	}
 	
 	/**
@@ -181,6 +188,7 @@ function teaTimer()
 	{
 		window.clearInterval(countdownInterval);
 		ts=null;
+		countdownInProgress=false;
 		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 	}
 	
