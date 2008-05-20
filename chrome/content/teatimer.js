@@ -1,5 +1,5 @@
 /*
-	TeaTimer: 
+	TeaTimer: A Firefox extension that protects you from oversteeped tea.
 	Copyright (C) 2008 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,9 @@ function teaTimer()
 	var quicktimer=null; //container for quick timer XUL element reference 'teatimer-quicktimer' (menuitem)
 	
 	var self=this;
-	var countdownInterval=null;
-	var statusbarAlertInterval=null;
+	var countdownInterval=null; //container for the countdown interval ressource
+	var statusbarAlertInterval=null; //container for the statusbar alert ('blink-blink') interval ressource
+	var ts=null; //timestamp
 	
 	/**
 	 * The public init method of teaTimer. 
@@ -49,6 +50,14 @@ function teaTimer()
 		window.openDialog("chrome://teatimer/content/quicktimer.xul","","centerscreen,dialog,modal,resizable,scrollbars,dependent");
 	}
 	
+	/**
+	 * This public method can be used to check if a entered time is in a valid format.
+	 *
+	 * @param string the potential time
+	 * @return integer the validated time in seconds
+	 * @throws teaTimerQuickTimerInvalidInputException
+	 * @throws teaTimerInvalidTimeException
+	 **/
 	this.validateEnteredTime=function(input)
 	{
 		input=trim(input);
@@ -83,6 +92,10 @@ function teaTimer()
 		return time;
 	}
 	
+	/**
+	 * This public method is called when the user clicks in the teaTimer statusbar panel.
+	 * @param object mouseEvent
+	 **/
 	this.countdownAreaClicked=function(mouseEvent)
 	{
 		if(mouseEvent.button===0) //left click
@@ -96,19 +109,24 @@ function teaTimer()
 	 **/
 	this.startCountdown=function()
 	{
+		//dump("GOOOOO");
+		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
 		//window.setTimeout(teaTimerInstance.pulse,1000);
 	}
 	
 	/**
 	 * This public method reloads the countdown in the statusbar.
+	 * Included is a complete re-establishment of all events and styles of the countdownArea.
+	 *
+	 * @param boolean resetCountdown time, too?
 	 **/
 	this.reloadCountdown=function(reset)
 	{
-		reset===(reset===true)?true:false;
-		clearInterval(statusbarAlertInterval);
+		reset=(reset===false)?false:true;
+		window.clearInterval(statusbarAlertInterval);
 		teatimerCountdown.removeAttribute("class");
-		if(reset) // go on here
+		if(reset)
 		{
 			resetCountdown();
 		}
@@ -122,7 +140,30 @@ function teaTimer()
 	this.pulse=function()
 	{
 		var currentTime=getCurrentCountdownTime();
-		currentTime--;
+		//log("statusbartime: "+currentTime+"\n");
+		var d=new Date();
+		if(ts===null)
+		{
+			ts=d.getTime();
+			currentTime--;
+		}
+		else
+		{
+			var time=d.getTime();
+			var difference=time-ts;
+			if(difference>900 && difference<=1000)
+			{
+				difference+=100;
+			}
+			//log("difference: "+difference+"\n");
+			if(difference>1000)
+			{
+				currentTime-=parseInt(difference/1000);
+				ts=time;
+			}
+			//log("new statusbartime: "+currentTime+"\n");
+		}
+		//log("-----\n");
 		//log(currentTime);
 		self.setCountdown(currentTime);
 		if(currentTime<=0)
@@ -132,13 +173,25 @@ function teaTimer()
 	}
 	
 	/**
-	 * This method is called, when the countdown is done. 
+	 * This public method stops the current count down.
+	 * Please note, that it does no reset of it, so you may call resetCountdown after calling this method.
+	 **/
+	this.stopCountdown=function()
+	{
+		window.clearInterval(countdownInterval);
+		ts=null;
+		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+	}
+	
+	/**
+	 * This method is called, when the countdown is done.
+	 * It stops the countdown, raises the alerts and handles events for the countdown area.
 	 **/
 	var brewingComplete=function()
 	{
-		clearInterval(countdownInterval);
+		self.stopCountdown();
 		shootAlerts();
-		teatimerCountdown.removeEventListener("click",teaTimerInstance.startCountdown,false);
+		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		teatimerCountdown.addEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
 	
@@ -208,7 +261,7 @@ function teaTimer()
 	 **/
 	var getBrewingTimeOfCurrentTea=function()
 	{
-		return 10;
+		return 5;
 	}
 	
 	/**
@@ -217,6 +270,12 @@ function teaTimer()
 	 **/
 	this.setCountdown=function(time)
 	{
+		time=parseInt(time);
+		if(typeof time==="NaN")
+		{
+			//go on here
+		}
+		
 		var timeStr="";
 		var seconds=(time%60);
 		timeStr=parseInt(time/60)+":"+((seconds<10)?"0":"")+seconds;
@@ -244,6 +303,12 @@ function teaTimer()
 		=========================
 	*/
 	
+	/**
+	 * This method tries to convert a given string  (like '1:20') into a number of seconds.
+	 * @param string TimeString (examples: '1:23', '0:40', '12:42')
+	 * @returns integer seconds
+	 * @throws teaTimerInvalidTimeStringException
+	 **/
 	var getTimeFromTimeString=function(str)
 	{
 		var parts=str.split(":");

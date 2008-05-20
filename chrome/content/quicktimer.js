@@ -1,5 +1,5 @@
 /*
-	TeaTimer: 
+	TeaTimer: A Firefox extension that protects you from oversteeped tea.
 	Copyright (C) 2008 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
@@ -19,20 +19,26 @@ function teaTimerQuickTimer()
     this.init=function()
     {
         document.getElementById("teaTimer-qtTime").focus();
+        document.addEventListener("keypress",teaTimerQtInstance.documentKeypress,false);
 	document.getElementById("teaTimer-qtTime").addEventListener("keypress",teaTimerQtInstance.timeKeypress,false);
         document.getElementById("teaTimer-qtBtnCancel").addEventListener("command",teaTimerQtInstance.cancelButtonCommand,false);
         document.getElementById("teaTimer-qtBtnOk").addEventListener("command",teaTimerQtInstance.okButtonCommand,false);
     }
     
+    this.documentKeypress=function(event)
+    {
+        if(event.keyCode===27) //escape
+        {
+            window.close();
+        }
+    }
+    
     this.timeKeypress=function(event)
     {
-	//dump(event.keyCode+"\n");
-	switch(event.keyCode)
-	{
-	    case 13: //enter
-		handleTimeInput();
-		break;
-	}
+	if(event.keyCode===13) //enter
+        {
+            handleTimeInput();
+        }
     }
     
     this.okButtonCommand=function()
@@ -49,6 +55,7 @@ function teaTimerQuickTimer()
 	{
             var time=window.opener.teaTimerInstance.validateEnteredTime(input);
             ok=true;
+            window.opener.teaTimerInstance.stopCountdown();
             window.opener.teaTimerInstance.setCountdown(time);
             if(document.getElementById("teaTimer-qtChkStartCountdown").checked)
             {

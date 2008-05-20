@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="teamTimer" default="createxpi">
 	<target name="createjar">
-		<zip destfile="chrome/teaTimer.jar" basedir="chrome" includes="content/teatimer.js content/teatimer.xul skin/style.css" /> 
+		<zip destfile="chrome/teaTimer.jar" basedir="chrome" includes="content/teatimer.js content/teatimer.xul content/quicktimer.js content/quicktimer.xul skin/style.css skin/quicktimer.css" /> 
 	</target>
 
 	<target name="createxpi" depends="createjar">

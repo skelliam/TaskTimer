@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-	TeaTimer; 
+	TeaTimer: A Firefox extension that protects you from oversteeped tea.
 	Copyright (C) 2008 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 		<em:id>teatimer@codepaintedby.philipp-soehnlein.de</em:id>
 		<em:version>0.1</em:version>
 		<em:name>TeaTimer</em:name>
-		<em:description>Released under the terms of the GPL v3, see my website for more informations.</em:description>
+		<em:description>A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3, see my website for more informations.</em:description>
 		<em:creator>Philipp Söhnlein</em:creator>
 		<em:homepageURL>http://codepaintedby.philipp-soehnlein.de/</em:homepageURL>
 		<em:type>2</em:type>
