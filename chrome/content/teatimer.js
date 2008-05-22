@@ -20,6 +20,7 @@ function teaTimer()
 	var debug=true;
 	const thisClassName="teaTimer"; // needed in debug output
 	const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+	const teaDB=storedPrefs.getBranch("teatimer.teas.");
 	
 	var teatimerCountdown=null; //container for quick timer XUL element reference 'teatimer-countdown' (label)
 	var quicktimer=null; //container for quick timer XUL element reference 'teatimer-quicktimer' (menuitem)
@@ -39,7 +40,114 @@ function teaTimer()
 		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		quicktimer=document.getElementById("teatimer-quicktimer");
 		quicktimer.addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
+		generateTeaMenuItems();
 		resetCountdown();
+	}
+	
+	var getNumberOfTeas=function()
+	{
+		for(var nr=1; nr<99; nr++) //nr<99 is just to prevent an endless loop
+		{
+			try
+			{
+				if(!checkTeaWithID(nr))
+				{
+					break;
+				}
+			}
+			catch(ex)
+			{
+				break;
+			}
+		}
+		
+		return (nr-1);
+	}
+	
+	var checkTeaWithID=function(id)
+	{
+		var result=false;
+		try
+		{
+			if(
+				teaDB.getCharPref(id+".name").length>0 &&
+				teaDB.getIntPref(id+".time")>0 &&
+				typeof teaDB.getBoolPref(id+".checked")==="boolean"
+				)
+			{
+				result=true;
+			}
+		}
+		catch(e)
+		{
+			
+		}
+		
+		return result;
+	}
+	
+	var getTeaData=function(id)
+	{
+		if(checkTeaWithID(id)===false)
+		{
+			throw new teaTimerInvalidTeaIDException("getTeaData: Invalid ID given.");
+		}
+		
+		var name=teaDB.getCharPref(id+".name");
+		var time=teaDB.getIntPref(id+".time");
+		var choosen=teaDB.getBoolPref(id+".checked");
+		
+		return {"ID":id,"name":name,"time":time,"choosen":choosen};
+	}
+	
+	var getDataOfAllTeas=function()
+	{
+		var numberOfTeas=getNumberOfTeas();
+		var teas=new Array();
+		for(var i=1; i<=numberOfTeas; i++)
+		{
+			teas.push(getTeaData(i));
+		}
+		
+		return teas;
+	}
+	
+	var getIDOfCurrentTea=function()
+	{
+		var id=1;
+		for(var i=1; i<=getNumberOfTeas(); i++)
+		{
+			var tea=getTeaData(i);
+			if(tea["choosen"]===true)
+			{
+				id=i;
+				break;
+			}
+		}
+		
+		return id; //go on here (with testing)
+	}
+	
+	var generateTeaMenuItems=function()
+	{
+		var teas=getDataOfAllTeas();
+		
+		var insertBeforeNode=document.getElementById("teatimer-endTealistSeparator");
+		var menu=document.getElementById("teatimer-contextMenu");
+		for(var i=0; i<teas.length; i++)
+		{
+			tea=teas[i];
+			var teaNode=document.createElement("menuitem");
+			teaNode.setAttribute("id","teatimer-tea"+tea["ID"]);
+			teaNode.setAttribute("label",tea["name"]+" ("+getTimeStringFromTime(tea["time"])+")");
+			teaNode.setAttribute("type","checkbox");
+			if(tea["choosen"]===true)
+			{
+				teaNode.setAttribute("checked","true");
+			}
+			
+			menu.insertBefore(teaNode,insertBeforeNode);
+		}
 	}
 	
 	/**
@@ -284,15 +392,12 @@ function teaTimer()
 	this.setCountdown=function(time)
 	{
 		time=parseInt(time);
-		if(typeof time==="NaN")
+		if(isNaN(time))
 		{
-			//go on here
+			throw new teaTimerInvalidTimeException("setCountdown: Invalid call. First parameter must be an integer.");
 		}
 		
-		var timeStr="";
-		var seconds=(time%60);
-		timeStr=parseInt(time/60)+":"+((seconds<10)?"0":"")+seconds;
-		teatimerCountdown.setAttribute("value",timeStr);
+		teatimerCountdown.setAttribute("value",getTimeStringFromTime(time));
 	}
 	
 	/**
@@ -334,6 +439,14 @@ function teaTimer()
 		var seconds=parseInt(parts[1],10);
 		
 		return minutes*60+seconds;
+	}
+	
+	var getTimeStringFromTime=function(time)
+	{
+		var timeStr="";
+		var seconds=(time%60);
+		timeStr=parseInt(time/60)+":"+((seconds<10)?"0":"")+seconds;
+		return timeStr;
 	}
 	
 	/**
@@ -378,6 +491,13 @@ function teaTimerInvalidTimeStringException(msg)
 	this.name="teaTimerInvalidTimeStringException";
 	this.message=((msg===undefined)?null:msg);
 }
+
+function teaTimerInvalidTeaIDException(msg)
+{
+	this.name="teaTimerInvalidTeaIDException";
+	this.message=((msg===undefined)?null:msg);
+}
+
 
 var teaTimerInstance=new teaTimer();
 window.addEventListener("load",teaTimerInstance.init,false);
