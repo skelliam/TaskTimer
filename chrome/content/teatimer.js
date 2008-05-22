@@ -21,9 +21,11 @@ function teaTimer()
 	const thisClassName="teaTimer"; // needed in debug output
 	const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
 	const teaDB=storedPrefs.getBranch("teatimer.teas.");
+	const MAXNROFTEAS=42;
 	
 	var teatimerCountdown=null; //container for quick timer XUL element reference 'teatimer-countdown' (label)
 	var quicktimer=null; //container for quick timer XUL element reference 'teatimer-quicktimer' (menuitem)
+	var teatimerContextMenu=document.getElementById("teatimer-contextMenu");
 	
 	var self=this;
 	var countdownInterval=null; //container for the countdown interval ressource
@@ -40,28 +42,62 @@ function teaTimer()
 		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		quicktimer=document.getElementById("teatimer-quicktimer");
 		quicktimer.addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
-		generateTeaMenuItems();
+		document.getElementById("teatimer-cancel").addEventListener("command",teaTimerInstance.cancelTimer,false);
+		
+		if(getNumberOfTeas()===0)
+		{
+			initTeaDB();
+		}
+		teatimerContextMenu=document.getElementById("teatimer-contextMenu");
+		teatimerContextMenu.addEventListener("popupshowing",teaTimerInstance.prepareTeaSelectMenu,false);
+		
+		resetCountdown();
+	}
+	
+	var initTeaDB=function()
+	{
+		log("Initiating Tea Database\n");
+		teaDB.setCharPref("1.name","Earl Grey");
+		teaDB.setIntPref("1.time",180);
+		teaDB.setBoolPref("1.checked",true);
+		
+		teaDB.setCharPref("2.name","Rooibos");
+		teaDB.setIntPref("2.time",420);
+		teaDB.setBoolPref("2.checked",false);
+		
+		teaDB.setCharPref("3.name","White Tea");
+		teaDB.setIntPref("3.time",120);
+		teaDB.setBoolPref("3.checked",false);
+	}
+	
+	this.cancelTimer=function()
+	{
+		if(countdownInProgress)
+		{
+			self.stopCountdown();
+		}
 		resetCountdown();
 	}
 	
 	var getNumberOfTeas=function()
 	{
-		for(var nr=1; nr<99; nr++) //nr<99 is just to prevent an endless loop
+		var teas=0;
+		for(var i=1; i<=MAXNROFTEAS; i++) 
 		{
 			try
 			{
-				if(!checkTeaWithID(nr))
+				if(checkTeaWithID(i))
 				{
-					break;
+					teas++;
 				}
 			}
 			catch(ex)
 			{
-				break;
+				//do nothing
 			}
 		}
 		
-		return (nr-1);
+		return teas;
 	}
 	
 	var checkTeaWithID=function(id)
@@ -102,53 +138,115 @@ function teaTimer()
 	
 	var getDataOfAllTeas=function()
 	{
-		var numberOfTeas=getNumberOfTeas();
+		var teaIDs=getIDsOfTeas();
 		var teas=new Array();
-		for(var i=1; i<=numberOfTeas; i++)
+		for(var i in teaIDs)
 		{
-			teas.push(getTeaData(i));
+			teas.push(getTeaData(teaIDs[i]));
 		}
 		
 		return teas;
 	}
 	
-	var getIDOfCurrentTea=function()
+	var getIdOfCurrentTea=function()
 	{
 		var id=1;
-		for(var i=1; i<=getNumberOfTeas(); i++)
+		var teaIDs=getIDsOfTeas();
+		for(var i in teaIDs)
 		{
-			var tea=getTeaData(i);
+			var tea=getTeaData(teaIDs[i]);
 			if(tea["choosen"]===true)
 			{
-				id=i;
+				id=teaIDs[i];
 				break;
 			}
 		}
 		
-		return id; //go on here (with testing)
+		return id;
 	}
 	
-	var generateTeaMenuItems=function()
+	var getIDsOfTeas=function()
+	{
+		var teas=new Array();
+		var numberOfTeas=getNumberOfTeas();
+		for(var i=1; i<=MAXNROFTEAS; i++)
+		{
+			if(checkTeaWithID(i))
+			{
+				teas.push(i);
+			}
+			
+			if(teas.length-1===numberOfTeas)
+			{
+				break;
+			}
+		}
+		
+		return teas;
+	}
+	
+	this.prepareTeaSelectMenu=function()
 	{
 		var teas=getDataOfAllTeas();
 		
-		var insertBeforeNode=document.getElementById("teatimer-endTealistSeparator");
-		var menu=document.getElementById("teatimer-contextMenu");
+		var separator=document.getElementById("teatimer-endTealistSeparator");
+		while(separator.previousSibling)
+		{
+			separator.parentNode.removeChild(separator.previousSibling);
+		}
+		
 		for(var i=0; i<teas.length; i++)
 		{
 			tea=teas[i];
 			var teaNode=document.createElement("menuitem");
-			teaNode.setAttribute("id","teatimer-tea"+tea["ID"]);
+			teaNode.setAttribute("name","teatimer-tea");
+			teaNode.setAttribute("value",tea["ID"]);
 			teaNode.setAttribute("label",tea["name"]+" ("+getTimeStringFromTime(tea["time"])+")");
-			teaNode.setAttribute("type","checkbox");
+			teaNode.setAttribute("type","radio");
 			if(tea["choosen"]===true)
 			{
 				teaNode.setAttribute("checked","true");
 			}
 			
-			menu.insertBefore(teaNode,insertBeforeNode);
+			teaNode.addEventListener("command",function(){teaTimerInstance.teaChoosen(parseInt(this.getAttribute("value")));},false); //extract the numeric ID from the menuitem ID which should be something like 'teatimer-tea1"
+			
+			teatimerContextMenu.insertBefore(teaNode,separator);
 		}
 	}
+	
+	this.teaChoosen=function(id)
+	{
+		id=parseInt(id);
+		if(isNaN(id) || !checkTeaWithID(id))
+		{
+			throw new teaTimerInvalidTeaIDException("teaChoosen: Invalid tea ID given.");
+		}
+		
+		self.stopCountdown();
+		
+		setTeaChecked(id);
+		
+		self.setCountdown(getTeaData(id)["time"]);
+		self.startCountdown();
+	}
+	
+	
+	
+	var setTeaChecked=function(id)
+	{
+		if(checkTeaWithID(id)!==true)
+		{
+			throw new teaTimerInvalidTeaIDException("setTeaChecked: There's no tea with ID '"+id+"'.");
+		}
+		
+		var teas=getIDsOfTeas();
+		for(var i in teas)
+		{
+			var teaID=teas[i];
+			teaDB.setBoolPref(teaID+".checked",((teaID===id)?true:false));
+		}
+	}
+	
 	
 	/**
 	 * This method is called, when the quick timer menu item is acivated (clicked).
@@ -372,17 +470,16 @@ function teaTimer()
 	var resetCountdown=function()
 	{
 		teatimerCountdown.setAttribute("tooltiptext","Click here to start tea timer.");
-		self.setCountdown(getBrewingTimeOfCurrentTea());
+		self.setCountdown(getSteepingTimeOfCurrentTea());
 	}
 	
 	/**
 	 * This private method returns the brewing time (in seconds) of the currenlty choosen tea.
 	 * @returns integer brewing time in seconds
-	 * @2do: This is currently static (set to 60)
 	 **/
-	var getBrewingTimeOfCurrentTea=function()
+	var getSteepingTimeOfCurrentTea=function()
 	{
-		return 5;
+		return getTeaData(getIdOfCurrentTea())["time"];
 	}
 	
 	/**
