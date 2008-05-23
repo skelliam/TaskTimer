@@ -60,8 +60,9 @@ function teaTimerQuickTimer()
             window.opener.teaTimerInstance.setCountdown(time);
             if(document.getElementById("teaTimer-qtChkStartCountdown").checked)
             {
-                window.opener.teaTimerInstance.startCountdown();
+                window.opener.teaTimerInstance.startCountdown(true);
             }
+            window.opener.teaTimerInstance.setQuickTimerMode();
         }
         catch(e)
         {

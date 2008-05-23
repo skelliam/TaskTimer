@@ -32,6 +32,7 @@ function teaTimer()
 	var statusbarAlertInterval=null; //container for the statusbar alert ('blink-blink') interval ressource
 	var ts=null; //timestamp
 	var countdownInProgress=false; //flag
+	var idOfCurrentSteepingTea=null;
 	
 	/**
 	 * The public init method of teaTimer. 
@@ -54,6 +55,15 @@ function teaTimer()
 		resetCountdown();
 	}
 	
+	/*
+		======================
+		| 'database' methods |
+		======================
+	*/
+	
+	/**
+	 * This method generates a basic preconfigured tea database.
+	 **/
 	var initTeaDB=function()
 	{
 		log("Initiating Tea Database\n");
@@ -70,15 +80,10 @@ function teaTimer()
 		teaDB.setBoolPref("3.checked",false);
 	}
 	
-	this.cancelTimer=function()
-	{
-		if(countdownInProgress)
-		{
-			self.stopCountdown();
-		}
-		resetCountdown();
-	}
-	
+	/**
+	 * This method counts the number of available teas in the database.
+	 * @returns integer number of teas
+	 **/
 	var getNumberOfTeas=function()
 	{
 		var teas=0;
@@ -100,6 +105,12 @@ function teaTimer()
 		return teas;
 	}
 	
+	/**
+	 * You can use this method to check if there's a tea with a certain ID.
+	 *
+	 * @param integer TeaID2check
+	 * @returns boolean true or false
+	 **/
 	var checkTeaWithID=function(id)
 	{
 		var result=false;
@@ -122,6 +133,13 @@ function teaTimer()
 		return result;
 	}
 	
+	/**
+	 * This method queries the database and returns an arary with the ID, the name, the time and the 'choosen state' of a certain tea.
+	 *
+	 * @param integer ID of tea you want to get data from
+	 * @returns array teaData
+	 * @throws teaTimerInvalidTeaIDException
+	 **/
 	var getTeaData=function(id)
 	{
 		if(checkTeaWithID(id)===false)
@@ -136,6 +154,17 @@ function teaTimer()
 		return {"ID":id,"name":name,"time":time,"choosen":choosen};
 	}
 	
+	/**
+	 * This method can be used to get an array with all teas and the corresponding data.
+	 *
+	 * Structure of array is:
+	 * 	Array(
+	 *		1=>Array(ID,name,time,choosen),
+	 *		2=>Array(ID,name,time,choosen)
+	 *		...
+	 * 		)
+	 * @returns array
+	 **/
 	var getDataOfAllTeas=function()
 	{
 		var teaIDs=getIDsOfTeas();
@@ -148,6 +177,10 @@ function teaTimer()
 		return teas;
 	}
 	
+	/**
+	 * This method returns the ID of the currently choosen/checked tea.
+	 * @returns integer teaID
+	 **/
 	var getIdOfCurrentTea=function()
 	{
 		var id=1;
@@ -165,6 +198,10 @@ function teaTimer()
 		return id;
 	}
 	
+	/**
+	 * This method returns an array with all available tea IDs.
+	 * @returns array teaIDs
+	 **/
 	var getIDsOfTeas=function()
 	{
 		var teas=new Array();
@@ -185,6 +222,50 @@ function teaTimer()
 		return teas;
 	}
 	
+	/**
+	 * Use this method to tell the database, that a certain tea is choosen.
+	 * The corresponding flag is set in the database for all teas.
+	 *
+	 * @param integer teaID
+	 * @throws teaTimerInvalidTeaIDException
+	 **/
+	var setTeaChecked=function(id)
+	{
+		if(checkTeaWithID(id)!==true)
+		{
+			throw new teaTimerInvalidTeaIDException("setTeaChecked: There's no tea with ID '"+id+"'.");
+		}
+		
+		var teas=getIDsOfTeas();
+		for(var i in teas)
+		{
+			var teaID=teas[i];
+			teaDB.setBoolPref(teaID+".checked",((teaID===id)?true:false));
+		}
+	}
+	
+	/**
+	 * This private method returns the brewing time (in seconds) of the currenlty choosen tea.
+	 * @returns integer brewing time in seconds
+	 **/
+	var getSteepingTimeOfCurrentTea=function()
+	{
+		return getTeaData(getIdOfCurrentTea())["time"];
+	}
+	
+	
+	
+	
+	/*
+		==============
+		| UI methods |
+		==============
+	*/
+	
+	/**
+	 * This public method can be called to regenerate/update the teas in tea timer context menu, based on the current content of the database.
+	 * It adds the tea nodes before the separator with XUL ID teatimer-endTealistSeparator
+	 **/
 	this.prepareTeaSelectMenu=function()
 	{
 		var teas=getDataOfAllTeas();
@@ -214,6 +295,13 @@ function teaTimer()
 		}
 	}
 	
+	/**
+	 * This event method is called, when a tea was choosen from the tea context menu.
+	 * It stops a maybe running countdown, markes the given tea as checked in the database and starts the new countdon.
+	 *
+	 * @param integer teaID
+	 * @throws teaTimerInvalidTeaIDException
+	 **/
 	this.teaChoosen=function(id)
 	{
 		id=parseInt(id);
@@ -230,24 +318,6 @@ function teaTimer()
 		self.startCountdown();
 	}
 	
-	
-	
-	var setTeaChecked=function(id)
-	{
-		if(checkTeaWithID(id)!==true)
-		{
-			throw new teaTimerInvalidTeaIDException("setTeaChecked: There's no tea with ID '"+id+"'.");
-		}
-		
-		var teas=getIDsOfTeas();
-		for(var i in teas)
-		{
-			var teaID=teas[i];
-			teaDB.setBoolPref(teaID+".checked",((teaID===id)?true:false));
-		}
-	}
-	
-	
 	/**
 	 * This method is called, when the quick timer menu item is acivated (clicked).
 	 * It prompts for an input and 
@@ -255,48 +325,6 @@ function teaTimer()
 	this.quicktimerMenuitemCommand=function()
 	{
 		window.openDialog("chrome://teatimer/content/quicktimer.xul","","centerscreen,dialog,modal,resizable,scrollbars,dependent");
-	}
-	
-	/**
-	 * This public method can be used to check if a entered time is in a valid format.
-	 *
-	 * @param string the potential time
-	 * @return integer the validated time in seconds
-	 * @throws teaTimerQuickTimerInvalidInputException
-	 * @throws teaTimerInvalidTimeException
-	 **/
-	this.validateEnteredTime=function(input)
-	{
-		input=trim(input);
-		if(input.length<=0)
-		{
-			throw new teaTimerQuickTimerInputToShortException("Invalid quick timer input. Input is to short.");
-		}
-		
-		var time=null;
-		var validFormat1=/^[0-9]+$/; //allow inputs in seconds (example: 60)
-		var validFormat2=/^[0-9]+:[0-5][0-9]$/; //allow input in minute:seconds (example: 1:20)
-		var validFormat3=/^[0-9]+:[0-9]$/; //allow input in minute:seconds with one digit second (example: 1:9)
-		
-		if(validFormat1.test(input))
-		{
-			time=parseInt(input);
-		}
-		else if(validFormat2.test(input) || validFormat3.test(input))
-		{
-			time=getTimeFromTimeString(input);
-		}
-		else
-		{
-			throw new teaTimerQuickTimerInvalidInputException("Invalid quick timer input.");
-		}
-		
-		if(time<=0)
-		{
-			throw new teaTimerInvalidTimeException("Entered QuickTimer Time is smaller or equal 0. That's of course an invalid time.");
-		}
-		
-		return time;
 	}
 	
 	/**
@@ -319,15 +347,63 @@ function teaTimer()
 		}
 	}
 	
+	
+	
+	
+	/*
+		=================
+		| Timer methods |
+		=================
+	*/
+	
+	/**
+	 * This public method can be used to set a countdown.
+	 * @param integer time in seconds
+	 **/
+	this.setCountdown=function(time)
+	{
+		time=parseInt(time);
+		if(isNaN(time))
+		{
+			throw new teaTimerInvalidTimeException("setCountdown: Invalid call. First parameter must be an integer.");
+		}
+		
+		teatimerCountdown.setAttribute("value",getTimeStringFromTime(time));
+	}
+	
 	/**
 	 * This public method starts the countdown for the currently choosen tea.
 	 **/
 	this.startCountdown=function()
 	{
-		//teatimerCountdown.removeEventListener("dblclick",teaTimerInstance.stopCountdown,false);
+		cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
 		teatimerCountdown.setAttribute("tooltiptext","Currently steeping... Click to pause the countdown.");
 		countdownInProgress=true;
+		idOfCurrentSteepingTea=getIdOfCurrentTea();
 		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
+	}
+	
+	/**
+	 * Use this public mehtod to cancel a currently running timer.
+	 **/
+	this.cancelTimer=function()
+	{
+		if(countdownInProgress)
+		{
+			self.stopCountdown();
+		}
+		
+		cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
+		
+		resetCountdown();
+	}
+	
+	/**
+	 * This public method sets the quick timer mode to on and must be called when a quick timer countdown was called.
+	 **/
+	this.setQuickTimerMode=function()
+	{
+		idOfCurrentSteepingTea="quicktimer";
 	}
 	
 	/**
@@ -339,8 +415,7 @@ function teaTimer()
 	this.reloadCountdown=function(reset)
 	{
 		reset=(reset===false)?false:true;
-		window.clearInterval(statusbarAlertInterval);
-		teatimerCountdown.removeAttribute("class");
+		cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it
 		if(reset)
 		{
 			resetCountdown();
@@ -407,10 +482,40 @@ function teaTimer()
 	{
 		self.stopCountdown();
 		shootAlerts();
+		idOfCurrentSteepingTea=null;
 		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		teatimerCountdown.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
 		teatimerCountdown.addEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
+	
+	/**
+	 * @returns integer the currentdown time in seconds
+	 **/
+	var getCurrentCountdownTime=function()
+	{
+		return getTimeFromTimeString(teatimerCountdown.getAttribute("value"));
+	}
+	
+	
+	/**
+	 * This private method resets the countdown to the value of the currently choosen tea.
+	 **/
+	var resetCountdown=function()
+	{
+		teatimerCountdown.setAttribute("tooltiptext","Click here to start tea timer, right click for more options.");
+		self.setCountdown(getSteepingTimeOfCurrentTea());
+	}
+	
+	
+	
+	
+	
+	/*
+		=================
+		| Alert methods |
+		=================
+	*/
+	
 	
 	/**
 	 * This method fires all alerts.
@@ -426,7 +531,16 @@ function teaTimer()
 	 **/
 	var doPopupAlert=function()
 	{
-		alert("TeaTimer says:\n\tBrewing complete.\n\tEnjoy your tea. :-)");
+		var teaName=null;
+		if(idOfCurrentSteepingTea==="quicktimer")
+		{
+			teaName="... whatever you timed";
+		}
+		else
+		{
+			teaName=getTeaData(idOfCurrentSteepingTea)["name"];
+		}
+		alert("TeaTimer says:\n\tSteeping complete.\n\tEnjoy your "+teaName+". :-)");
 	}
 	
 	/**
@@ -456,67 +570,65 @@ function teaTimer()
 	}
 	
 	/**
-	 * @returns integer the currentdown time in seconds
+	 * This method quits the statusbar alert.
 	 **/
-	var getCurrentCountdownTime=function()
+	var cancelStatusbarAlert=function()
 	{
-		return getTimeFromTimeString(teatimerCountdown.getAttribute("value"));
+		window.clearInterval(statusbarAlertInterval);
+		teatimerCountdown.removeAttribute("class");
 	}
 	
 	
-	/**
-	 * This private method resets the countdown to the value of the currently choosen tea.
-	 **/
-	var resetCountdown=function()
-	{
-		teatimerCountdown.setAttribute("tooltiptext","Click here to start tea timer.");
-		self.setCountdown(getSteepingTimeOfCurrentTea());
-	}
 	
-	/**
-	 * This private method returns the brewing time (in seconds) of the currenlty choosen tea.
-	 * @returns integer brewing time in seconds
-	 **/
-	var getSteepingTimeOfCurrentTea=function()
-	{
-		return getTeaData(getIdOfCurrentTea())["time"];
-	}
 	
-	/**
-	 * This public method can be used to set a countdown.
-	 * @param integer time in seconds
-	 **/
-	this.setCountdown=function(time)
-	{
-		time=parseInt(time);
-		if(isNaN(time))
-		{
-			throw new teaTimerInvalidTimeException("setCountdown: Invalid call. First parameter must be an integer.");
-		}
-		
-		teatimerCountdown.setAttribute("value",getTimeStringFromTime(time));
-	}
-	
-	/**
-	 * This private method dumps the given string to the console if teaTimer.debug===true and browser dom.window.dump.enabled===true
-	 * @param string String to dump
-	 * @returns boolean true
-	 **/
-	var log=function(msgString)
-	{
-		if(debug)
-		{
-			dump(thisClassName+" says: "+msgString);
-		}
-		
-		return true;
-	}
 	
 	/*
 		=========================
 		| string helper methods |
 		=========================
 	*/
+	
+	/**
+	 * This public method can be used to check if a entered time is in a valid format.
+	 *
+	 * @param string the potential time
+	 * @return integer the validated time in seconds
+	 * @throws teaTimerQuickTimerInvalidInputException
+	 * @throws teaTimerInvalidTimeException
+	 **/
+	this.validateEnteredTime=function(input)
+	{
+		input=trim(input);
+		if(input.length<=0)
+		{
+			throw new teaTimerQuickTimerInputToShortException("Invalid quick timer input. Input is to short.");
+		}
+		
+		var time=null;
+		var validFormat1=/^[0-9]+$/; //allow inputs in seconds (example: 60)
+		var validFormat2=/^[0-9]+:[0-5][0-9]$/; //allow input in minute:seconds (example: 1:20)
+		var validFormat3=/^[0-9]+:[0-9]$/; //allow input in minute:seconds with one digit second (example: 1:9)
+		
+		if(validFormat1.test(input))
+		{
+			time=parseInt(input);
+		}
+		else if(validFormat2.test(input) || validFormat3.test(input))
+		{
+			time=getTimeFromTimeString(input);
+		}
+		else
+		{
+			throw new teaTimerQuickTimerInvalidInputException("Invalid quick timer input.");
+		}
+		
+		if(time<=0)
+		{
+			throw new teaTimerInvalidTimeException("Entered QuickTimer Time is smaller or equal 0. That's of course an invalid time.");
+		}
+		
+		return time;
+	}
 	
 	/**
 	 * This method tries to convert a given string  (like '1:20') into a number of seconds.
@@ -538,6 +650,13 @@ function teaTimer()
 		return minutes*60+seconds;
 	}
 	
+	/**
+	 * This method returns the string representation (like '1:20') of a given time.
+	 * It's the opposite of getTimeFromTimeString
+	 *
+	 * @param integer time in seconds
+	 * @returins string timeString
+	 **/
 	var getTimeStringFromTime=function(time)
 	{
 		var timeStr="";
@@ -574,6 +693,29 @@ function teaTimer()
 	var trim=function(text)
 	{
 		return ltrim(rtrim(text));
+	}
+	
+	
+	
+	/*
+		=========================
+		| Miscellaneous methods |
+		=========================
+	*/
+	
+	/**
+	 * This private method dumps the given string to the console if teaTimer.debug===true and browser dom.window.dump.enabled===true
+	 * @param string String to dump
+	 * @returns boolean true
+	 **/
+	var log=function(msgString)
+	{
+		if(debug)
+		{
+			dump(thisClassName+" says: "+msgString);
+		}
+		
+		return true;
 	}
 }
 
