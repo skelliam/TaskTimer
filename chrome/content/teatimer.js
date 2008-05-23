@@ -24,7 +24,6 @@ function teaTimer()
 	const MAXNROFTEAS=42;
 	
 	var teatimerCountdown=null; //container for quick timer XUL element reference 'teatimer-countdown' (label)
-	var quicktimer=null; //container for quick timer XUL element reference 'teatimer-quicktimer' (menuitem)
 	var teatimerContextMenu=document.getElementById("teatimer-contextMenu");
 	
 	var self=this;
@@ -41,8 +40,8 @@ function teaTimer()
 	{
 		teatimerCountdown=document.getElementById("teatimer-countdown");
 		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
-		quicktimer=document.getElementById("teatimer-quicktimer");
-		quicktimer.addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
+		document.getElementById("teatimer-options").addEventListener("command",teaTimerInstance.openOptionsWindow,false);
+		document.getElementById("teatimer-quicktimer").addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
 		document.getElementById("teatimer-cancel").addEventListener("command",teaTimerInstance.cancelTimer,false);
 		
 		if(getNumberOfTeas()===0)
@@ -53,6 +52,8 @@ function teaTimer()
 		teatimerContextMenu.addEventListener("popupshowing",teaTimerInstance.prepareTeaSelectMenu,false);
 		
 		resetCountdown();
+		
+		//self.openOptionsWindow();
 	}
 	
 	/*
@@ -325,6 +326,11 @@ function teaTimer()
 	this.quicktimerMenuitemCommand=function()
 	{
 		window.openDialog("chrome://teatimer/content/quicktimer.xul","","centerscreen,dialog,modal,resizable,scrollbars,dependent");
+	}
+	
+	this.openOptionsWindow=function()
+	{
+		window.openDialog("chrome://teatimer/content/options.xul","","centerscreen,dialog,modal,resizable,scrollbars,dependent");
 	}
 	
 	/**

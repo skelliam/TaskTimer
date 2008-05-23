@@ -22,6 +22,7 @@
 			<label id="teatimer-countdown" value="TeaTimer" />
 			<popup id="teatimer-contextMenu" position="before_end">
 				<menuseparator id="teatimer-endTealistSeparator" />
+				<menuitem id="teatimer-options" label="Options..." />
 				<menuitem id="teatimer-cancel" label="Cancel" />
 				<menuitem id="teatimer-quicktimer" label="Quick Timer..." />
 			</popup>

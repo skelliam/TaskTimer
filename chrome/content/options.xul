@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+	TeaTimer: A Firefox extension that protects you from oversteeped tea.
+	Copyright (C) 2008 Philipp Söhnlein
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License version 3 as 
+	published by the Free Software Foundation.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://teatimer/skin/options.css" type="text/css"?>
+<window title="TeaTimer - Options" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/x-javascript" src="chrome://teatimer/content/options.js" />
+    
+    <tabbox>
+        <tabs>
+            <tab label="Tea varities" />
+        </tabs>
+        <tabpanels>
+            <tabpanel id="teaTimer-optionsVaritiesTab">
+                <vbox flex="1">
+                    <groupbox id="teaTimer-optionsAddBox">
+                        <caption label="Add new tea" />
+                        <hbox align="end">
+                            <vbox>
+                                <label control="teaTimer-optionsNewTeaName" value="Tea" />
+                                <textbox id="teaTimer-optionsNewTeaName" />
+                            </vbox>
+                            <vbox>
+                                <label control="teaTimer-optionsNewTeaTime" value="Time" />
+                                <textbox id="teaTimer-optionsNewTeaTime" />
+                            </vbox>
+                            <button label="Add" />
+                        </hbox>
+                    </groupbox>
+                    
+                    <tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
+                        <treecols  editable="true">
+                            <treecol label="ID" id="teaTimer-optionsTeas-idColumn" hidden="true" />
+                            <treecol label="Tea" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
+                            <treecol label="Time" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
+                        </treecols>
+                        <treechildren>
+                            <treeitem>
+                                <treerow>
+                                    <treecell label="1" />
+                                    <treecell editable="true" label="Earl Grey" />
+                                    <treecell editable="true" label="3:00" />
+                                </treerow>
+                            </treeitem>
+                            <treeitem>
+                                <treerow>
+                                    <treecell label="2" />
+                                    <treecell editable="true" label="Rooibos" />
+                                    <treecell editable="true" label="7:00" />
+                                </treerow>
+                            </treeitem>
+                        </treechildren>
+                    </tree>
+                    
+                    <hbox align="right">
+                        <button label="Delete selected tea" />
+                    </hbox>
+                    
+                </vbox>
+            </tabpanel>
+        </tabpanels>
+    </tabbox>
+    
+    <hbox align="right">
+        <button label="Cancel" id="teaTimer-optionsWinBtnCancel" accesskey="c" />
+        <button label="OK" id="teaTimer-optionsWinBtnOk" accesskey="o" />
+    </hbox>
+</window>
