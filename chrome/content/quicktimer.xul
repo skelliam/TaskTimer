@@ -18,6 +18,7 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://teatimer/skin/quicktimer.css" type="text/css"?>
 <window title="TeaTimer - Quick Timer" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/quicktimer.js" />
     
     <vbox>

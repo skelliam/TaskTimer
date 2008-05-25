@@ -18,6 +18,8 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://teatimer/skin/options.css" type="text/css"?>
 <window title="TeaTimer - Options" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
+    <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/options.js" />
     
     <tabbox>
@@ -27,8 +29,8 @@
         <tabpanels>
             <tabpanel id="teaTimer-optionsVaritiesTab">
                 <vbox flex="1">
-                    <groupbox id="teaTimer-optionsAddBox">
-                        <caption label="Add new tea" />
+                    <groupbox>
+                        <caption label="Add a new tea" />
                         <hbox align="end">
                             <vbox>
                                 <label control="teaTimer-optionsNewTeaName" value="Tea" />
@@ -38,36 +40,41 @@
                                 <label control="teaTimer-optionsNewTeaTime" value="Time" />
                                 <textbox id="teaTimer-optionsNewTeaTime" />
                             </vbox>
-                            <button label="Add" />
+                            <button id="teaTimer-optionsBtnAddTea" label="Add" />
                         </hbox>
                     </groupbox>
                     
-                    <tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
-                        <treecols  editable="true">
-                            <treecol label="ID" id="teaTimer-optionsTeas-idColumn" hidden="true" />
-                            <treecol label="Tea" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
-                            <treecol label="Time" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
-                        </treecols>
-                        <treechildren>
-                            <treeitem>
-                                <treerow>
-                                    <treecell label="1" />
-                                    <treecell editable="true" label="Earl Grey" />
-                                    <treecell editable="true" label="3:00" />
-                                </treerow>
-                            </treeitem>
-                            <treeitem>
-                                <treerow>
-                                    <treecell label="2" />
-                                    <treecell editable="true" label="Rooibos" />
-                                    <treecell editable="true" label="7:00" />
-                                </treerow>
-                            </treeitem>
-                        </treechildren>
-                    </tree>
-                    
+		    <groupbox>
+			<caption label="Manage existing teas" />
+			
+			<tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
+			    <treecols  editable="true">
+				<treecol label="ID" id="teaTimer-optionsTeas-idColumn" hidden="true" />
+				<treecol label="Tea" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
+				<treecol label="Time" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
+			    </treecols>
+			    <treechildren id="teaTimer-optionsTeasTreeChildren">
+				<!--
+				<treeitem>
+				    <treerow>
+					<treecell label="1" />
+					<treecell editable="true" label="Earl Grey" />
+					<treecell editable="true" label="3:00" />
+				    </treerow>
+				</treeitem>
+				<treeitem>
+				    <treerow>
+					<treecell label="2" />
+					<treecell editable="true" label="Rooibos" />
+					<treecell editable="true" label="7:00" />
+				    </treerow>
+				</treeitem>
+				-->
+			    </treechildren>
+			</tree>
+                    </groupbox>
                     <hbox align="right">
-                        <button label="Delete selected tea" />
+                        <button id="teaTimer-optionsBtnDelTea" label="Delete selected tea" disabled="true" />
                     </hbox>
                     
                 </vbox>

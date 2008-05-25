@@ -16,6 +16,8 @@
 */
 function teaTimerQuickTimer()
 {
+    const common=new teaTimerCommon();
+    
     this.init=function()
     {
         document.getElementById("teaTimer-qtTime").focus();
@@ -53,7 +55,7 @@ function teaTimerQuickTimer()
 	
 	try
 	{
-            var time=window.opener.teaTimerInstance.validateEnteredTime(input);
+            var time=common.validateEnteredTime(input);
             ok=true;
             window.opener.teaTimerInstance.stopCountdown();
             window.opener.teaTimerInstance.reloadCountdown();
@@ -67,7 +69,7 @@ function teaTimerQuickTimer()
         catch(e)
         {
             var errorMsg="";
-            if(e.name==="teaTimerQuickTimerInputToShortException")
+            if(e.name==="teaTimerTimeInputToShortException")
             {
                 errorMsg="Your input was to short.";
             }
@@ -92,17 +94,7 @@ function teaTimerQuickTimer()
     }
 }
 
-function teaTimerQuickTimerInputToShortException(msg)
-{
-	this.name="teaTimerQuickTimerInputToShortException";
-	this.message=((msg===undefined)?null:msg);
-}
 
-function teaTimerQuickTimerInvalidInputException(msg)
-{
-	this.name="teaTimerQuickTimerInvalidInputException";
-	this.message=((msg===undefined)?null:msg);
-}
 
 
 var teaTimerQtInstance=new teaTimerQuickTimer();

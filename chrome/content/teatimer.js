@@ -17,11 +17,10 @@
 
 function teaTimer()
 {
-	var debug=true;
 	const thisClassName="teaTimer"; // needed in debug output
-	const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-	const teaDB=storedPrefs.getBranch("teatimer.teas.");
-	const MAXNROFTEAS=42;
+	
+	const teaDB=new teaTimerTeaDB();
+	const common=new teaTimerCommon();
 	
 	var teatimerCountdown=null; //container for quick timer XUL element reference 'teatimer-countdown' (label)
 	var teatimerContextMenu=document.getElementById("teatimer-contextMenu");
@@ -44,219 +43,17 @@ function teaTimer()
 		document.getElementById("teatimer-quicktimer").addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
 		document.getElementById("teatimer-cancel").addEventListener("command",teaTimerInstance.cancelTimer,false);
 		
-		if(getNumberOfTeas()===0)
+		if(teaDB.getNumberOfTeas()===0)
 		{
-			initTeaDB();
+			teaDB.initTeaDB();
 		}
 		teatimerContextMenu=document.getElementById("teatimer-contextMenu");
 		teatimerContextMenu.addEventListener("popupshowing",teaTimerInstance.prepareTeaSelectMenu,false);
 		
 		resetCountdown();
-		
 		//self.openOptionsWindow();
 	}
-	
-	/*
-		======================
-		| 'database' methods |
-		======================
-	*/
-	
-	/**
-	 * This method generates a basic preconfigured tea database.
-	 **/
-	var initTeaDB=function()
-	{
-		log("Initiating Tea Database\n");
-		teaDB.setCharPref("1.name","Earl Grey");
-		teaDB.setIntPref("1.time",180);
-		teaDB.setBoolPref("1.checked",true);
 		
-		teaDB.setCharPref("2.name","Rooibos");
-		teaDB.setIntPref("2.time",420);
-		teaDB.setBoolPref("2.checked",false);
-		
-		teaDB.setCharPref("3.name","White Tea");
-		teaDB.setIntPref("3.time",120);
-		teaDB.setBoolPref("3.checked",false);
-	}
-	
-	/**
-	 * This method counts the number of available teas in the database.
-	 * @returns integer number of teas
-	 **/
-	var getNumberOfTeas=function()
-	{
-		var teas=0;
-		for(var i=1; i<=MAXNROFTEAS; i++) 
-		{
-			try
-			{
-				if(checkTeaWithID(i))
-				{
-					teas++;
-				}
-			}
-			catch(ex)
-			{
-				//do nothing
-			}
-		}
-		
-		return teas;
-	}
-	
-	/**
-	 * You can use this method to check if there's a tea with a certain ID.
-	 *
-	 * @param integer TeaID2check
-	 * @returns boolean true or false
-	 **/
-	var checkTeaWithID=function(id)
-	{
-		var result=false;
-		try
-		{
-			if(
-				teaDB.getCharPref(id+".name").length>0 &&
-				teaDB.getIntPref(id+".time")>0 &&
-				typeof teaDB.getBoolPref(id+".checked")==="boolean"
-				)
-			{
-				result=true;
-			}
-		}
-		catch(e)
-		{
-			
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * This method queries the database and returns an arary with the ID, the name, the time and the 'choosen state' of a certain tea.
-	 *
-	 * @param integer ID of tea you want to get data from
-	 * @returns array teaData
-	 * @throws teaTimerInvalidTeaIDException
-	 **/
-	var getTeaData=function(id)
-	{
-		if(checkTeaWithID(id)===false)
-		{
-			throw new teaTimerInvalidTeaIDException("getTeaData: Invalid ID given.");
-		}
-		
-		var name=teaDB.getCharPref(id+".name");
-		var time=teaDB.getIntPref(id+".time");
-		var choosen=teaDB.getBoolPref(id+".checked");
-		
-		return {"ID":id,"name":name,"time":time,"choosen":choosen};
-	}
-	
-	/**
-	 * This method can be used to get an array with all teas and the corresponding data.
-	 *
-	 * Structure of array is:
-	 * 	Array(
-	 *		1=>Array(ID,name,time,choosen),
-	 *		2=>Array(ID,name,time,choosen)
-	 *		...
-	 * 		)
-	 * @returns array
-	 **/
-	var getDataOfAllTeas=function()
-	{
-		var teaIDs=getIDsOfTeas();
-		var teas=new Array();
-		for(var i in teaIDs)
-		{
-			teas.push(getTeaData(teaIDs[i]));
-		}
-		
-		return teas;
-	}
-	
-	/**
-	 * This method returns the ID of the currently choosen/checked tea.
-	 * @returns integer teaID
-	 **/
-	var getIdOfCurrentTea=function()
-	{
-		var id=1;
-		var teaIDs=getIDsOfTeas();
-		for(var i in teaIDs)
-		{
-			var tea=getTeaData(teaIDs[i]);
-			if(tea["choosen"]===true)
-			{
-				id=teaIDs[i];
-				break;
-			}
-		}
-		
-		return id;
-	}
-	
-	/**
-	 * This method returns an array with all available tea IDs.
-	 * @returns array teaIDs
-	 **/
-	var getIDsOfTeas=function()
-	{
-		var teas=new Array();
-		var numberOfTeas=getNumberOfTeas();
-		for(var i=1; i<=MAXNROFTEAS; i++)
-		{
-			if(checkTeaWithID(i))
-			{
-				teas.push(i);
-			}
-			
-			if(teas.length-1===numberOfTeas)
-			{
-				break;
-			}
-		}
-		
-		return teas;
-	}
-	
-	/**
-	 * Use this method to tell the database, that a certain tea is choosen.
-	 * The corresponding flag is set in the database for all teas.
-	 *
-	 * @param integer teaID
-	 * @throws teaTimerInvalidTeaIDException
-	 **/
-	var setTeaChecked=function(id)
-	{
-		if(checkTeaWithID(id)!==true)
-		{
-			throw new teaTimerInvalidTeaIDException("setTeaChecked: There's no tea with ID '"+id+"'.");
-		}
-		
-		var teas=getIDsOfTeas();
-		for(var i in teas)
-		{
-			var teaID=teas[i];
-			teaDB.setBoolPref(teaID+".checked",((teaID===id)?true:false));
-		}
-	}
-	
-	/**
-	 * This private method returns the brewing time (in seconds) of the currenlty choosen tea.
-	 * @returns integer brewing time in seconds
-	 **/
-	var getSteepingTimeOfCurrentTea=function()
-	{
-		return getTeaData(getIdOfCurrentTea())["time"];
-	}
-	
-	
-	
-	
 	/*
 		==============
 		| UI methods |
@@ -269,8 +66,8 @@ function teaTimer()
 	 **/
 	this.prepareTeaSelectMenu=function()
 	{
-		var teas=getDataOfAllTeas();
-		
+		var teas=teaDB.getDataOfAllTeas();
+
 		var separator=document.getElementById("teatimer-endTealistSeparator");
 		while(separator.previousSibling)
 		{
@@ -283,7 +80,7 @@ function teaTimer()
 			var teaNode=document.createElement("menuitem");
 			teaNode.setAttribute("name","teatimer-tea");
 			teaNode.setAttribute("value",tea["ID"]);
-			teaNode.setAttribute("label",tea["name"]+" ("+getTimeStringFromTime(tea["time"])+")");
+			teaNode.setAttribute("label",tea["name"]+" ("+common.getTimeStringFromTime(tea["time"])+")");
 			teaNode.setAttribute("type","radio");
 			if(tea["choosen"]===true)
 			{
@@ -306,16 +103,16 @@ function teaTimer()
 	this.teaChoosen=function(id)
 	{
 		id=parseInt(id);
-		if(isNaN(id) || !checkTeaWithID(id))
+		if(isNaN(id) || !teaDB.checkTeaWithID(id))
 		{
-			throw new teaTimerInvalidTeaIDException("teaChoosen: Invalid tea ID given.");
+		    throw new teaTimerInvalidTeaIDException("teaChoosen: Invalid tea ID given.");
 		}
 		
 		self.stopCountdown();
 		
-		setTeaChecked(id);
+		teaDB.setTeaChecked(id);
 		
-		self.setCountdown(getTeaData(id)["time"]);
+		self.setCountdown(teaDB.getTeaData(id)["time"]);
 		self.startCountdown();
 	}
 	
@@ -371,10 +168,10 @@ function teaTimer()
 		time=parseInt(time);
 		if(isNaN(time))
 		{
-			throw new teaTimerInvalidTimeException("setCountdown: Invalid call. First parameter must be an integer.");
+		    throw new teaTimerInvalidTimeException("setCountdown: Invalid call. First parameter must be an integer.");
 		}
 		
-		teatimerCountdown.setAttribute("value",getTimeStringFromTime(time));
+		teatimerCountdown.setAttribute("value",common.getTimeStringFromTime(time));
 	}
 	
 	/**
@@ -385,7 +182,7 @@ function teaTimer()
 		cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
 		teatimerCountdown.setAttribute("tooltiptext","Currently steeping... Click to pause the countdown.");
 		countdownInProgress=true;
-		idOfCurrentSteepingTea=getIdOfCurrentTea();
+		idOfCurrentSteepingTea=teaDB.getIdOfCurrentTea();
 		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
 	}
 	
@@ -499,7 +296,7 @@ function teaTimer()
 	 **/
 	var getCurrentCountdownTime=function()
 	{
-		return getTimeFromTimeString(teatimerCountdown.getAttribute("value"));
+		return common.getTimeFromTimeString(teatimerCountdown.getAttribute("value"));
 	}
 	
 	
@@ -509,7 +306,7 @@ function teaTimer()
 	var resetCountdown=function()
 	{
 		teatimerCountdown.setAttribute("tooltiptext","Click here to start tea timer, right click for more options.");
-		self.setCountdown(getSteepingTimeOfCurrentTea());
+		self.setCountdown(teaDB.getSteepingTimeOfCurrentTea());
 	}
 	
 	
@@ -544,7 +341,7 @@ function teaTimer()
 		}
 		else
 		{
-			teaName=getTeaData(idOfCurrentSteepingTea)["name"];
+			teaName=teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
 		}
 		alert("TeaTimer says:\n\tSteeping complete.\n\tEnjoy your "+teaName+". :-)");
 	}
@@ -583,166 +380,7 @@ function teaTimer()
 		window.clearInterval(statusbarAlertInterval);
 		teatimerCountdown.removeAttribute("class");
 	}
-	
-	
-	
-	
-	
-	/*
-		=========================
-		| string helper methods |
-		=========================
-	*/
-	
-	/**
-	 * This public method can be used to check if a entered time is in a valid format.
-	 *
-	 * @param string the potential time
-	 * @return integer the validated time in seconds
-	 * @throws teaTimerQuickTimerInvalidInputException
-	 * @throws teaTimerInvalidTimeException
-	 **/
-	this.validateEnteredTime=function(input)
-	{
-		input=trim(input);
-		if(input.length<=0)
-		{
-			throw new teaTimerQuickTimerInputToShortException("Invalid quick timer input. Input is to short.");
-		}
-		
-		var time=null;
-		var validFormat1=/^[0-9]+$/; //allow inputs in seconds (example: 60)
-		var validFormat2=/^[0-9]+:[0-5][0-9]$/; //allow input in minute:seconds (example: 1:20)
-		var validFormat3=/^[0-9]+:[0-9]$/; //allow input in minute:seconds with one digit second (example: 1:9)
-		
-		if(validFormat1.test(input))
-		{
-			time=parseInt(input);
-		}
-		else if(validFormat2.test(input) || validFormat3.test(input))
-		{
-			time=getTimeFromTimeString(input);
-		}
-		else
-		{
-			throw new teaTimerQuickTimerInvalidInputException("Invalid quick timer input.");
-		}
-		
-		if(time<=0)
-		{
-			throw new teaTimerInvalidTimeException("Entered QuickTimer Time is smaller or equal 0. That's of course an invalid time.");
-		}
-		
-		return time;
-	}
-	
-	/**
-	 * This method tries to convert a given string  (like '1:20') into a number of seconds.
-	 * @param string TimeString (examples: '1:23', '0:40', '12:42')
-	 * @returns integer seconds
-	 * @throws teaTimerInvalidTimeStringException
-	 **/
-	var getTimeFromTimeString=function(str)
-	{
-		var parts=str.split(":");
-		if(parts.length!==2)
-		{
-			throw new teaTimerInvalidTimeStringException("getTimeFromTimeString: '"+str+"' is not a valid time string.");
-		}
-		
-		var minutes=parseInt(parts[0],10);
-		var seconds=parseInt(parts[1],10);
-		
-		return minutes*60+seconds;
-	}
-	
-	/**
-	 * This method returns the string representation (like '1:20') of a given time.
-	 * It's the opposite of getTimeFromTimeString
-	 *
-	 * @param integer time in seconds
-	 * @returins string timeString
-	 **/
-	var getTimeStringFromTime=function(time)
-	{
-		var timeStr="";
-		var seconds=(time%60);
-		timeStr=parseInt(time/60)+":"+((seconds<10)?"0":"")+seconds;
-		return timeStr;
-	}
-	
-	/**
-	 * Returns a text without whitespaces in front.
-	 * @param string text2ltrim
-	 * @returns string trimmed text
-	 **/
-	var ltrim=function(text)
-	{
-		return text.replace(/^\s+/,"");
-	}
-	
-	/**
-	 * Returns a text without whitespaces at the end.
-	 * @param string text2rtrim
-	 * @returns string trimmed text
-	 **/
-	var rtrim=function(text)
-	{
-		return text.replace(/\s+$/,"");
-	}
-	
-	/**
-	 * The famous trim function.
-	 * @param string text2trim
-	 * @returns string trimmed text
-	 **/
-	var trim=function(text)
-	{
-		return ltrim(rtrim(text));
-	}
-	
-	
-	
-	/*
-		=========================
-		| Miscellaneous methods |
-		=========================
-	*/
-	
-	/**
-	 * This private method dumps the given string to the console if teaTimer.debug===true and browser dom.window.dump.enabled===true
-	 * @param string String to dump
-	 * @returns boolean true
-	 **/
-	var log=function(msgString)
-	{
-		if(debug)
-		{
-			dump(thisClassName+" says: "+msgString);
-		}
-		
-		return true;
-	}
 }
-
-function teaTimerInvalidTimeException(msg)
-{
-	this.name="teaTimerInvalidTimeException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function teaTimerInvalidTimeStringException(msg)
-{
-	this.name="teaTimerInvalidTimeStringException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function teaTimerInvalidTeaIDException(msg)
-{
-	this.name="teaTimerInvalidTeaIDException";
-	this.message=((msg===undefined)?null:msg);
-}
-
 
 var teaTimerInstance=new teaTimer();
 window.addEventListener("load",teaTimerInstance.init,false);

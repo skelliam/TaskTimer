@@ -16,6 +16,8 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <overlay id="teatimer-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
+	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
 	<script type="application/x-javascript" src="chrome://teatimer/content/teatimer.js" />
 	<statusbar id="status-bar">
 		<statusbarpanel id="teatimer-panel" context="teatimer-contextMenu">
