@@ -79,8 +79,7 @@ function teaTimerOptionsWindow()
 	{
 	    try
 	    {
-		common.validateEnteredTime(teaTime);
-                teaTime=parseInt(teaTime,10);
+                teaTime=common.validateEnteredTime(teaTime);
                 inputok=true;
 	    }
 	    catch(e)
@@ -108,6 +107,7 @@ function teaTimerOptionsWindow()
             
             nameTxtField.value="";
             timeTxtField.value="";
+            nameTxtField.focus();
         }
     }
     
@@ -221,42 +221,42 @@ function teaTimerOptionsWindow()
         {
             var treecells=treerows[i].getElementsByTagName("treecell");
             var treeTeaID=parseInt(treecells[0].getAttribute("label"));
-            dump("handling tea with ID "+treeTeaID+"\n");
+            common.log("Options","handling tea with ID "+treeTeaID+"\n");
             teasInList.push(treeTeaID);
             var treeTeaName=treecells[1].getAttribute("label");
             var treeTeaTime=common.getTimeFromTimeString(treecells[2].getAttribute("label"));
             if(!teaDB.checkTeaWithID(treeTeaID)) //tea is not in DB, add it
             {
-                dump("Tea is not in DB, add it...\n");
+                common.log("Options","Tea is not in DB, add it...\n");
                 teasInDB.push(teaDB.addTea(treeTeaName,treeTeaTime));
-                dump("Added.\n");
+                common.log("Options","Added.\n");
             }
             else //tea is in DB, check if teaData has changed
             {
-                dump("Tea is in DB\n");
+                common.log("Options","Tea is in DB\n");
                 var teaData=teaDB.getTeaData(treeTeaID);
                 if(treeTeaName!=teaData["name"])
                 {
-                    dump("Setting name\n");
+                    common.log("Options","Setting name\n");
                     teaDB.setName(teaData["ID"],treeTeaName);
                 }
                 
                 if(treeTeaTime!=teaData["time"])
                 {
-                    dump("Setting time\n");
+                    common.log("Options","Setting time\n");
                     teaDB.setTime(teaData["ID"],treeTeaTime);
                 }
             }
         }
         
-        //delete teas that are in DB, but not in the list
+        //hideteas that are in DB, but not in the list. They will be deleted on next start
         for(var i in teasInDB)
         {
             if(common.in_array(teasInDB[i],teasInList)===false)
             {
-                dump("Deleting tea with ID "+teasInDB[i]+"\n");
-                teaDB.deleteTea(teasInDB[i]);
-                dump("Deleted.\n");
+                dump("Hidding tea with ID "+teasInDB[i]+"\n");
+                teaDB.setHidden(teasInDB[i]);
+                dump("Hidden.\n");
             }
         }
         

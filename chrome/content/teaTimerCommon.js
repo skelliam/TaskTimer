@@ -20,6 +20,40 @@ function teaTimerCommon()
 {
     var debug=true;
     var self=this;
+    const quitObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+    
+    quitObserver.addObserver(this,"quit-application-granted",false);
+    
+    this.observe=function(subject,actionID,actionValue)
+    {
+	if(actionID==="quit-application-granted")
+	{
+            try
+            {
+                var teaDB=new teaTimerTeaDB();
+                var hiddenTeas=teaDB.getIDsOfHiddenTeas();
+                for(var i=0; i<hiddenTeas.length; i++)
+                {
+                    try
+                    {
+                        teaDB.deleteTea(hiddenTeas[i]);
+                        self.log("Common","tea with ID "+hiddenTeas[i]+" deleted.\n");
+                    }
+                    catch(e)
+                    {
+                        //it's not really a problem, if there was an error, while deleting a tea, because it's still hidden. So, please forgive me, when I'm just swallowing up the error.
+                    }
+                }
+            }
+            catch(e)
+            {
+                //it's not really a problem, if there was an error, while deleting a tea, because it's still hidden. So, please forgive me, when I'm just swallowing up the error.
+            }
+	    quitObserver.removeObserver(this,"quit-application-granted");
+	}
+        
+        return true;
+    }
     
     /*
 	=========================
@@ -50,7 +84,7 @@ function teaTimerCommon()
 	
 	if(validFormat1.test(input))
 	{
-	    time=parseInt(input);
+	    time=parseInt(input,10);
 	}
 	else if(validFormat2.test(input) || validFormat3.test(input))
 	{
@@ -213,7 +247,8 @@ function teaTimerCommon()
     {
 	if(debug)
 	{
-	    dump(component+" says: "+msgString);
+            component=((typeof component==="string" && component.length>0)?component:"unknown component");
+	    dump("teaTimer ("+component+") says: "+msgString);
 	}
 	
 	return true;

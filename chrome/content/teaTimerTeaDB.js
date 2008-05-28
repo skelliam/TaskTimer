@@ -30,18 +30,21 @@ function teaTimerTeaDB()
      **/
     this.initTeaDB=function()
     {
-	log("Initiating Tea Database\n");
+	common.log("teaTimer","Initiating Tea Database\n");
 	teaDB.setCharPref("1.name","Earl Grey");
 	teaDB.setIntPref("1.time",180);
 	teaDB.setBoolPref("1.checked",true);
+	teaDB.setBoolPref("1.hidden",false);
 	
 	teaDB.setCharPref("2.name","Rooibos");
 	teaDB.setIntPref("2.time",420);
 	teaDB.setBoolPref("2.checked",false);
+	teaDB.setBoolPref("2.hidden",false);
 	
 	teaDB.setCharPref("3.name","White Tea");
 	teaDB.setIntPref("3.time",120);
 	teaDB.setBoolPref("3.checked",false);
+	teaDB.setBoolPref("3.hidden",false);
     }
 	
     /**
@@ -69,6 +72,16 @@ function teaTimerTeaDB()
 	return teas;
     }
     
+    var checkIfTeaIsHidden=function(id)
+    {
+	if(checkTeaWithID(id)===false)
+	{
+	    throw new teaTimerInvalidTeaIDException("checkIfTeaIsHidden: Invalid call, first parameter must be a tea ID.");
+	}
+	
+	return ((getTeaData(id)["hidden"]===true)?true:false);
+    }
+    
     this.addTea=function(name,time,checked)
     {
         if(!(
@@ -87,6 +100,7 @@ function teaTimerTeaDB()
         teaDB.setCharPref(id+".name",name);
 	teaDB.setIntPref(id+".time",time);
 	teaDB.setBoolPref(id+".checked",checked);
+	teaDB.setBoolPref(id+".hidden",false);
         
         return id;
     }
@@ -127,6 +141,16 @@ function teaTimerTeaDB()
         teaDB.setIntPref(id+".time",parseInt(time));
     }
     
+    this.setHidden=function(id)
+    {
+	if(self.checkTeaWithID(id)===false)
+        {
+            throw new teaTimerInvalidTeaIDException("setHidden: Invalid call, first parameter must be a tea ID.");
+        }
+        
+        teaDB.setBoolPref(id+".hidden",true);
+    }
+    
     this.deleteTea=function(id)
     {
         if(self.checkTeaWithID(id)===false)
@@ -137,6 +161,7 @@ function teaTimerTeaDB()
         teaDB.clearUserPref(id+".name");
         teaDB.clearUserPref(id+".time");
         teaDB.clearUserPref(id+".checked");
+	teaDB.clearUserPref(id+".hidden");
     }
     
     /**
@@ -184,8 +209,17 @@ function teaTimerTeaDB()
 	var name=teaDB.getCharPref(id+".name");
 	var time=teaDB.getIntPref(id+".time");
 	var choosen=teaDB.getBoolPref(id+".checked");
+	var hidden=false;
+	try
+	{
+	    var hidden=teaDB.getBoolPref(id+".hidden");
+	}
+	catch(e)
+	{
+	    
+	}
 	
-	return {"ID":id,"name":name,"time":time,"choosen":choosen};
+	return {"ID":id,"name":name,"time":time,"choosen":choosen,"hidden":hidden};
     }
 	
     /**
@@ -199,9 +233,10 @@ function teaTimerTeaDB()
      * 		)
      * @returns array
      **/
-    this.getDataOfAllTeas=function()
+    this.getDataOfAllTeas=function(includehidden)
     {
-	var teaIDs=self.getIDsOfTeas();
+	includehidden=((includehidden===true)?true:false);
+	var teaIDs=self.getIDsOfTeas(includehidden);
 	var teas=new Array();
 	for(var i in teaIDs)
 	{
@@ -236,15 +271,22 @@ function teaTimerTeaDB()
      * This method returns an array with all available tea IDs.
      * @returns array teaIDs
      **/
-    this.getIDsOfTeas=function()
+    this.getIDsOfTeas=function(includehidden)
     {
+	includehidden=((includehidden===true)?true:false);
 	var teas=new Array();
 	var numberOfTeas=self.getNumberOfTeas();
 	for(var i=1; i<=MAXNROFTEAS; i++)
 	{
 	    if(self.checkTeaWithID(i))
 	    {
-		teas.push(i);
+		if(
+		   (includehidden===false && self.getTeaData(i)["hidden"]===false) ||
+		   (includehidden===true)
+		)
+		{
+		    teas.push(i);
+		}
 	    }
 	    
 	    if(teas.length-1===numberOfTeas)
@@ -255,7 +297,23 @@ function teaTimerTeaDB()
 	
 	return teas;
     }
+    
+    this.getIDsOfHiddenTeas=function()
+    {
+        var teas=self.getIDsOfTeas(true);
+        var hiddenTeas=new Array();
+        for(var i=0; i<teas.length; i++)
+        {
+            var teaID=teas[i];
+            if(self.getTeaData(teaID)["hidden"]===true)
+            {
+                hiddenTeas.push(teaID);
+            }
+        }
+        
+        return hiddenTeas;
 	
+    }
     /**
      * Use this method to tell the database, that a certain tea is choosen.
      * The corresponding flag is set in the database for all teas.
@@ -284,7 +342,19 @@ function teaTimerTeaDB()
      **/
     this.getSteepingTimeOfCurrentTea=function()
     {
-	return self.getTeaData(self.getIdOfCurrentTea())["time"];
+	var time=null;
+	try
+	{
+	    time=self.getTeaData(self.getIdOfCurrentTea())["time"];
+	}
+	catch(e)
+	{
+	    var firstTeaID=self.getIDsOfTeas()[0];
+	    self.setTeaChecked(firstTeaID);
+	    time=self.getTeaData(firstTeaID)["time"];
+	}
+	
+	return time;
     }
 }
 

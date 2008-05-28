@@ -111,6 +111,7 @@ function teaTimer()
 		self.stopCountdown();
 		
 		teaDB.setTeaChecked(id);
+		idOfCurrentSteepingTea=null; //reseting maybe set quicktimer flag
 		
 		self.setCountdown(teaDB.getTeaData(id)["time"]);
 		self.startCountdown();
@@ -182,7 +183,10 @@ function teaTimer()
 		cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
 		teatimerCountdown.setAttribute("tooltiptext","Currently steeping... Click to pause the countdown.");
 		countdownInProgress=true;
-		idOfCurrentSteepingTea=teaDB.getIdOfCurrentTea();
+		if(idOfCurrentSteepingTea!=="quicktimer")
+		{
+			idOfCurrentSteepingTea=teaDB.getIdOfCurrentTea();
+		}
 		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
 	}
 	
@@ -233,7 +237,7 @@ function teaTimer()
 	this.pulse=function()
 	{
 		var currentTime=getCurrentCountdownTime();
-		//log("statusbartime: "+currentTime+"\n");
+		//common.log("Main class","statusbartime: "+currentTime+"\n");
 		var d=new Date();
 		if(ts===null)
 		{
@@ -248,16 +252,16 @@ function teaTimer()
 			{
 				difference+=100;
 			}
-			//log("difference: "+difference+"\n");
+			//common.log("Main class","difference: "+difference+"\n");
 			if(difference>1000)
 			{
 				currentTime-=parseInt(difference/1000);
 				ts=time;
 			}
-			//log("new statusbartime: "+currentTime+"\n");
+			//common.log("Main class","new statusbartime: "+currentTime+"\n");
 		}
-		//log("-----\n");
-		//log(currentTime);
+		//common.log("Main class","-----\n");
+		//common.log("Main class",currentTime);
 		self.setCountdown(currentTime);
 		if(currentTime<=0)
 		{
