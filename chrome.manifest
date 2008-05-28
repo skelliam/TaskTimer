@@ -14,8 +14,11 @@
 #	You should have received a copy of the GNU General Public License
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 content		teatimer	chrome/content/
+#content		teatimer	jar:chrome/teaTimer.jar!/content/
 overlay		chrome://browser/content/browser.xul	        chrome://teatimer/content/teatimer.xul
 
 skin	        teatimer	classic/1.0	chrome/skin/
+#skin	        teatimer	classic/1.0	jar:chrome/teaTimer.jar!/skin/
 style	        chrome://browser/content/browser.xul            chrome://teatimer/skin/style.css
