@@ -1,6 +1,6 @@
 /*
 	TeaTimer: A Firefox extension that protects you from oversteeped tea.
-	Copyright (C) 2008 Philipp Sšhnlein
+	Copyright (C) 2008 Philipp SÃ¶hnlein
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License version 3 as 
@@ -19,7 +19,6 @@ function teaTimerTeaDB()
 {
     var self=this;
     
-    const MAXNROFTEAS=42;
     const common=new teaTimerCommon();
     
     const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
@@ -54,13 +53,16 @@ function teaTimerTeaDB()
     this.getNumberOfTeas=function()
     {
 	var teas=0;
-	for(var i=1; i<=MAXNROFTEAS; i++) 
+        const offset=23;
+        var end=offset;
+	for(var i=1; i<=end; i++) 
 	{
 	    try
 	    {
 		if(self.checkTeaWithID(i))
 		{
 		    teas++;
+                    end=i+offset;
 		}
 	    }
 	    catch(ex)
@@ -72,6 +74,12 @@ function teaTimerTeaDB()
 	return teas;
     }
     
+    /**
+     * This private method checks if a certain tea is marked for deletion (hidden).
+     * @param integer teaID
+     * @return bool hidden oder not?
+     * @throws teaTimerInvalidTeaIDException
+     **/
     var checkIfTeaIsHidden=function(id)
     {
 	if(checkTeaWithID(id)===false)
@@ -82,6 +90,14 @@ function teaTimerTeaDB()
 	return ((getTeaData(id)["hidden"]===true)?true:false);
     }
     
+    /**
+     * This public method adds a tea to the DB.
+     * @param string teaName
+     * @param integer teaTime (in seconds)
+     * @param boolean mark tea as active tea?
+     * @returns integer new teaID
+     * @throws teaTimerDBInsufficientInputDataException
+     **/
     this.addTea=function(name,time,checked)
     {
         if(!(
@@ -102,15 +118,31 @@ function teaTimerTeaDB()
 	teaDB.setBoolPref(id+".checked",checked);
 	teaDB.setBoolPref(id+".hidden",false);
         
+        if(checked===true)
+        {
+            self.setTeaChecked(id); //we should call this, to make sure, that no other tea is marked as active.
+        }
+        
         return id;
     }
     
+    /**
+     * This private method calculates the next free ID.
+     * @returns integer ID
+     **/
     var getNextAutoIncrementId=function()
     {
         var allTeaIDs=self.getIDsOfTeas();
         return allTeaIDs[allTeaIDs.length-1]+1;
     }
     
+    /**
+     * This public method lets you set the name of a certain existing tea.
+     * @param integer teaID
+     * @param string newName
+     * @throws teaTimerInvalidTeaIDException
+     * @throws teaTimerInvalidTeaNameException
+     **/
     this.setName=function(id,name)
     {
         if(self.checkTeaWithID(id)===false)
@@ -126,6 +158,13 @@ function teaTimerTeaDB()
         teaDB.setCharPref(id+".name",name);
     }
     
+    /**
+     * This public method lets you set the time of a certain existing tea.
+     * @param integer teaID
+     * @param integer new time (in seconds)
+     * @throws teaTimerInvalidTeaIDException
+     * @throws teaTimerInvalidTeaTimeException
+     **/
     this.setTime=function(id,time)
     {
         if(self.checkTeaWithID(id)===false)
@@ -133,14 +172,19 @@ function teaTimerTeaDB()
             throw new teaTimerInvalidTeaIDException("setTime: Invalid call, first parameter must be a tea ID.");
         }
         
-        if(!(typeof time==="number" && parseInt(time)>0))
+        if(!(typeof time==="number" && parseInt(time,10)>0))
         {
             throw new teaTimerInvalidTeaTimeException("setTime: Invalid call, second parameter must be a time integer greater than 0.");
         }
         
-        teaDB.setIntPref(id+".time",parseInt(time));
+        teaDB.setIntPref(id+".time",parseInt(time,10));
     }
     
+     /**
+     * This public method sets a certain existing tea for deletion (hidden).
+     * @param integer teaID
+     * @throws teaTimerInvalidTeaIDException
+     **/
     this.setHidden=function(id)
     {
 	if(self.checkTeaWithID(id)===false)
@@ -151,6 +195,12 @@ function teaTimerTeaDB()
         teaDB.setBoolPref(id+".hidden",true);
     }
     
+    /**
+     * This public method finally deletes a certain tea.
+     * It does not check, if the tea was marked as "hidden" before!
+     * @param integer teaID
+     * @throws teaTimerInvalidTeaIDException
+     **/
     this.deleteTea=function(id)
     {
         if(self.checkTeaWithID(id)===false)
@@ -276,7 +326,9 @@ function teaTimerTeaDB()
 	includehidden=((includehidden===true)?true:false);
 	var teas=new Array();
 	var numberOfTeas=self.getNumberOfTeas();
-	for(var i=1; i<=MAXNROFTEAS; i++)
+        const offset=23;
+        var end=offset;
+	for(var i=1; i<=end; i++)
 	{
 	    if(self.checkTeaWithID(i))
 	    {
@@ -286,6 +338,7 @@ function teaTimerTeaDB()
 		)
 		{
 		    teas.push(i);
+                    end=i+offset;
 		}
 	    }
 	    
@@ -298,6 +351,10 @@ function teaTimerTeaDB()
 	return teas;
     }
     
+    /**
+     * This method returns an array with all tea IDs of teas, that are marked for deletion (hidden).
+     * @returns array teaIDs
+     **/
     this.getIDsOfHiddenTeas=function()
     {
         var teas=self.getIDsOfTeas(true);

@@ -24,6 +24,10 @@ function teaTimerCommon()
     
     quitObserver.addObserver(this,"quit-application-granted",false);
     
+    /**
+     * This observer method is called, when the Firefox quits.
+     * It checks which teas are marked for deletion and finally deletes them
+     **/
     this.observe=function(subject,actionID,actionValue)
     {
 	if(actionID==="quit-application-granted")

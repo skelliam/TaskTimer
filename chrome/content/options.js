@@ -48,6 +48,9 @@ function teaTimerOptionsWindow()
 	fillTreeWithDBValues();
     }
     
+    /**
+     * This public method is called, when a key is pressed in the window, so it can handle shortcuts.
+     **/
     this.documentKeypress=function(event)
     {
         if(event.keyCode===27) //escape
@@ -56,6 +59,9 @@ function teaTimerOptionsWindow()
         }
     }
     
+    /**
+     * This public method is called, when a key is pressed in one of the "add tea textfields". Useful for handling special inputs.
+     **/
     this.addTxtFieldsKeypress=function(event)
     {
 	if(event.keyCode===13) //enter
@@ -64,6 +70,10 @@ function teaTimerOptionsWindow()
         }
     }
     
+    /**
+     * This public method is called, when the "add tea" button is clicked.
+     * It handles validation and adding a tea to the tree.
+     **/
     this.addButtonCommand=function()
     {
         var inputok=false;
@@ -111,6 +121,10 @@ function teaTimerOptionsWindow()
         }
     }
     
+    /**
+     * This private method is used to find the ID of the last tea in the tealist.
+     * @returns integer ID
+     **/
     var getLastTeaIDFromTree=function()
     {
         var treerows=treeBody.getElementsByTagName("treerow");
@@ -127,6 +141,12 @@ function teaTimerOptionsWindow()
         return lastID;
     }
     
+    /**
+     * This private method adds a tea into the tealist.
+     * @param integer ID
+     * @param string name
+     * @param integer time (in seconds)
+     **/
     var addTeaToTree=function(ID,name,time)
     {
         var parent=treeBody;
@@ -152,6 +172,10 @@ function teaTimerOptionsWindow()
 	parent.appendChild(treeitem);
     }
     
+    /**
+     * This public method is called when the OK-button is pressed.
+     * It validates the teas in the tealist and induces the final saving proccess.
+     **/
     this.okButtonCommand=function()
     {
         if(treeBody.getElementsByTagName("treerow").length===0)
@@ -182,6 +206,12 @@ function teaTimerOptionsWindow()
         }
     }
     
+    /**
+     * This private function checks if the fields in the tealist (tree) are valid.
+     * @returns boolean true, if everything is okay
+     * @throws teaTimerInvalidTeaNameException
+     * @throws teaTimerInvalidTeaTimeException
+     **/
     var validateTeasInTree=function()
     {
         var treerows=treeBody.getElementsByTagName("treerow");
@@ -197,7 +227,6 @@ function teaTimerOptionsWindow()
             
             try
             {
-                dump(treeTeaTime);
                 common.validateEnteredTime(treeTeaTime);
             }
             catch(e)
@@ -209,10 +238,11 @@ function teaTimerOptionsWindow()
         return true;
     }
     
+    /**
+     * This private method dumps the current content of the tea list into the DB.
+     **/
     var writeTreeTeasinDB=function()
     {
-        try
-        {
         var teasInDB=teaDB.getIDsOfTeas();
         var teasInList=new Array();
         //handle teas that are in the list
@@ -259,19 +289,20 @@ function teaTimerOptionsWindow()
                 dump("Hidden.\n");
             }
         }
-        
-        }
-        catch(e)
-        {
-            dump(e);
-        }
     }
     
+    /**
+     * This public method is called, when the cancel button is pressed. 
+     **/
     this.cancelButtonCommand=function()
     {
         window.close();
     }
     
+    /**
+     * This public method is called, when a item in the tree is selected.
+     * It handles also the "disabled"-state of the delete button.
+     **/
     this.treeSelected=function()
     {
 	var selectedItems=getSelectedTreeIndexes();
@@ -279,6 +310,10 @@ function teaTimerOptionsWindow()
 	deleteButton.setAttribute("disabled",((selectedItems.length>0)?"false":"true"));
     }
     
+    /**
+     * This private method checks which items in the tree are selected.
+     * @returns array IDs of selected rows.
+     **/
     var getSelectedTreeIndexes=function()
     {
 	var rangeStartOffset=new Object();
@@ -300,11 +335,19 @@ function teaTimerOptionsWindow()
 	return selectedItems;
     }
     
+    /**
+     * This private method checks how many teas are in the tealist (tree).
+     * @return integer number of teas
+     **/
     var getNumberOfTeasInTree=function()
     {
 	return treeBody.getElementsByTagName("treeitem").length;
     }
     
+    /**
+     * This public method is called, when the "delete selected teas" button is pressed and removes the items from the tree.
+     * It does not the deletion proccess, that is done, when the dialog is closed with "OK".
+     **/
     this.deleteSelectedTeas=function()
     {
 	var selectedItems=getSelectedTreeIndexes();
@@ -323,6 +366,9 @@ function teaTimerOptionsWindow()
 	}while(deletedItems<selectedItems.length);
     }
     
+    /**
+     * This private method adds the current database content into the tea list (tree).
+     **/
     var fillTreeWithDBValues=function()
     {
 	var teas=teaDB.getDataOfAllTeas();

@@ -119,13 +119,17 @@ function teaTimer()
 	
 	/**
 	 * This method is called, when the quick timer menu item is acivated (clicked).
-	 * It prompts for an input and 
+	 * It opens the quicktimer window.
 	 **/
 	this.quicktimerMenuitemCommand=function()
 	{
 		window.openDialog("chrome://teatimer/content/quicktimer.xul","","centerscreen,dialog,modal,resizable,scrollbars,dependent");
 	}
 	
+	/**
+	 * This method is called, when the options menu item is acivated (clicked).
+	 * It opens the options window.
+	 **/
 	this.openOptionsWindow=function()
 	{
 		window.openDialog("chrome://teatimer/content/options.xul","","centerscreen,dialog,modal,resizable,scrollbars,dependent");
@@ -248,7 +252,7 @@ function teaTimer()
 		{
 			var time=d.getTime();
 			var difference=time-ts;
-			if(difference>900 && difference<=1000)
+			if((difference%1000)>900 && (difference%1000)<=1000)
 			{
 				difference+=100;
 			}
