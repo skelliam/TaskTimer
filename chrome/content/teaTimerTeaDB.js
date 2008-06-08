@@ -109,14 +109,14 @@ function teaTimerTeaDB()
             throw new teaTimerDBInsufficientInputDataException("addTea: First parameter must be a string with more than 0 chars, second parameter must be a vaild time integer.");
         }
         
-	time=parseInt(time,10);
+		time=parseInt(time,10);
         checked=(checked===true)?true:false;
         
         var id=getNextAutoIncrementId();
         teaDB.setCharPref(id+".name",name);
-	teaDB.setIntPref(id+".time",time);
-	teaDB.setBoolPref(id+".checked",checked);
-	teaDB.setBoolPref(id+".hidden",false);
+		teaDB.setIntPref(id+".time",time);
+		teaDB.setBoolPref(id+".checked",checked);
+		teaDB.setBoolPref(id+".hidden",false);
         
         if(checked===true)
         {
@@ -302,19 +302,19 @@ function teaTimerTeaDB()
      **/
     this.getIdOfCurrentTea=function()
     {
-	var id=1;
-	var teaIDs=self.getIDsOfTeas();
-	for(var i in teaIDs)
-	{
-	    var tea=self.getTeaData(teaIDs[i]);
-	    if(tea["choosen"]===true)
-	    {
-		id=teaIDs[i];
-		break;
-	    }
-	}
-	
-	return id;
+		var id=1;	
+		var teaIDs=self.getIDsOfTeas();
+		for(var i in teaIDs)
+		{
+			var tea=self.getTeaData(teaIDs[i]);
+			if(tea["choosen"]===true)
+			{
+				id=teaIDs[i];
+				break;
+			}
+		}
+		
+		return id;
     }
 	
     /**

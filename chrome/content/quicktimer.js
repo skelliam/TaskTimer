@@ -22,7 +22,7 @@ function teaTimerQuickTimer()
     {
         document.getElementById("teaTimer-qtTime").focus();
         document.addEventListener("keypress",teaTimerQtInstance.documentKeypress,false);
-	document.getElementById("teaTimer-qtTime").addEventListener("keypress",teaTimerQtInstance.timeKeypress,false);
+		document.getElementById("teaTimer-qtTime").addEventListener("keypress",teaTimerQtInstance.timeKeypress,false);
         document.getElementById("teaTimer-qtBtnCancel").addEventListener("command",teaTimerQtInstance.cancelButtonCommand,false);
         document.getElementById("teaTimer-qtBtnOk").addEventListener("command",teaTimerQtInstance.okButtonCommand,false);
     }
@@ -60,9 +60,10 @@ function teaTimerQuickTimer()
             window.opener.teaTimerInstance.stopCountdown();
             window.opener.teaTimerInstance.reloadCountdown();
             window.opener.teaTimerInstance.setCountdown(time);
-            if(document.getElementById("teaTimer-qtChkStartCountdown").checked)
+            window.opener.teaTimerInstance.setQuickTimerMode();
+			if(document.getElementById("teaTimer-qtChkStartCountdown").checked)
             {
-                window.opener.teaTimerInstance.startCountdown(true);
+                window.opener.teaTimerInstance.startCountdown();
             }
             window.opener.teaTimerInstance.setQuickTimerMode();
         }

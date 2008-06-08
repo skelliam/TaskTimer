@@ -18,7 +18,7 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>teatimer@codepaintedby.philipp-soehnlein.de</em:id>
-		<em:version>0.4-rc1</em:version>
+		<em:version>0.4</em:version>
 		<em:name>TeaTimer</em:name>
 		<em:description>A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3, see my website for more informations.</em:description>
 		<em:creator>Philipp Söhnlein</em:creator>

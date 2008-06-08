@@ -28,7 +28,8 @@ function teaTimer()
 	var self=this;
 	var countdownInterval=null; //container for the countdown interval ressource
 	var statusbarAlertInterval=null; //container for the statusbar alert ('blink-blink') interval ressource
-	var ts=null; //timestamp
+	var startingTSofCurrentCountdown=null;
+	var steepingTimeOfCurrentTea=null; 
 	var countdownInProgress=false; //flag
 	var idOfCurrentSteepingTea=null;
 	
@@ -145,8 +146,8 @@ function teaTimer()
 		{
 			if(countdownInProgress===true)
 			{
-				self.stopCountdown();
-				teatimerCountdown.setAttribute("tooltiptext","Timer paused. Click to proceed.");
+				//self.stopCountdown();
+				//teatimerCountdown.setAttribute("tooltiptext","Timer paused. Click to proceed.");
 			}
 			else
 			{
@@ -185,12 +186,20 @@ function teaTimer()
 	this.startCountdown=function()
 	{
 		cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
-		teatimerCountdown.setAttribute("tooltiptext","Currently steeping... Click to pause the countdown.");
+		teatimerCountdown.setAttribute("tooltiptext","Currently steeping...");
 		countdownInProgress=true;
-		if(idOfCurrentSteepingTea!=="quicktimer")
+		if(idOfCurrentSteepingTea==="quicktimer")
+		{
+			steepingTimeOfCurrentTea=getCurrentCountdownTime();
+		}
+		else
 		{
 			idOfCurrentSteepingTea=teaDB.getIdOfCurrentTea();
+			steepingTimeOfCurrentTea=teaDB.getSteepingTimeOfCurrentTea();
 		}
+		
+		startingTSofCurrentCountdown=new Date().getTime();
+		
 		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
 	}
 	
@@ -241,36 +250,23 @@ function teaTimer()
 	this.pulse=function()
 	{
 		var currentTime=getCurrentCountdownTime();
-		//common.log("Main class","statusbartime: "+currentTime+"\n");
-		var d=new Date();
-		if(ts===null)
+		common.log("Main class","statusbartime: "+currentTime+"\n");
+		var difference=new Date().getTime()-startingTSofCurrentCountdown;
+		common.log("Main class","difference: "+difference+"\n");
+		if((difference%1000)>=900 && (difference%1000)<1000)
 		{
-			ts=d.getTime();
-			currentTime--;
+			difference+=100;
 		}
-		else
-		{
-			var time=d.getTime();
-			var difference=time-ts;
-			if((difference%1000)>900 && (difference%1000)<=1000)
-			{
-				difference+=100;
-			}
-			//common.log("Main class","difference: "+difference+"\n");
-			if(difference>1000)
-			{
-				currentTime-=parseInt(difference/1000);
-				ts=time;
-			}
-			//common.log("Main class","new statusbartime: "+currentTime+"\n");
-		}
-		//common.log("Main class","-----\n");
-		//common.log("Main class",currentTime);
-		self.setCountdown(currentTime);
+		common.log("Main class","corrected difference: "+difference+"\n");
+		common.log("Main class","steeping time of current tea: "+currentTime+"\n");
+		currentTime=steepingTimeOfCurrentTea-parseInt(difference/1000);
+		common.log("Main class","new statusbartime: "+currentTime+"\n\n");
+		self.setCountdown(currentTime);	
 		if(currentTime<=0)
 		{
 			brewingComplete();
 		}
+		common.log("Main class","-----\n");
 	}
 	
 	/**
@@ -280,7 +276,7 @@ function teaTimer()
 	this.stopCountdown=function()
 	{
 		window.clearInterval(countdownInterval);
-		ts=null;
+		startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
 		countdownInProgress=false;
 		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 	}
@@ -293,7 +289,7 @@ function teaTimer()
 	{
 		self.stopCountdown();
 		shootAlerts();
-		idOfCurrentSteepingTea=null;
+		idOfCurrentSteepingTea=startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
 		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		teatimerCountdown.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
 		teatimerCountdown.addEventListener("click",teaTimerInstance.reloadCountdown,false);
