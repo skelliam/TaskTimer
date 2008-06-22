@@ -24,6 +24,7 @@ function teaTimer()
 	
 	var teatimerCountdown=null; //container for quick timer XUL element reference 'teatimer-countdown' (label)
 	var teatimerContextMenu=document.getElementById("teatimer-contextMenu");
+	const sound=Components.classes["@mozilla.org/sound;1"].createInstance().QueryInterface(Components.interfaces.nsISound);
 	
 	var self=this;
 	var countdownInterval=null; //container for the countdown interval ressource
@@ -40,6 +41,7 @@ function teaTimer()
 	{
 		teatimerCountdown=document.getElementById("teatimer-countdown");
 		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		sound.init();
 		document.getElementById("teatimer-options").addEventListener("command",teaTimerInstance.openOptionsWindow,false);
 		document.getElementById("teatimer-quicktimer").addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
 		document.getElementById("teatimer-cancel").addEventListener("command",teaTimerInstance.cancelTimer,false);
@@ -329,6 +331,7 @@ function teaTimer()
 	 **/
 	var shootAlerts=function()
 	{
+		doSoundAlert();
 		doStatusbarAlert();
 		doPopupAlert();
 	}
@@ -360,6 +363,15 @@ function teaTimer()
 		teatimerCountdown.setAttribute("tooltiptext","Tea ready. Click here to cancel alert.")
 		statusbarAlertInterval=window.setInterval(teaTimerInstance.toggleStatusbarAlertStyle,400);
 	}
+	
+	var doSoundAlert=function()
+	{
+        const SND_URL=new Components.Constructor("@mozilla.org/network/standard-url;1","nsIURL");
+        var url=new SND_URL();
+        url.spec="chrome://teatimer/content/sound/end-speech.wav";
+        sound.play(url);
+	}
+	
 	
 	/**
 	 * This method is capable for toggling the correct CSS classes for the 'blinking'-statusbar-alert.
