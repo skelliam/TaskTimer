@@ -25,6 +25,7 @@
     <tabbox>
         <tabs>
             <tab label="Tea varities" />
+            <tab label="Alerts" />
         </tabs>
         <tabpanels>
             <tabpanel id="teaTimer-optionsVaritiesTab">
@@ -76,8 +77,42 @@
                     <hbox align="right">
                         <button id="teaTimer-optionsBtnDelTea" label="Delete selected tea" disabled="true" />
                     </hbox>
-                    
                 </vbox>
+            </tabpanel>
+            <tabpanel id="teaTimer-optionsAlertsTab">
+                <groupbox flex="1">
+                    <caption label="Sound Alerts" />
+                    <vbox>
+                        <hbox align="center">
+                            <label control="teaTimer-optionsStartSound" value="Play this sound, when timer is started:" />
+                            <spacer flex="1" />
+                            <menulist id="teaTimer-optionsStartSound">
+                                <menupopup>
+                                    <menuitem label="None" value="none" />
+                                    <menuitem label="Cup" value="cup" />
+                                    <menuitem label="Egg Timer" value="eggtimer" />
+                                    <menuitem label="Pour" value="pour" />
+                                </menupopup>
+                            </menulist>
+                            <button id="teaTimer-optionsBtnPreviewStartSound" label="Preview" />
+                        </hbox>
+                        
+                        <hbox align="center">
+                            <label control="teaTimer-optionsEndSound" value="Play this sound, when timer finishes:" />
+                            <spacer flex="1" />
+                            <menulist id="teaTimer-optionsEndSound">
+                                <menupopup>
+                                    <menuitem label="None" value="none" />
+                                    <menuitem label="Egg Timer" value="eggtimer" />
+                                    <menuitem label="Fanfare" value="fanfare" />
+                                    <menuitem label="Slurp" value="slurp" />
+                                    <menuitem label="Speech" value="speech" />
+                                </menupopup>
+                            </menulist>
+                            <button id="teaTimer-optionsBtnPreviewEndSound" label="Preview" />
+                        </hbox>
+                    </vbox>  
+                </groupbox>
             </tabpanel>
         </tabpanels>
     </tabbox>

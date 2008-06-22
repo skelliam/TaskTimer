@@ -18,6 +18,7 @@ function teaTimerOptionsWindow()
 {
     var teaDB=new teaTimerTeaDB();
     const common=new teaTimerCommon();
+    const sound=Components.classes["@mozilla.org/sound;1"].createInstance().QueryInterface(Components.interfaces.nsISound);
     const self=this;
     
     var tree=null; //container for the tree element (teelist)
@@ -28,10 +29,13 @@ function teaTimerOptionsWindow()
         
     this.init=function()
     {
+        //general
         document.addEventListener("keypress",teaTimerOptionsWindowInstance.documentKeypress,false);
         document.getElementById("teaTimer-optionsWinBtnCancel").addEventListener("command",teaTimerOptionsWindowInstance.cancelButtonCommand,false);
         document.getElementById("teaTimer-optionsWinBtnOk").addEventListener("command",teaTimerOptionsWindowInstance.okButtonCommand,false);
+        sound.init();
         
+        //tea varities tab
         nameTxtField=document.getElementById("teaTimer-optionsNewTeaName");
         nameTxtField.addEventListener("keypress",teaTimerOptionsWindowInstance.addTxtFieldsKeypress,false);
 	timeTxtField=document.getElementById("teaTimer-optionsNewTeaTime");
@@ -43,9 +47,25 @@ function teaTimerOptionsWindow()
 	treeBody=document.getElementById("teaTimer-optionsTeasTreeChildren");
 	deleteButton=document.getElementById("teaTimer-optionsBtnDelTea");
 	deleteButton.addEventListener("command",teaTimerOptionsWindowInstance.deleteSelectedTeas,false);
-
 	
 	fillTreeWithDBValues();
+        
+        //alerts tab
+        initSoundSelectBox("start");
+        initSoundSelectBox("end");
+        document.getElementById("teaTimer-optionsBtnPreviewStartSound").addEventListener("command",teaTimerOptionsWindowInstance.previewStartSound,false);
+        document.getElementById("teaTimer-optionsBtnPreviewEndSound").addEventListener("command",teaTimerOptionsWindowInstance.previewEndSound,false);
+        /*
+        if(getStartSoundId()==="none")
+        {
+            deactivateStartSoundPreview();
+        }
+        
+        if(getEndSoundId()==="none")
+        {
+            deactivateEndSoundPreview();
+        }
+       */
     }
     
     /**
@@ -377,6 +397,87 @@ function teaTimerOptionsWindow()
 	    var tea=teas[i];
 	    addTeaToTree(tea["ID"],tea["name"],tea["time"]);
 	}
+    }
+    
+    var initSoundSelectBox=function(type)
+    {
+        type=(type==="start")?"start":"end";
+        
+        if(type==="start")
+        {
+            var currentSound=common.getIdOfStartSound();
+            var box=document.getElementById("teaTimer-optionsStartSound");
+            box.addEventListener("command",teaTimerOptionsWindowInstance.startSoundChanged,false);
+        }
+        
+        if(type==="end")
+        {
+            var currentSound=common.getIdOfEndSound();
+            var box=document.getElementById("teaTimer-optionsEndSound");
+            document.getElementById("teaTimer-optionsEndSound").addEventListener("command",teaTimerOptionsWindowInstance.endSoundChanged,false);
+        }
+        
+        var sounds=box.getElementsByTagName("menuitem");
+        for(var i=0; i<sounds.length; i++)
+        {
+            if(sounds[i].getAttribute("value")===currentSound)
+            {
+                box.selectedIndex=i;
+            }
+        }
+    }
+    
+    this.startSoundChanged=function()
+    {
+        soundChanged("start");
+    }
+    
+    this.endSoundChanged=function()
+    {
+        soundChanged("end");
+    }
+    
+    var soundChanged=function(type)
+    {
+        type=(type==="start")?"start":"end";
+        
+        var idOfSelectBox=null;
+        var idOfPreviewButton=null;
+        if(type==="start")
+        {
+            idOfSelectBox="teaTimer-optionsStartSound";
+            idOfPreviewButton="teaTimer-optionsBtnPreviewStartSound";
+        }
+        else
+        {
+            idOfSelectBox="teaTimer-optionsEndSound";
+            idOfPreviewButton="teaTimer-optionsBtnPreviewEndSound";
+        }
+        
+        var button=document.getElementById(idOfPreviewButton);
+        if(document.getElementById(idOfSelectBox).value==="none")
+        {
+            button.setAttribute("disabled",true);
+        }
+        else
+        {
+            button.removeAttribute("disabled");
+        }
+    }
+    
+    this.previewStartSound=function()
+    {
+        previewSound("start");
+    }
+    
+    this.previewEndSound=function()
+    {
+        previewSound("end");
+    }
+    
+    var previewSound=function(type)
+    {
+        type=(type==="start")?"start":"end";
     }
 }
 

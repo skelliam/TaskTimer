@@ -20,8 +20,9 @@ function teaTimerCommon()
 {
     var debug=true;
     var self=this;
+    const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+    const alertPrefs=storedPrefs.getBranch("teatimer.alerts.");
     const quitObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
-    
     quitObserver.addObserver(this,"quit-application-granted",false);
     
     /**
@@ -257,6 +258,62 @@ function teaTimerCommon()
 	
 	return true;
     }
+    
+    this.getIdOfStartSound=function()
+    {
+        return getIdOfSound("start");
+    }
+    
+    this.getIdOfEndSound=function()
+    {
+        return getIdOfSound("end");
+    }
+    
+    var getIdOfSound=function(type)
+    {
+        var id=null;
+        
+        try
+        {
+            id=alertPrefs.getCharPref(type+"Sound");
+        }
+        catch(e)
+        {
+            //do nothing;
+        }
+        
+        if(id===null || self.in_array(id,getValidSoundIDs(type))===false)
+        {
+            id="none";
+            alertPrefs.setCharPref(type+"Sound","none");
+        }
+        
+        return id;
+    }
+    
+    var getValidSoundIDs=function(type)
+    {
+        var validSounds=new Array();
+        
+        if(type==="start")
+        {
+            validSounds.push("none");
+            validSounds.push("cup");
+            validSounds.push("eggtimer");
+            validSounds.push("pour");
+        }
+        else
+        {
+            validSounds.push("none");
+            validSounds.push("eggtimer");
+            validSounds.push("fanfare");
+            validSounds.push("slurp");
+            validSounds.push("speech");
+        }
+        
+        return validSounds;
+    }
+    
 }
 
 function teaTimerTimeInputToShortException(msg)
