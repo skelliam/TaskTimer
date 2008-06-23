@@ -10,6 +10,13 @@
 					content/teatimer.xul
 					content/teaTimerCommon.js
 					content/teaTimerTeaDB.js
+					content/sound/end-egg-timer.wav
+					content/sound/end-fanfare.wav
+					content/sound/end-slurp.wav
+					content/sound/end-speech.wav
+					content/sound/start-cup.wav
+					content/sound/start-egg-timer.wav
+					content/sound/start-pouring.wav
 					skin/options.css
 					skin/style.css 
 					skin/quicktimer.css

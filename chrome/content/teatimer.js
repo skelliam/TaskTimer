@@ -203,6 +203,12 @@ function teaTimer()
 		startingTSofCurrentCountdown=new Date().getTime();
 		
 		countdownInterval=window.setInterval(teaTimerInstance.pulse,1000);
+		
+		var soundID=common.getIdOfStartSound();
+		if(soundID!=="none")
+		{
+			sound.play(common.getURLtoSound("start",soundID,true));
+		}
 	}
 	
 	/**
@@ -366,10 +372,11 @@ function teaTimer()
 	
 	var doSoundAlert=function()
 	{
-        const SND_URL=new Components.Constructor("@mozilla.org/network/standard-url;1","nsIURL");
-        var url=new SND_URL();
-        url.spec="chrome://teatimer/content/sound/end-speech.wav";
-        sound.play(url);
+        var soundID=common.getIdOfEndSound();
+		if(soundID!=="none")
+		{
+			sound.play(common.getURLtoSound("end",soundID,true));
+		}
 	}
 	
 	

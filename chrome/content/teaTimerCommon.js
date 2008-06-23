@@ -59,6 +59,218 @@ function teaTimerCommon()
         
         return true;
     }
+	
+	/*
+	=========================
+	| Sound Alert  methods|
+	=========================
+	
+	Note: Sound IDs are not numeric, and there's a special ID called "none" for no sound.
+    */
+	
+	/**
+	 * This public methods returns the ID of the sound, that is played, when a timer is started.
+	 * @return string soundID
+	 **/
+	this.getIdOfStartSound=function()
+    {
+        return getIdOfSound("start");
+    }
+    
+	/**
+	 * This public methods returns the ID of the sound, that is played, when a timer is finished.
+	 * @return string soundID
+	 **/
+    this.getIdOfEndSound=function()
+    {
+        return getIdOfSound("end");
+    }
+    
+	/**
+	 * This private mthod return the ID of either the start or the end sound.
+	 * @param string type (possible values are: 'start' and 'end')
+	 * @return string soundID
+	 **/
+    var getIdOfSound=function(type)
+    {
+        var id=null;
+        
+        try
+        {
+            id=alertPrefs.getCharPref(type+"Sound");
+        }
+        catch(e)
+        {
+            //do nothing;
+        }
+        
+        if(id===null || self.in_array(id,getValidSoundIDs(type))===false)
+        {
+            id="none";
+            alertPrefs.setCharPref(type+"Sound","none");
+        }
+        
+        return id;
+    }
+    
+	/**
+	 * This private method returns all valid sound IDs for a certain sound type.
+	 * @param string type (possible values are: 'start' and 'end')
+	 * @return array
+	 **/
+    var getValidSoundIDs=function(type)
+    {
+        var validSounds=new Array();
+        
+        if(type==="start")
+        {
+            validSounds.push("none");
+            validSounds.push("cup");
+            validSounds.push("eggtimer");
+            validSounds.push("pour");
+        }
+        else
+        {
+            validSounds.push("none");
+            validSounds.push("eggtimer");
+            validSounds.push("fanfare");
+            validSounds.push("slurp");
+            validSounds.push("speech");
+        }
+        
+        return validSounds;
+    }
+    
+	/**
+	 * This public methods returns the URL to a specific sound file. It can also return an URL object, that implements the nsIURL interface.
+	 *
+	 * @param string sound type (possible values are "start" and "end")
+	 * @param string sound ID
+	 * @param boolean return URL as object (=true) or as String (=false), optional (standard=false);
+	 * @return object or string, depending on parameter #3
+	 * @throws teaTimerInvalidSoundTypeException
+	 * @throws teaTimerInvalidSoundIDException
+	 **/
+	this.getURLtoSound=function(type,id,returnObject)
+	{
+		switch(type)
+		{
+			case "end":
+			case "start":
+				break;
+			default:
+				throw new teaTimerInvalidSoundTypeException("getURLtoSound: First argument must be 'start' or 'end'.");
+		}
+		
+		if(self.in_array(id,getValidSoundIDs(type))===false)
+		{
+			throw new teaTimerInvalidSoundIDException("getURLtoSound: Invalid sound ID given.");
+		}
+		
+		if(id==="none")
+		{
+			throw new teaTimerInvalidSoundIDException("getURLtoSound: Can't provide URL to sound with ID 'none', because it has none. :-)");
+		}
+		
+		returnObject=((returnObject===true)?true:false);
+		
+		var url="chrome://teatimer/content/sound/";
+		if(type==="start")
+		{
+			switch(id)
+			{
+				case "cup":
+					url+="start-cup.wav";
+					break;
+				case "eggtimer":
+					url+="start-egg-timer.wav";
+					break;
+				case "pour":
+					url+="start-pouring.wav";
+					break;
+			}
+		}
+		else
+		{
+			switch(id)
+			{
+				case "eggtimer":
+					url+="end-egg-timer.wav";
+					break;
+				case "fanfare":
+					url+="end-fanfare.wav";
+					break;
+				case "slurp":
+					url+="end-slurp.wav";
+					break;
+				case "speech":
+					url+="end-speech.wav";
+					break;
+			}
+		}
+		
+		if(returnObject)
+		{
+			const SND_URL=new Components.Constructor("@mozilla.org/network/standard-url;1","nsIURL");
+			var ret=new SND_URL();
+			ret.spec=url;
+		}
+		else
+		{
+			var ret=url;
+		}
+		
+		return ret;
+	}
+	
+	/**
+	 * This public method checks if the given sound ID is valid.
+	 * @param string sound type (possible values are "start" or "end")
+	 * @param string soundID
+	 * @returns boolean true or false
+	 * @throws teaTimerInvalidSoundTypeException
+	 **/
+	this.checkSoundId=function(type,id)
+	{
+		switch(type)
+		{
+			case "end":
+			case "start":
+				break;
+			default:
+				throw new teaTimerInvalidSoundTypeException("checkSoundId: First argument must be 'start' or 'end'.");
+		}
+		
+		return self.in_array(id,getValidSoundIDs(type));
+	}
+	
+	/**
+	 * This public method sets a specific sound in the options.
+	 * @param string sound type (possible values are "start" or "end")
+	 * @param string soundID
+	 * @throws teaTimerInvalidSoundTypeException
+	 * @throws teaTimerInvalidSoundIDException
+	 **/
+	this.setSound=function(type,id)
+	{
+		switch(type)
+		{
+			case "end":
+			case "start":
+				break;
+			default:
+				throw new teaTimerInvalidSoundTypeException("setSound: First argument must be 'start' or 'end'.");
+		}
+		
+		if(self.in_array(id,getValidSoundIDs(type))===false)
+		{
+			throw new teaTimerInvalidSoundIDException("setSound: Invalid sound ID given.");
+		}
+		
+		alertPrefs.setCharPref(type+"Sound",id);
+	}
+	
+	
     
     /*
 	=========================
@@ -250,70 +462,14 @@ function teaTimerCommon()
      **/
     this.log=function(component,msgString)
     {
-	if(debug)
-	{
-            component=((typeof component==="string" && component.length>0)?component:"unknown component");
-	    dump("teaTimer ("+component+") says: "+msgString);
-	}
-	
-	return true;
+		if(debug)
+		{
+			component=((typeof component==="string" && component.length>0)?component:"unknown component");
+			dump("teaTimer ("+component+") says: "+msgString);
+		}
+		
+		return true;
     }
-    
-    this.getIdOfStartSound=function()
-    {
-        return getIdOfSound("start");
-    }
-    
-    this.getIdOfEndSound=function()
-    {
-        return getIdOfSound("end");
-    }
-    
-    var getIdOfSound=function(type)
-    {
-        var id=null;
-        
-        try
-        {
-            id=alertPrefs.getCharPref(type+"Sound");
-        }
-        catch(e)
-        {
-            //do nothing;
-        }
-        
-        if(id===null || self.in_array(id,getValidSoundIDs(type))===false)
-        {
-            id="none";
-            alertPrefs.setCharPref(type+"Sound","none");
-        }
-        
-        return id;
-    }
-    
-    var getValidSoundIDs=function(type)
-    {
-        var validSounds=new Array();
-        
-        if(type==="start")
-        {
-            validSounds.push("none");
-            validSounds.push("cup");
-            validSounds.push("eggtimer");
-            validSounds.push("pour");
-        }
-        else
-        {
-            validSounds.push("none");
-            validSounds.push("eggtimer");
-            validSounds.push("fanfare");
-            validSounds.push("slurp");
-            validSounds.push("speech");
-        }
-        
-        return validSounds;
-    }
-    
 }
 
 function teaTimerTimeInputToShortException(msg)
@@ -340,8 +496,14 @@ function teaTimerInvalidTimeStringException(msg)
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidTeaNameException(msg)
+function teaTimerInvalidSoundTypeException(msg)
 {
-    this.name="teaTimerInvalidTeaNameException";
+    this.name="teaTimerInvalidSoundTypeException";
     this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidSoundIDException(msg)
+{
+	this.name="teaTimerInvalidSoundIDException";
+	this.message=((msg===undefined)?null:msg);
 }

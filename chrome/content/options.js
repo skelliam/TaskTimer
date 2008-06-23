@@ -26,6 +26,8 @@ function teaTimerOptionsWindow()
     var deleteButton=null; //container for the tea delete button
     var nameTxtField=document.getElementById("teaTimer-optionsNewTeaName");
     var timeTxtField=document.getElementById("teaTimer-optionsNewTeaTime");
+	var btnPreviewStartSound=null; //container for start sound preview button
+	var btnPreviewEndSound=null; //container for end sound preview button
         
     this.init=function()
     {
@@ -38,34 +40,35 @@ function teaTimerOptionsWindow()
         //tea varities tab
         nameTxtField=document.getElementById("teaTimer-optionsNewTeaName");
         nameTxtField.addEventListener("keypress",teaTimerOptionsWindowInstance.addTxtFieldsKeypress,false);
-	timeTxtField=document.getElementById("teaTimer-optionsNewTeaTime");
+		timeTxtField=document.getElementById("teaTimer-optionsNewTeaTime");
         timeTxtField.addEventListener("keypress",teaTimerOptionsWindowInstance.addTxtFieldsKeypress,false);
         
-	document.getElementById("teaTimer-optionsBtnAddTea").addEventListener("command",teaTimerOptionsWindowInstance.addButtonCommand,false);
-	tree=document.getElementById("teaTimer-optionsTeas");
-	tree.addEventListener("select",teaTimerOptionsWindowInstance.treeSelected,false);
-	treeBody=document.getElementById("teaTimer-optionsTeasTreeChildren");
-	deleteButton=document.getElementById("teaTimer-optionsBtnDelTea");
-	deleteButton.addEventListener("command",teaTimerOptionsWindowInstance.deleteSelectedTeas,false);
-	
-	fillTreeWithDBValues();
+		document.getElementById("teaTimer-optionsBtnAddTea").addEventListener("command",teaTimerOptionsWindowInstance.addButtonCommand,false);
+		tree=document.getElementById("teaTimer-optionsTeas");
+		tree.addEventListener("select",teaTimerOptionsWindowInstance.treeSelected,false);
+		treeBody=document.getElementById("teaTimer-optionsTeasTreeChildren");
+		deleteButton=document.getElementById("teaTimer-optionsBtnDelTea");
+		deleteButton.addEventListener("command",teaTimerOptionsWindowInstance.deleteSelectedTeas,false);
+		
+		fillTreeWithDBValues();
         
         //alerts tab
         initSoundSelectBox("start");
         initSoundSelectBox("end");
-        document.getElementById("teaTimer-optionsBtnPreviewStartSound").addEventListener("command",teaTimerOptionsWindowInstance.previewStartSound,false);
-        document.getElementById("teaTimer-optionsBtnPreviewEndSound").addEventListener("command",teaTimerOptionsWindowInstance.previewEndSound,false);
-        /*
-        if(getStartSoundId()==="none")
+		btnPreviewStartSound=document.getElementById("teaTimer-optionsBtnPreviewStartSound");
+        btnPreviewStartSound.addEventListener("command",teaTimerOptionsWindowInstance.previewStartSound,false);
+		btnPreviewEndSound=document.getElementById("teaTimer-optionsBtnPreviewEndSound");
+        btnPreviewEndSound.addEventListener("command",teaTimerOptionsWindowInstance.previewEndSound,false);
+        
+        if(getValueOfSoundSelectBox("start")==="none")
         {
-            deactivateStartSoundPreview();
+            btnPreviewStartSound.setAttribute("disabled",true);
         }
         
-        if(getEndSoundId()==="none")
+        if(getValueOfSoundSelectBox("end")==="none")
         {
-            deactivateEndSoundPreview();
+            btnPreviewEndSound.setAttribute("disabled",true);
         }
-       */
     }
     
     /**
@@ -84,7 +87,7 @@ function teaTimerOptionsWindow()
      **/
     this.addTxtFieldsKeypress=function(event)
     {
-	if(event.keyCode===13) //enter
+		if(event.keyCode===13) //enter
         {
             self.addButtonCommand();
         }
@@ -208,7 +211,17 @@ function teaTimerOptionsWindow()
             try
             {
                 validateTeasInTree();
-                valid=true;
+				if(
+					common.checkSoundId("start",getValueOfSoundSelectBox("start"))===false ||
+					common.checkSoundId("end",getValueOfSoundSelectBox("end"))===false
+				)
+				{
+					alert("There's something wrong with the sounds you have choosen. Please check your choise.");
+				}
+				else
+				{
+					valid=true;
+				}
             }
             catch(e)
             {
@@ -221,6 +234,7 @@ function teaTimerOptionsWindow()
             if(valid)
             {
                 writeTreeTeasinDB();
+				saveSounds();
                 window.close();
             }
         }
@@ -391,14 +405,20 @@ function teaTimerOptionsWindow()
      **/
     var fillTreeWithDBValues=function()
     {
-	var teas=teaDB.getDataOfAllTeas();
-	for(var i in teas)
-	{
-	    var tea=teas[i];
-	    addTeaToTree(tea["ID"],tea["name"],tea["time"]);
-	}
+		var teas=teaDB.getDataOfAllTeas();
+		for(var i in teas)
+		{
+			var tea=teas[i];
+			addTeaToTree(tea["ID"],tea["name"],tea["time"]);
+		}
     }
     
+	
+	/**
+	 * This private method inits either the startsound or the endsound select box (menulist).
+	 * That means, it adds events and sets the currently saved sound as selected.
+	 * @param string type ("start" or "end")
+	 **/
     var initSoundSelectBox=function(type)
     {
         type=(type==="start")?"start":"end";
@@ -427,58 +447,100 @@ function teaTimerOptionsWindow()
         }
     }
     
+	/**
+	 * This public method is called when the start sound changes.
+	 **/
     this.startSoundChanged=function()
     {
         soundChanged("start");
     }
     
+	/**
+	 * This public method is called when the end sound changes.
+	 **/
     this.endSoundChanged=function()
     {
         soundChanged("end");
     }
     
+	/**
+	 * This private checks if some action needs to be done, when a sound select box (menulist) changes.
+	 * It currently only enables or disables the preview button, depending on the choosen values.
+	 * @param type soundType ("start" or "end")
+	 **/
     var soundChanged=function(type)
     {
         type=(type==="start")?"start":"end";
         
         var idOfSelectBox=null;
-        var idOfPreviewButton=null;
+        var previewButton=null;
         if(type==="start")
         {
             idOfSelectBox="teaTimer-optionsStartSound";
-            idOfPreviewButton="teaTimer-optionsBtnPreviewStartSound";
+            previewButton=btnPreviewStartSound;
         }
         else
         {
             idOfSelectBox="teaTimer-optionsEndSound";
-            idOfPreviewButton="teaTimer-optionsBtnPreviewEndSound";
+            previewButton=btnPreviewEndSound;
         }
         
-        var button=document.getElementById(idOfPreviewButton);
         if(document.getElementById(idOfSelectBox).value==="none")
         {
-            button.setAttribute("disabled",true);
+            previewButton.setAttribute("disabled",true);
         }
         else
         {
-            button.removeAttribute("disabled");
+            previewButton.removeAttribute("disabled");
         }
     }
     
+	/**
+	 * This public method previews (plays) the start sound.
+	 **/
     this.previewStartSound=function()
     {
         previewSound("start");
     }
     
+	/**
+	 * This public method previews (plays) the end sound.
+	 **/
     this.previewEndSound=function()
     {
         previewSound("end");
     }
     
+	/**
+	 * This private method previews (plays) either the start or the end sound.
+	 **/
     var previewSound=function(type)
     {
         type=(type==="start")?"start":"end";
+		var urlObj=common.getURLtoSound(type,getValueOfSoundSelectBox(type),true);
+		sound.play(urlObj);
     }
+	
+	/**
+	 * This private method returns the sound ID of the currently selected start or end sound.
+	 * @param string type ("start" or "end")
+	 * @return string soundID
+	 **/
+	var getValueOfSoundSelectBox=function(type)
+	{
+		type=(type==="start")?"start":"end";
+		var idOfSelectBox=((type==="start")?"teaTimer-optionsStartSound":"teaTimer-optionsEndSound");
+		return document.getElementById(idOfSelectBox).value;
+	}
+	
+	/**
+	 * This private method saves the start end the end sounds into the options "database".
+	 **/
+	var saveSounds=function()
+	{
+		common.setSound("start",getValueOfSoundSelectBox("start"));
+		common.setSound("end",getValueOfSoundSelectBox("end"));
+	}
 }
 
 var teaTimerOptionsWindowInstance=new teaTimerOptionsWindow();
