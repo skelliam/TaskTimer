@@ -356,7 +356,8 @@ function teaTimer()
 		{
 			teaName=teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
 		}
-		alert("TeaTimer says:\n\tSteeping complete.\n\tEnjoy your "+teaName+". :-)");
+		window.openDialog("chrome://teatimer/content/teaFinishedDialog.xul","","centerscreen,dialog,resizable,dependent,minimizable=no",teaName);
+		//alert("TeaTimer says:\n\tSteeping complete.\n\tEnjoy your "+teaName+". :-)");
 	}
 	
 	/**
