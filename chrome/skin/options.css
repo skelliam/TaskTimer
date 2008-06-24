@@ -35,12 +35,7 @@ window
     text-align: center;
 }
 
-#teaTimer-optionsNewTeaName
-{
-    width: 15em;
-}
-
 #teaTimer-optionsNewTeaTime
 {
-    width: 4em;
+    width: 5em;
 }

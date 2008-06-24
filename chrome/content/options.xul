@@ -33,7 +33,7 @@
                     <groupbox>
                         <caption label="Add a new tea" />
                         <hbox align="end">
-                            <vbox>
+                            <vbox flex="1">
                                 <label control="teaTimer-optionsNewTeaName" value="Tea" />
                                 <textbox id="teaTimer-optionsNewTeaName" />
                             </vbox>
