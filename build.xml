@@ -6,6 +6,7 @@
 					content/options.xul
 					content/quicktimer.js 
 					content/quicktimer.xul
+					content/teaReadyDialog.xul
 					content/teatimer.js 
 					content/teatimer.xul
 					content/teaTimerCommon.js
