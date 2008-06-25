@@ -45,34 +45,34 @@
                         </hbox>
                     </groupbox>
                     
-		    <groupbox>
-			<caption label="Manage existing teas" />
-			
-			<tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
-			    <treecols  editable="true">
-				<treecol label="ID" id="teaTimer-optionsTeas-idColumn" hidden="true" />
-				<treecol label="Tea" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
-				<treecol label="Time" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
-			    </treecols>
-			    <treechildren id="teaTimer-optionsTeasTreeChildren">
-				<!--
-				<treeitem>
-				    <treerow>
-					<treecell label="1" />
-					<treecell editable="true" label="Earl Grey" />
-					<treecell editable="true" label="3:00" />
-				    </treerow>
-				</treeitem>
-				<treeitem>
-				    <treerow>
-					<treecell label="2" />
-					<treecell editable="true" label="Rooibos" />
-					<treecell editable="true" label="7:00" />
-				    </treerow>
-				</treeitem>
-				-->
-			    </treechildren>
-			</tree>
+					<groupbox>
+						<caption label="Manage existing teas" />
+						
+						<tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
+							<treecols  editable="true">
+							<treecol label="ID" id="teaTimer-optionsTeas-idColumn" hidden="true" />
+							<treecol label="Tea" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
+							<treecol label="Time" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
+							</treecols>
+							<treechildren id="teaTimer-optionsTeasTreeChildren">
+							<!--
+							<treeitem>
+								<treerow>
+								<treecell label="1" />
+								<treecell editable="true" label="Earl Grey" />
+								<treecell editable="true" label="3:00" />
+								</treerow>
+							</treeitem>
+							<treeitem>
+								<treerow>
+								<treecell label="2" />
+								<treecell editable="true" label="Rooibos" />
+								<treecell editable="true" label="7:00" />
+								</treerow>
+							</treeitem>
+							-->
+							</treechildren>
+						</tree>
                     </groupbox>
                     <hbox align="right">
                         <button id="teaTimer-optionsBtnDelTea" label="Delete selected tea" disabled="true" />
@@ -80,7 +80,13 @@
                 </vbox>
             </tabpanel>
             <tabpanel id="teaTimer-optionsAlertsTab">
-                <groupbox flex="1">
+				<vbox>
+				<groupbox>
+					<caption label="General Alerts" />
+					<checkbox id="teaTimer-optionsPopupAlert" label="Show dialog window when timer finishes" />
+					<checkbox id="teaTimer-optionsStatusbarAlert" label="Blink statusbar when timer finishes" />
+				</groupbox>
+                <groupbox>
                     <caption label="Sound Alerts" />
                     <vbox>
                         <hbox align="center">
@@ -113,6 +119,7 @@
                         </hbox>
                     </vbox>  
                 </groupbox>
+				</vbox>
             </tabpanel>
         </tabpanels>
     </tabbox>

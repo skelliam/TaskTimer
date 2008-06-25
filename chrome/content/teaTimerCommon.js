@@ -31,8 +31,8 @@ function teaTimerCommon()
      **/
     this.observe=function(subject,actionID,actionValue)
     {
-	if(actionID==="quit-application-granted")
-	{
+		if(actionID==="quit-application-granted")
+		{
             try
             {
                 var teaDB=new teaTimerTeaDB();
@@ -54,11 +54,57 @@ function teaTimerCommon()
             {
                 //it's not really a problem, if there was an error, while deleting a tea, because it's still hidden. So, please forgive me, when I'm just swallowing up the error.
             }
-	    quitObserver.removeObserver(this,"quit-application-granted");
-	}
+		    quitObserver.removeObserver(this,"quit-application-granted");
+		}
         
         return true;
     }
+	
+	/*
+		=================
+		| Alert methods |
+		=================
+	*/
+	
+	/**
+	 * This public method checks, if the given alarm is active (should be fired) or not.
+	 * @param string alertType ("popup" or "statusbar")
+	 * @return bool true or false
+	 **/
+	this.isAlertDesired=function(type)
+	{
+		type=(type.toLowerCase()==="popup")?"Popup":"Statusbar";
+		
+		var desired=false;
+        try
+        {
+            desired=alertPrefs.getBoolPref("do"+type+"Alert");
+        }
+        catch(e)
+        {
+			alertPrefs.setBoolPref("do"+type+"Alert",true);
+			desired=true;
+        }
+		
+        return desired;
+	}
+	
+	/**
+	 * This public method activates or deactivates a certain alert.
+	 * @param string alertType ("popup" or "statusbar")
+	 * @param bool activate (=true) or deactivate(=false)
+	 * @throws teaTimerInvalidAlertStatusException
+	 **/
+	this.setAlert=function(type,status)
+	{
+		type=(type.toLowerCase()==="popup")?"Popup":"Statusbar";
+		if(typeof status!=="boolean")
+		{
+			throw new teaTimerInvalidAlertStatusException("setAlert: Second parameter must be boolean.");
+		}
+		
+		alertPrefs.setBoolPref("do"+type+"Alert",status);
+	}
 	
 	/*
 	=========================
@@ -408,51 +454,51 @@ function teaTimerCommon()
      */
     this.in_array=function(needle,haystack,strict,debug)
     {
-	if(!(haystack instanceof Array) || isNaN(haystack.length))
-	{
-	    throw new TypeError("Warning: in_array(): Wrong datatype for second argument.");
-	}
-	
-	strict=((typeof strict==="boolean")?strict:false);
-	
-	for(var i=0; i<haystack.length; i++)
-	{
-	    if(haystack[i] instanceof Array)
-	    {
-		if(haystack[i].length===needle.length)
+		if(!(haystack instanceof Array) || isNaN(haystack.length))
 		{
-		    for(var z=0; z<haystack[i].length; z++)
-		    {
-			if(
-			    (strict===true && needle[z]===haystack[i][z]) ||
-                            (strict===false && needle[z]==haystack[i][z])
-		    	)
+			throw new TypeError("Warning: in_array(): Wrong datatype for second argument.");
+		}
+		
+		strict=((typeof strict==="boolean")?strict:false);
+		
+		for(var i=0; i<haystack.length; i++)
+		{
+			if(haystack[i] instanceof Array)
 			{
-                            if(z===haystack[i].length-1)
-                            {
-                                return true;
-			    }
+				if(haystack[i].length===needle.length)
+				{
+					for(var z=0; z<haystack[i].length; z++)
+					{
+						if(
+							(strict===true && needle[z]===haystack[i][z]) ||
+							(strict===false && needle[z]==haystack[i][z])
+							)
+						{
+							if(z===haystack[i].length-1)
+							{
+								return true;
+							}
+						}
+						else
+						{
+							break;
+						}
+					}
+				}
 			}
 			else
 			{
-			    break;
+				if(
+					(strict===true && needle===haystack[i]) || 
+					(strict===false && needle==haystack[i])
+					)
+				{
+					return true;
+				}
 			}
-		    }
 		}
-	    }
-	    else
-	    {
-		if(
-			(strict===true && needle===haystack[i]) || 
-			(strict===false && needle==haystack[i])
-		    )
-		    {
-			return true;
-		    }
-	    }
-	}
-	
-	return false;
+		
+		return false;
     }
 	
     /**
@@ -493,6 +539,12 @@ function teaTimerInvalidTimeException(msg)
 function teaTimerInvalidTimeStringException(msg)
 {
     this.name="teaTimerInvalidTimeStringException";
+    this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidAlertStatusException(msg)
+{
+    this.name="teaTimerInvalidAlertStatusException";
     this.message=((msg===undefined)?null:msg);
 }
 

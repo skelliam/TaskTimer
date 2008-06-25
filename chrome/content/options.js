@@ -53,6 +53,26 @@ function teaTimerOptionsWindow()
 		fillTreeWithDBValues();
         
         //alerts tab
+		var chkPopupAlert=document.getElementById("teaTimer-optionsPopupAlert");
+		if(common.isAlertDesired("popup"))
+		{
+			chkPopupAlert.setAttribute("checked","true");
+		}
+		else
+		{
+			chkPopupAlert.removeAttribute("checked","false");
+		}
+		
+		var chkStatusbarAlert=document.getElementById("teaTimer-optionsStatusbarAlert");
+		if(common.isAlertDesired("statusbar"))
+		{
+			chkStatusbarAlert.setAttribute("checked","true");
+		}
+		else
+		{
+			chkStatusbarAlert.removeAttribute("checked","false");
+		}
+		
         initSoundSelectBox("start");
         initSoundSelectBox("end");
 		btnPreviewStartSound=document.getElementById("teaTimer-optionsBtnPreviewStartSound");
@@ -174,25 +194,25 @@ function teaTimerOptionsWindow()
     {
         var parent=treeBody;
         var treerow=document.createElement("treerow");
-	var treecell=document.createElement("treecell");
-	treecell.setAttribute("label",ID);
+		var treecell=document.createElement("treecell");
+		treecell.setAttribute("label",ID);
         treecell.setAttribute("editable","false");
-	treerow.appendChild(treecell);
+		treerow.appendChild(treecell);
 	    
         var treeNameCell=document.createElement("treecell");
-	treeNameCell.setAttribute("label",name);
-	treeNameCell.setAttribute("editable","true");
-	treerow.appendChild(treeNameCell);
+		treeNameCell.setAttribute("label",name);
+		treeNameCell.setAttribute("editable","true");
+		treerow.appendChild(treeNameCell);
 	    
-	var treeTimeCell=document.createElement("treecell");
-	treeTimeCell.setAttribute("label",common.getTimeStringFromTime(time));
-	treeTimeCell.setAttribute("editable","true");
-	treerow.appendChild(treeTimeCell);
-	    
-	var treeitem=document.createElement("treeitem");
-	treeitem.appendChild(treerow);
-	    
-	parent.appendChild(treeitem);
+		var treeTimeCell=document.createElement("treecell");
+		treeTimeCell.setAttribute("label",common.getTimeStringFromTime(time));
+		treeTimeCell.setAttribute("editable","true");
+		treerow.appendChild(treeTimeCell);
+			
+		var treeitem=document.createElement("treeitem");
+		treeitem.appendChild(treerow);
+			
+		parent.appendChild(treeitem);
     }
     
     /**
@@ -234,6 +254,7 @@ function teaTimerOptionsWindow()
             if(valid)
             {
                 writeTreeTeasinDB();
+				saveAlerts();
 				saveSounds();
                 window.close();
             }
@@ -531,6 +552,17 @@ function teaTimerOptionsWindow()
 		type=(type==="start")?"start":"end";
 		var idOfSelectBox=((type==="start")?"teaTimer-optionsStartSound":"teaTimer-optionsEndSound");
 		return document.getElementById(idOfSelectBox).value;
+	}
+	
+	var saveAlerts=function()
+	{
+		var popupValue=document.getElementById("teaTimer-optionsPopupAlert").getAttribute("checked");
+		popupValue=(popupValue==="true")?true:false;
+		common.setAlert("popup",popupValue);
+		
+		var statusbarValue=document.getElementById("teaTimer-optionsStatusbarAlert").getAttribute("checked");
+		statusbarValue=(statusbarValue==="true")?true:false;
+		common.setAlert("statusbar",statusbarValue);
 	}
 	
 	/**

@@ -296,6 +296,9 @@ function teaTimer()
 	var brewingComplete=function()
 	{
 		self.stopCountdown();
+		teatimerCountdown.setAttribute("value","Ready!");
+		teatimerCountdown.setAttribute("class","readyAlert");
+		teatimerCountdown.setAttribute("tooltiptext","Tea ready. Click here to reload timer.");
 		shootAlerts();
 		idOfCurrentSteepingTea=startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
 		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
@@ -338,15 +341,23 @@ function teaTimer()
 	var shootAlerts=function()
 	{
 		doSoundAlert();
-		doStatusbarAlert();
-		doPopupAlert();
+		
+		if(common.isAlertDesired("statusbar"))
+		{
+			doStatusbarAlert();
+		}
+		
+		if(common.isAlertDesired("popup"))
+		{
+			doPopupAlert();
+		}
 	}
 	
 	/**
 	 * This method generates and fires the 'tea-ready'-popup.
 	 **/
 	var doPopupAlert=function()
-	{
+	{	
 		var teaName=null;
 		if(idOfCurrentSteepingTea==="quicktimer")
 		{
@@ -364,12 +375,13 @@ function teaTimer()
 	 **/
 	var doStatusbarAlert=function()
 	{
-		teatimerCountdown.setAttribute("value","Ready!");
-		teatimerCountdown.setAttribute("class","readyAlert");
 		teatimerCountdown.setAttribute("tooltiptext","Tea ready. Click here to cancel alert.")
 		statusbarAlertInterval=window.setInterval(teaTimerInstance.toggleStatusbarAlertStyle,400);
 	}
 	
+	/**
+	 * This private method plays the "timer finished" sound, if there was one choosen in the options
+	 **/
 	var doSoundAlert=function()
 	{
         var soundID=common.getIdOfEndSound();
