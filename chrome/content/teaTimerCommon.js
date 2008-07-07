@@ -159,6 +159,7 @@ function teaTimerCommon()
 		stdValue="eggtimer";
 	    }
             alertPrefs.setCharPref(type+"Sound",stdValue);
+	    id=stdValue;
         }
         
         return id;
