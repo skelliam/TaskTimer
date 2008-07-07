@@ -153,7 +153,12 @@ function teaTimerCommon()
         if(id===null || self.in_array(id,getValidSoundIDs(type))===false)
         {
             id="none";
-            alertPrefs.setCharPref(type+"Sound","none");
+	    var stdValue="slurp";
+	    if(type==="start")
+	    {
+		stdValue="eggtimer";
+	    }
+            alertPrefs.setCharPref(type+"Sound",stdValue);
         }
         
         return id;
