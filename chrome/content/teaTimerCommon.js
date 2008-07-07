@@ -153,12 +153,7 @@ function teaTimerCommon()
         if(id===null || self.in_array(id,getValidSoundIDs(type))===false)
         {
             id="none";
-	    var stdValue="slurp";
-	    if(type==="start")
-	    {
-		stdValue="eggtimer";
-	    }
-            alertPrefs.setCharPref(type+"Sound",stdValue);
+            alertPrefs.setCharPref(type+"Sound",id);
         }
         
         return id;
@@ -321,7 +316,35 @@ function teaTimerCommon()
 		alertPrefs.setCharPref(type+"Sound",id);
 	}
 	
-	
+	/**
+	 * This public method checks if sound alerts are initalized correctly in the stored preferences.
+	 * @param string sound type (possible values are "start" or "end")
+	 * @returns boolean
+	 * @throws teaTimerInvalidSoundTypeException
+	 **/
+	this.checkIfSoundAlertIsInitalized=function(type)
+	{
+		switch(type)
+		{
+			case "end":
+			case "start":
+				break;
+			default:
+				throw new teaTimerInvalidSoundTypeException("checkIfSoundAlertIsInitalized: First argument must be 'start' or 'end'.");
+		}
+		
+		var id=null;
+		try
+		{
+		    id=alertPrefs.getCharPref(type+"Sound");
+		}
+		catch(e)
+		{
+		    
+		}
+		
+		return ((id!==null && self.checkSoundId(type,id))?true:false);
+	}
     
     /*
 	=========================

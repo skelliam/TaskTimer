@@ -46,6 +46,16 @@ function teaTimer()
 		document.getElementById("teatimer-quicktimer").addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
 		document.getElementById("teatimer-cancel").addEventListener("command",teaTimerInstance.cancelTimer,false);
 		
+		if(common.checkIfSoundAlertIsInitalized("start")===false)
+		{
+			common.setSound("start","eggtimer");
+		}
+		
+		if(common.checkIfSoundAlertIsInitalized("end")===false)
+		{
+			common.setSound("end","slurp");
+		}
+		
 		if(teaDB.getNumberOfTeas()===0)
 		{
 			teaDB.initTeaDB();
