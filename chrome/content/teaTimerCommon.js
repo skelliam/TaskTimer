@@ -68,12 +68,26 @@ function teaTimerCommon()
 	
 	/**
 	 * This public method checks, if the given alarm is active (should be fired) or not.
-	 * @param string alertType ("popup" or "statusbar")
+	 * @param string alertType ("popup", "statusbar" or "widget")
+	 * @throws teaTimerInvalidAlertTypeException
 	 * @return bool true or false
 	 **/
 	this.isAlertDesired=function(type)
 	{
-		type=(type.toLowerCase()==="popup")?"Popup":"Statusbar";
+		switch(type.toLowerCase())
+		{
+			case "popup":
+				type="Popup";
+				break;
+			case "statusbar":
+				type="Statusbar";
+				break;
+			case "widget":
+				type="Widget";
+				break;
+			default:
+				throw new teaTimerInvalidAlertTypeException("isAlertDesired: First parameter must be a vaild alert type.");
+		}
 		
 		var desired=false;
         try
@@ -91,13 +105,28 @@ function teaTimerCommon()
 	
 	/**
 	 * This public method activates or deactivates a certain alert.
-	 * @param string alertType ("popup" or "statusbar")
+	 * @param string alertType ("popup", "statusbar" or "widget")
 	 * @param bool activate (=true) or deactivate(=false)
+	 * @throws teaTimerInvalidAlertTypeException
 	 * @throws teaTimerInvalidAlertStatusException
 	 **/
 	this.setAlert=function(type,status)
 	{
-		type=(type.toLowerCase()==="popup")?"Popup":"Statusbar";
+		switch(type.toLowerCase())
+		{
+			case "popup":
+				type="Popup";
+				break;
+			case "statusbar":
+				type="Statusbar";
+				break;
+			case "widget":
+				type="Widget";
+				break;
+			default:
+				throw new teaTimerInvalidAlertTypeException("setAlert: First parameter must be a vaild alert type.");
+		}
+		
 		if(typeof status!=="boolean")
 		{
 			throw new teaTimerInvalidAlertStatusException("setAlert: Second parameter must be boolean.");
@@ -107,11 +136,48 @@ function teaTimerCommon()
 	}
 	
 	/*
-	=========================
-	| Sound Alert  methods|
-	=========================
+		========================
+		| Widget Alert methods |
+		========================
+	*/
 	
-	Note: Sound IDs are not numeric, and there's a special ID called "none" for no sound.
+	
+	this.setWidgetAlertShowTime=function(time)
+	{
+		if(!(typeof time==="number" && time>=0))
+		{
+			throw new teaTimerInvalidWidgetAlertShowTimeException("setWidgetAlertShowTime: First parameter must be an integer greater or equal 0.");
+		}
+		
+		time=parseInt(time,10);
+		alertPrefs.setIntPref("widgetAlertShowTime",time);
+	}
+	
+	this.getWidgetAlertShowTime=function()
+	{
+		var time=5;
+		try
+		{
+			time=alertPrefs.getIntPref("widgetAlertShowTime");
+			if(time<0)
+			{
+				throw new teaTimerInvalidWidgetAlertShowTimeException();
+			}
+		}
+		catch(e)
+		{
+			self.setWidgetAlertShowTime(time);
+		}
+		
+		return time;
+	}
+	
+	/*
+		=========================
+		| Sound Alert  methods |
+		=========================
+	
+		Note: Sound IDs are not numeric, and there's a special ID called "none" for no sound.
     */
 	
 	/**
@@ -570,10 +636,22 @@ function teaTimerInvalidTimeStringException(msg)
     this.message=((msg===undefined)?null:msg);
 }
 
+function teaTimerInvalidAlertTypeException(msg)
+{
+    this.name="teaTimerInvalidAlertTypeException";
+    this.message=((msg===undefined)?null:msg);
+}
+
 function teaTimerInvalidAlertStatusException(msg)
 {
     this.name="teaTimerInvalidAlertStatusException";
     this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidWidgetAlertShowTimeException(msg)
+{
+	this.name="teaTimerInvalidWidgetAlertShowTimeException";
+	this.message=((msg===undefined)?null:msg);
 }
 
 function teaTimerInvalidSoundTypeException(msg)

@@ -15,9 +15,15 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-content		teatimer	chrome/content/
+#this line is for Firefox<3
+content			teatimer	chrome/content/ 
 #content		teatimer	jar:chrome/teaTimer.jar!/content/
-overlay		chrome://browser/content/browser.xul	        chrome://teatimer/content/teatimer.xul
+
+# this line is for Firefox>=3
+content			teatimer	chrome/content/ contentaccessible=yes 
+#content		teatimer	jar:chrome/teaTimer.jar!/content/ contentaccessible=yes
+
+overlay			chrome://browser/content/browser.xul	        chrome://teatimer/content/teatimer.xul
 
 skin	        teatimer	classic/1.0	chrome/skin/
 #skin	        teatimer	classic/1.0	jar:chrome/teaTimer.jar!/skin/

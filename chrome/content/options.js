@@ -28,6 +28,7 @@ function teaTimerOptionsWindow()
     var timeTxtField=document.getElementById("teaTimer-optionsNewTeaTime");
 	var btnPreviewStartSound=null; //container for start sound preview button
 	var btnPreviewEndSound=null; //container for end sound preview button
+	var widgetShowTimeTxtField=null;
         
     this.init=function()
     {
@@ -73,6 +74,20 @@ function teaTimerOptionsWindow()
 			chkStatusbarAlert.removeAttribute("checked","false");
 		}
 		
+		var chkWidgetAlert=document.getElementById("teaTimer-optionsWidgetAlert");
+		if(common.isAlertDesired("widget"))
+		{
+			chkWidgetAlert.setAttribute("checked","true");
+		}
+		else
+		{
+			chkWidgetAlert.removeAttribute("checked","false");
+		}
+		
+		widgetShowTimeTxtField=document.getElementById("teaTimer-optionsWidgetShowTime");
+		widgetShowTimeTxtField.value=common.getWidgetAlertShowTime();
+		widgetShowTimeTxtField.addEventListener("keypress",teaTimerOptionsWindowInstance.widgetShowTimeTxtFieldKeypress,false);
+		
         initSoundSelectBox("start");
         initSoundSelectBox("end");
 		btnPreviewStartSound=document.getElementById("teaTimer-optionsBtnPreviewStartSound");
@@ -113,6 +128,18 @@ function teaTimerOptionsWindow()
         }
     }
     
+	/**
+	 * 
+	 **/
+	this.widgetShowTimeTxtFieldKeypress=function(event)
+	{
+		alert("IN");
+		if(event.keyCode===13) //enter
+        {
+            self.okButtonCommand();
+        }
+	}
+	
     /**
      * This public method is called, when the "add tea" button is clicked.
      * It handles validation and adding a tea to the tree.
@@ -236,11 +263,19 @@ function teaTimerOptionsWindow()
 					common.checkSoundId("end",getValueOfSoundSelectBox("end"))===false
 				)
 				{
-					alert("There's something wrong with the sounds you have choosen. Please check your choise.");
+					alert("There's something wrong with the sounds you have choosen. Please check your choice.");
 				}
 				else
 				{
-					valid=true;
+					var widgetShowTime=parseInt(widgetShowTimeTxtField.value,10);
+					if(!(widgetShowTime>=0))
+					{
+						alert("Please check your input in the text field 'Number of seconds the widget disappears automatically'. Only numbers greater or equal zero are allowed.");
+					}
+					else
+					{
+						valid=true;
+					}
 				}
             }
             catch(e)
@@ -360,9 +395,9 @@ function teaTimerOptionsWindow()
      **/
     this.treeSelected=function()
     {
-	var selectedItems=getSelectedTreeIndexes();
+		var selectedItems=getSelectedTreeIndexes();
 	
-	deleteButton.setAttribute("disabled",((selectedItems.length>0)?"false":"true"));
+		deleteButton.setAttribute("disabled",((selectedItems.length>0)?"false":"true"));
     }
     
     /**
@@ -563,6 +598,12 @@ function teaTimerOptionsWindow()
 		var statusbarValue=document.getElementById("teaTimer-optionsStatusbarAlert").getAttribute("checked");
 		statusbarValue=(statusbarValue==="true")?true:false;
 		common.setAlert("statusbar",statusbarValue);
+		
+		var widgetValue=document.getElementById("teaTimer-optionsWidgetAlert").getAttribute("checked");
+		widgetValue=(widgetValue==="true")?true:false;
+		common.setAlert("widget",widgetValue);
+		
+		common.setWidgetAlertShowTime(parseInt(widgetShowTimeTxtField.value,10));
 	}
 	
 	/**

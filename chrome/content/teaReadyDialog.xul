@@ -1,13 +1,31 @@
 <?xml version="1.0"?>
+<!--
+	TeaTimer: A Firefox extension that protects you from oversteeped tea.
+	Copyright (C) 2008 Philipp Söhnlein
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License version 3 as 
+	published by the Free Software Foundation.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://teatimer/skin/teaReadyDialog.css" type="text/css"?>
 <dialog title="TeaTimer - Your tea is ready"
    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    buttons="accept"
    buttonlabelaccept="OK"
-   ondialogaccept="window.close();"
-   onload="var el=document.getElementById('teanameline'); el.setAttribute('value',el.getAttribute('value').replace('{$TEANAME}',window.arguments[0]));">
-   
-	<description value="TeaTimer says:" class="header" />
-	<description value="Steeping complete." class="indent" />
-	<description id="teanameline" value="Enjoy your {$TEANAME} :-)" class="indent" />
+   ondialogaccept="window.close();">
+	<script type="application/x-javascript" src="chrome://teatimer/content/teaReadyDialog.js" />
+	<box orient="vertical" id="wrapper">
+	  <description value="TeaTimer says:" class="header" />
+	  <description id="messageline" value="Steeping complete." />
+	  <description id="teanameline" value="Enjoy your {$TEANAME} :-)" />
+	</box>
 </dialog>

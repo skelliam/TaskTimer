@@ -21,13 +21,15 @@
 	<script type="application/x-javascript" src="chrome://teatimer/content/teatimer.js" />
 	<statusbar id="status-bar">
 		<statusbarpanel id="teatimer-panel" context="teatimer-contextMenu">
-			<label id="teatimer-countdown" value="TeaTimer" />
-			<popup id="teatimer-contextMenu" position="before_end">
-				<menuseparator id="teatimer-endTealistSeparator" />
-				<menuitem id="teatimer-options" label="Options..." />
-				<menuitem id="teatimer-cancel" label="Cancel" />
-				<menuitem id="teatimer-quicktimer" label="Quick Timer..." />
-			</popup>
+			<box id="teatimer-box"> <!-- This extra box is needed, because FF<3 can not handle CSS background images for statusbarpanel elements -->
+				<label id="teatimer-countdown" value="TeaTimer" />
+				<popup id="teatimer-contextMenu" position="before_end">
+					<menuseparator id="teatimer-endTealistSeparator" />
+					<menuitem id="teatimer-options" label="Options..." />
+					<menuitem id="teatimer-cancel" label="Cancel" />
+					<menuitem id="teatimer-quicktimer" label="Quick Timer..." />
+				</popup>
+			</box>
 		</statusbarpanel>
 	</statusbar>
 </overlay>

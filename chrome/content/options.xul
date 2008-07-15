@@ -86,6 +86,15 @@
 					<checkbox id="teaTimer-optionsPopupAlert" label="Show dialog window when timer finishes" />
 					<checkbox id="teaTimer-optionsStatusbarAlert" label="Blink statusbar when timer finishes" />
 				</groupbox>
+				<groupbox>
+					<caption label="Website Widget Alert" />
+					<description>The Website Widget appears directly in the website you are currently reading.</description>
+					<checkbox id="teaTimer-optionsWidgetAlert" label="Show website widget when timer finishes" />
+					<hbox align="center">
+						<label control="teaTimer-optionsWidgetShowTime" value="Number of seconds the widget disappears automatically (0=never):" />
+						<textbox id="teaTimer-optionsWidgetShowTime" />
+					</hbox>
+				</groupbox>
                 <groupbox>
                     <caption label="Sound Alerts" />
                     <vbox>

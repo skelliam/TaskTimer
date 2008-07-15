@@ -1,0 +1,60 @@
+/*
+	TeaTimer: A Firefox extension that protects you from oversteeped tea.
+	Copyright (C) 2008 Philipp Söhnlein
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License version 3 as 
+	published by the Free Software Foundation.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+/*
+  The following CSS rules are resetting all inheritable CSS properties for the teaTimer alert widget.
+  This is needed to ensure the look of the alert widget, indepent of the style sheet rules of the document, in which this widget will be placed.
+*/
+
+#teaTimer-alertWidget,
+#teaTimer-alertWidget h1,
+#teaTimer-alertWidget p
+{
+  color: #000;
+  font-family: serif;
+  background: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  caption-side: top;
+  cursor: auto;
+  direction: ltr;
+  empty-cells: show;
+  font-size: 1em;
+  font-size-adjust: none;
+  font-stretch: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: normal;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: disc;
+  text-align: left;
+  text-indent: 0;
+  text-transform: none;
+  white-space: normal;
+  word-spacing: normal;
+}
+
+@media print {
+  #teaTimer-alertWidget
+  {
+	display: none;
+  }  
+}

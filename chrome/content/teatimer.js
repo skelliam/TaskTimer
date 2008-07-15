@@ -22,6 +22,8 @@ function teaTimer()
 	const teaDB=new teaTimerTeaDB();
 	const common=new teaTimerCommon();
 	
+	var teatimerPanel=null; //container for teatimer-panel (statusbarpanel)
+	var teatimerBox=null; //container for teatimer-panel (box)
 	var teatimerCountdown=null; //container for quick timer XUL element reference 'teatimer-countdown' (label)
 	var teatimerContextMenu=document.getElementById("teatimer-contextMenu");
 	const sound=Components.classes["@mozilla.org/sound;1"].createInstance().QueryInterface(Components.interfaces.nsISound);
@@ -39,6 +41,9 @@ function teaTimer()
 	 **/
 	this.init=function()
 	{
+		teatimerPanel=document.getElementById("teatimer-panel");
+		teatimerBox=document.getElementById("teatimer-box");
+		
 		teatimerCountdown=document.getElementById("teatimer-countdown");
 		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		sound.init();
@@ -197,7 +202,7 @@ function teaTimer()
 	 **/
 	this.startCountdown=function()
 	{
-		cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
+		self.cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
 		teatimerCountdown.setAttribute("tooltiptext","Currently steeping...");
 		countdownInProgress=true;
 		if(idOfCurrentSteepingTea==="quicktimer")
@@ -209,6 +214,8 @@ function teaTimer()
 			idOfCurrentSteepingTea=teaDB.getIdOfCurrentTea();
 			steepingTimeOfCurrentTea=teaDB.getSteepingTimeOfCurrentTea();
 		}
+		
+		teatimerBox.setAttribute("class","steeping");
 		
 		startingTSofCurrentCountdown=new Date().getTime();
 		
@@ -231,7 +238,7 @@ function teaTimer()
 			self.stopCountdown();
 		}
 		
-		cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
+		self.cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
 		
 		resetCountdown();
 	}
@@ -253,7 +260,7 @@ function teaTimer()
 	this.reloadCountdown=function(reset)
 	{
 		reset=(reset===false)?false:true;
-		cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it
+		self.cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it
 		if(reset)
 		{
 			resetCountdown();
@@ -296,6 +303,7 @@ function teaTimer()
 		window.clearInterval(countdownInterval);
 		startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
 		countdownInProgress=false;
+		teatimerBox.removeAttribute("class");
 		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 	}
 	
@@ -314,6 +322,7 @@ function teaTimer()
 		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		teatimerCountdown.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
 		teatimerCountdown.addEventListener("click",teaTimerInstance.reloadCountdown,false);
+		teatimerPanel.addEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
 	
 	/**
@@ -357,6 +366,22 @@ function teaTimer()
 			doStatusbarAlert();
 		}
 		
+		if(common.isAlertDesired("widget"))
+		{
+			try
+			{
+				doWidgetAlert();
+			}
+			catch(e)
+			{
+				//if websiteWidgetAlert fails and no other alert is active, do anyhow a popupalert. It's better than having no alert at all.
+				if(!common.isAlertDesired("statusbar") && !common.isAlertDesired("popup") && common.getIdOfEndSound()==="none")
+				{
+					doPopupAlert(true);
+				}
+			}
+		}
+		
 		if(common.isAlertDesired("popup"))
 		{
 			doPopupAlert();
@@ -366,8 +391,9 @@ function teaTimer()
 	/**
 	 * This method generates and fires the 'tea-ready'-popup.
 	 **/
-	var doPopupAlert=function()
-	{	
+	var doPopupAlert=function(callBecauseOfWidgetError)
+	{
+		callBecauseOfWidgetError=((callBecauseOfWidgetError===true)?true:false);
 		var teaName=null;
 		if(idOfCurrentSteepingTea==="quicktimer")
 		{
@@ -377,7 +403,7 @@ function teaTimer()
 		{
 			teaName=teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
 		}
-		window.openDialog("chrome://teatimer/content/teaReadyDialog.xul","","centerscreen,dialog,resizable,dependent,minimizable=no",teaName);
+		window.openDialog("chrome://teatimer/content/teaReadyDialog.xul","","centerscreen,dialog,resizable,dependent,minimizable=no",teaName,callBecauseOfWidgetError);
 	}
 	
 	/**
@@ -401,6 +427,212 @@ function teaTimer()
 		}
 	}
 	
+	/**
+	 * This private method generates the widget for the widget alert and places it in the document.
+	 **/
+	var doWidgetAlert=function()
+	{
+		try
+		{
+			var req=new XMLHttpRequest();
+			req.open("GET","chrome://teatimer/skin/widgetAlert/default/widget.html",false);
+			req.overrideMimeType("text/xml");
+			req.send(null);
+			if(req.status===0) //status for local requests must be 0, to be okay.
+			{
+				var wdoc=req.responseXML;
+				var widget=wdoc.getElementById("teaTimer-alertWidget");
+				//var targetWindow=document.commandDispatcher.focusedWindow;
+				var targetWindow=gBrowser.selectedBrowser.contentWindow;
+				//var targetDoc=targetWindow.document;
+				var targetDoc=gBrowser.selectedBrowser.contentDocument;
+				
+				//check if website uses frames. If yes, try to findest the biggest frame, we will include the widget in it.
+				if(targetDoc.getElementsByTagName("frameset").length>0)
+				{
+					var frames=targetDoc.getElementsByTagName("frameset")[0].getElementsByTagName("frame");
+					var biggestFrame=null;
+					var biggestFrameSize=null;
+					for(var i=0; i<frames.length; i++)
+					{
+						var currentFrameSize=frames[i].clientWidth*frames[i].clientHeight;
+						if(currentFrameSize>biggestFrameSize)
+						{
+							biggestFrame=i;
+							biggestFrameSize=currentFrameSize;
+						}
+					}
+					
+					//alert(frames[biggestFrame].contentDocument);
+					var targetBody=frames[biggestFrame].contentDocument.getElementsByTagName("body")[0];
+				}
+				else
+				{
+					var targetBody=targetDoc.getElementsByTagName("body")[0];
+				}
+				
+				//check if there's already an element with the ID "teaTimer-alertWidget"
+				if(targetDoc.getElementById("teaTimer-alertWidget")!==null)
+				{
+					//throw new teaTimerAlertWidgetAlreadyInDocumentException("Can't do widget alert, because there's already an element with the ID teaTimer-alertWidget in the document.");
+					self.removeWidgetAlert();
+				}
+				
+				var teaName=null;
+				if(idOfCurrentSteepingTea==="quicktimer")
+				{
+					teaName="... whatever you timed";
+				}
+				else
+				{
+					teaName=teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
+				}
+				
+				wdoc.getElementById("teaTimer-alertWidgetHeadline").appendChild(wdoc.createTextNode("TeaTimer says:"));
+				wdoc.getElementById("teaTimer-alertWidgetCompleteMessage").appendChild(wdoc.createTextNode("Steeping complete."));
+				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePrefix").appendChild(wdoc.createTextNode("Enjoy your "));
+				wdoc.getElementById("teaTimer-alertWidgetTeaName").appendChild(wdoc.createTextNode(teaName));
+				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePostfix").appendChild(wdoc.createTextNode(":-) ."));
+				widget.addEventListener("click",teaTimerInstance.removeWidgetAlert,false);
+				targetBody.appendChild(widget);
+				
+				var cssResetLink=targetDoc.createElement("link");
+				cssResetLink.setAttribute("id","teaTimer-alertWidgetResetCSS");
+				cssResetLink.setAttribute("href","chrome://teatimer/skin/widgetAlert/reset.css");
+				cssResetLink.setAttribute("media","all");
+				cssResetLink.setAttribute("rel","stylesheet");
+				cssResetLink.setAttribute("type","text/css");
+				targetBody.parentNode.getElementsByTagName("head")[0].appendChild(cssResetLink);
+				
+				var cssLink=targetDoc.createElement("link");
+				cssLink.setAttribute("id","teaTimer-alertWidgetThemeCSS");
+				cssLink.setAttribute("href","chrome://teatimer/skin/widgetAlert/default/widget.css");
+				cssLink.setAttribute("media","screen");
+				cssLink.setAttribute("rel","stylesheet");
+				cssLink.setAttribute("type","text/css");
+				targetBody.parentNode.getElementsByTagName("head")[0].appendChild(cssLink);
+				
+				var secondsUntilFadeOut=common.getWidgetAlertShowTime();
+				if(secondsUntilFadeOut>0)
+				{
+					targetWindow.setTimeout(teaTimerInstance.fadeOutWidgetAlert,secondsUntilFadeOut*1000);
+				}
+			}
+		}
+		catch(e)
+		{
+			//alert(e);
+			throw e;
+		}
+	}
+	
+	/*
+	var removeStylesRecursively=function(obj)
+	{
+		resetStylesOfObject(obj);
+		
+		if(obj.hasChildNodes())
+		{
+			for(var i=0; i<obj.childNodes.length; i++)
+			{
+				removeStylesRecursively(obj.childNodes[i]);
+			}
+		}
+	}
+	
+	var resetStylesOfObject=function(obj)
+	{
+		if(obj.style)
+		{
+			var inheritableStyles=new Array("borderCollapse","fontStyle");
+			//go on here
+			for(var i in inheritableStyles)
+			{
+				var value=inheritableStyles[i];
+				switch(value)
+				{
+					case "borderCollapse":
+						obj.style[i]="collapse";
+						break;
+					case "borderSpacing":
+						obj.style[i]="0";
+						break;
+					case "captionSide":
+						obj.style[i]="top";
+						break;
+					case "color":
+						obj.style[i]="#000";
+						break;
+					case "cursor":
+						obj.style[i]="auto";
+						break;
+					case "direction":
+						obj.style[i]="ltr";
+						break;
+					case "emptyCells":
+						obj.style[i]="show";
+						break;
+					case "fontFamily":
+						obj.style[i]="";
+						break;
+					case "fontStyle":
+						obj.style[value]="";
+						break;
+				}
+			}
+		}
+	}
+	*/
+	
+	/**
+	 * Once called, this public method decreases the opacity of the teaTimer-alertWidget, until the opacity is 0. Finally it removes the widget.
+	 **/
+	this.fadeOutWidgetAlert=function()
+	{
+		var targetWindow=document.commandDispatcher.focusedWindow;
+		var targetDoc=targetWindow.document;
+		var widget=targetDoc.getElementById("teaTimer-alertWidget");
+		if(widget!==null)
+		{
+			var step=0.2;
+			if(widget.style.opacity==="")
+			{
+				widget.style.opacity=1;
+			}
+
+			if(((widget.style.opacity*1)-step)>0)
+			{
+				widget.style.opacity=((widget.style.opacity*1)-step)+"";
+				targetWindow.setTimeout(teaTimerInstance.fadeOutWidgetAlert,80);
+			}
+			else
+			{
+				self.removeWidgetAlert();
+			}
+		}
+	}
+	
+	/**
+	 * This public method removes all HTML nodes from the document, that are associated with the teaTimer alert widget.
+	 * Currently these are:
+	 * - link node with ID 'teaTimer-alertWidgetResetCSS'
+	 * - link node with ID 'teaTimer-alertWidgetThemeCSS'
+	 * - div node with ID 'teaTimer-alertWidget'
+	 **/
+	this.removeWidgetAlert=function()
+	{
+		var targetDoc=document.commandDispatcher.focusedWindow.document;
+		var nodesToRemove=new Array("teaTimer-alertWidget","teaTimer-alertWidgetResetCSS","teaTimer-alertWidgetThemeCSS");
+		for(var i=0; i<nodesToRemove.length; i++)
+		{
+			var node=targetDoc.getElementById(nodesToRemove[i]);
+			if(node!==null)
+			{
+				node.parentNode.removeChild(node);
+			}
+		}
+	}
+	
 	
 	/**
 	 * This method is capable for toggling the correct CSS classes for the 'blinking'-statusbar-alert.
@@ -420,12 +652,21 @@ function teaTimer()
 	/**
 	 * This method quits the statusbar alert.
 	 **/
-	var cancelStatusbarAlert=function()
+	this.cancelStatusbarAlert=function()
 	{
 		window.clearInterval(statusbarAlertInterval);
 		teatimerCountdown.removeAttribute("class");
+		teatimerPanel.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
 }
+	
+function teaTimerAlertWidgetAlreadyInDocumentException(msg)
+{
+    this.name="teaTimerAlertWidgetAlreadyInDocumentException";
+    this.message=((msg===undefined)?null:msg);
+}
+
+
 
 var teaTimerInstance=new teaTimer();
 window.addEventListener("load",teaTimerInstance.init,false);

@@ -7,6 +7,7 @@
 					content/quicktimer.js 
 					content/quicktimer.xul
 					content/teaReadyDialog.xul
+					content/teaReadyDialog.js
 					content/teatimer.js 
 					content/teatimer.xul
 					content/teaTimerCommon.js
@@ -21,6 +22,14 @@
 					skin/options.css
 					skin/style.css 
 					skin/quicktimer.css
+					skin/icon-inactive.png
+					skin/icon-steeping.png
+					skin/icon32.png
+					skin/teaReadyDialog.css
+					skin/widgetAlert/reset.css
+					skin/widgetAlert/default/widget.html
+					skin/widgetAlert/default/widget.css
+					skin/widgetAlert/default/bg.png
 					" /> 
 	</target>
 

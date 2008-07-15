@@ -15,6 +15,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#teatimer-box
+{
+	padding-left: 20px;
+    background-image: url(chrome://teatimer/skin/icon-inactive.png);
+    background-repeat: no-repeat;
+    height: 16px;
+}
+
+#teatimer-box.steeping
+{
+	background-image: url(chrome://teatimer/skin/icon-steeping.png);
+}
+
 #teatimer-countdown.invisible
 {
     visibility: hidden;
@@ -24,3 +37,4 @@
 {
     color: #090;
 }
+

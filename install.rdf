@@ -18,17 +18,19 @@
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>teatimer@codepaintedby.philipp-soehnlein.de</em:id>
-		<em:version>0.6</em:version>
+		<em:version>0.7</em:version>
 		<em:name>TeaTimer</em:name>
 		<em:description>A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3, see my website for more informations.</em:description>
 		<em:creator>Philipp Söhnlein</em:creator>
 		<em:homepageURL>http://codepaintedby.philipp-soehnlein.de/</em:homepageURL>
+		<em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
 		<em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
 		<em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
 		<em:contributor>Fanfare Sound released under Soundsnap license by shriek (shriek-music.com) on soundsnap.com</em:contributor>
 		<em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
 		<em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
 		<em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
+		<em:iconURL>chrome://teatimer/skin/icon32.png</em:iconURL>
 		<em:type>2</em:type>
 		<em:targetApplication>
 			<Description>
