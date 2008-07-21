@@ -129,11 +129,10 @@ function teaTimerOptionsWindow()
     }
     
 	/**
-	 * 
+	 * This public method is called, when a key is pressed in the teaTimer-optionsWidgetShowTime text field. Useful for handling special inputs.
 	 **/
 	this.widgetShowTimeTxtFieldKeypress=function(event)
 	{
-		alert("IN");
 		if(event.keyCode===13) //enter
         {
             self.okButtonCommand();
@@ -369,7 +368,7 @@ function teaTimerOptionsWindow()
             }
         }
         
-        //hideteas that are in DB, but not in the list. They will be deleted on next start
+        //hide teas that are in DB, but not in the list. They will be deleted on next start
         for(var i in teasInDB)
         {
             if(common.in_array(teasInDB[i],teasInList)===false)
@@ -430,8 +429,8 @@ function teaTimerOptionsWindow()
      * @return integer number of teas
      **/
     var getNumberOfTeasInTree=function()
-    {
-	return treeBody.getElementsByTagName("treeitem").length;
+	{
+		return treeBody.getElementsByTagName("treeitem").length;
     }
     
     /**
@@ -589,6 +588,9 @@ function teaTimerOptionsWindow()
 		return document.getElementById(idOfSelectBox).value;
 	}
 	
+	/**
+	 * This method bundles all the "writing alerts to stored preferences"-stuff.
+	 **/
 	var saveAlerts=function()
 	{
 		var popupValue=document.getElementById("teaTimer-optionsPopupAlert").getAttribute("checked");

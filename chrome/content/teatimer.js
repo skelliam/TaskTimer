@@ -69,7 +69,6 @@ function teaTimer()
 		teatimerContextMenu.addEventListener("popupshowing",teaTimerInstance.prepareTeaSelectMenu,false);
 		
 		resetCountdown();
-		//self.openOptionsWindow();
 	}
 		
 	/*
@@ -374,6 +373,9 @@ function teaTimer()
 			}
 			catch(e)
 			{
+				//alert(e.name);
+				//alert(e.message);
+				
 				//if websiteWidgetAlert fails and no other alert is active, do anyhow a popupalert. It's better than having no alert at all.
 				if(!common.isAlertDesired("statusbar") && !common.isAlertDesired("popup") && common.getIdOfEndSound()==="none")
 				{
@@ -442,34 +444,9 @@ function teaTimer()
 			{
 				var wdoc=req.responseXML;
 				var widget=wdoc.getElementById("teaTimer-alertWidget");
-				//var targetWindow=document.commandDispatcher.focusedWindow;
 				var targetWindow=gBrowser.selectedBrowser.contentWindow;
-				//var targetDoc=targetWindow.document;
 				var targetDoc=gBrowser.selectedBrowser.contentDocument;
-				
-				//check if website uses frames. If yes, try to findest the biggest frame, we will include the widget in it.
-				if(targetDoc.getElementsByTagName("frameset").length>0)
-				{
-					var frames=targetDoc.getElementsByTagName("frameset")[0].getElementsByTagName("frame");
-					var biggestFrame=null;
-					var biggestFrameSize=null;
-					for(var i=0; i<frames.length; i++)
-					{
-						var currentFrameSize=frames[i].clientWidth*frames[i].clientHeight;
-						if(currentFrameSize>biggestFrameSize)
-						{
-							biggestFrame=i;
-							biggestFrameSize=currentFrameSize;
-						}
-					}
-					
-					//alert(frames[biggestFrame].contentDocument);
-					var targetBody=frames[biggestFrame].contentDocument.getElementsByTagName("body")[0];
-				}
-				else
-				{
-					var targetBody=targetDoc.getElementsByTagName("body")[0];
-				}
+				var targetBody=getWebsiteWidgetTargetDoc();
 				
 				//check if there's already an element with the ID "teaTimer-alertWidget"
 				if(targetDoc.getElementById("teaTimer-alertWidget")!==null)
@@ -496,21 +473,8 @@ function teaTimer()
 				widget.addEventListener("click",teaTimerInstance.removeWidgetAlert,false);
 				targetBody.appendChild(widget);
 				
-				var cssResetLink=targetDoc.createElement("link");
-				cssResetLink.setAttribute("id","teaTimer-alertWidgetResetCSS");
-				cssResetLink.setAttribute("href","chrome://teatimer/skin/widgetAlert/reset.css");
-				cssResetLink.setAttribute("media","all");
-				cssResetLink.setAttribute("rel","stylesheet");
-				cssResetLink.setAttribute("type","text/css");
-				targetBody.parentNode.getElementsByTagName("head")[0].appendChild(cssResetLink);
-				
-				var cssLink=targetDoc.createElement("link");
-				cssLink.setAttribute("id","teaTimer-alertWidgetThemeCSS");
-				cssLink.setAttribute("href","chrome://teatimer/skin/widgetAlert/default/widget.css");
-				cssLink.setAttribute("media","screen");
-				cssLink.setAttribute("rel","stylesheet");
-				cssLink.setAttribute("type","text/css");
-				targetBody.parentNode.getElementsByTagName("head")[0].appendChild(cssLink);
+				targetBody.parentNode.getElementsByTagName("head")[0].appendChild(generateWebsiteWidgetCSSLink("reset",targetDoc));
+				targetBody.parentNode.getElementsByTagName("head")[0].appendChild(generateWebsiteWidgetCSSLink("theme",targetDoc));
 				
 				var secondsUntilFadeOut=common.getWidgetAlertShowTime();
 				if(secondsUntilFadeOut>0)
@@ -526,71 +490,78 @@ function teaTimer()
 		}
 	}
 	
-	/*
-	var removeStylesRecursively=function(obj)
+	/**
+	 * This method detects the correct body element of the given document. If the document contains a frameset it will return the body element of the biggest frame.
+	 * 
+	 * @param object targetDoc (object HTMLDocument)
+	 * @returns object targetBody (object HTMLBodyElement)
+	 **/
+	var getWebsiteWidgetTargetDoc=function(doc)
 	{
-		resetStylesOfObject(obj);
-		
-		if(obj.hasChildNodes())
+		if(doc===undefined)
 		{
-			for(var i=0; i<obj.childNodes.length; i++)
-			{
-				removeStylesRecursively(obj.childNodes[i]);
-			}
+			doc=gBrowser.selectedBrowser.contentDocument;
 		}
-	}
-	
-	var resetStylesOfObject=function(obj)
-	{
-		if(obj.style)
+		
+		var targetBody=null;
+		//check if website uses frames. If yes, try to findest the biggest frame, we will include the widget in it.
+		if(doc.getElementsByTagName("frameset").length>0)
 		{
-			var inheritableStyles=new Array("borderCollapse","fontStyle");
-			//go on here
-			for(var i in inheritableStyles)
+			var frames=doc.getElementsByTagName("frameset")[0].getElementsByTagName("frame");
+			var biggestFrame=null;
+			var biggestFrameSize=null;
+			for(var i=0; i<frames.length; i++)
 			{
-				var value=inheritableStyles[i];
-				switch(value)
+				var currentFrameSize=frames[i].offsetWidth*frames[i].offsetHeight;
+				if(currentFrameSize>biggestFrameSize)
 				{
-					case "borderCollapse":
-						obj.style[i]="collapse";
-						break;
-					case "borderSpacing":
-						obj.style[i]="0";
-						break;
-					case "captionSide":
-						obj.style[i]="top";
-						break;
-					case "color":
-						obj.style[i]="#000";
-						break;
-					case "cursor":
-						obj.style[i]="auto";
-						break;
-					case "direction":
-						obj.style[i]="ltr";
-						break;
-					case "emptyCells":
-						obj.style[i]="show";
-						break;
-					case "fontFamily":
-						obj.style[i]="";
-						break;
-					case "fontStyle":
-						obj.style[value]="";
-						break;
+					biggestFrame=i;
+					biggestFrameSize=currentFrameSize;
 				}
 			}
+			
+			targetBody=getWebsiteWidgetTargetDoc(frames[biggestFrame].contentDocument);
 		}
+		else
+		{
+			targetBody=doc.getElementsByTagName("body")[0];
+		}
+		
+		return targetBody;
 	}
-	*/
+	
+	/**
+	 * This method generates a link element that links the website widget reset or theme CSS, depending on type parameter.
+	 *
+	 * @param string type ("reset" or "theme")
+	 * @param object root HTMLDocument element of the link node, that has to be created.
+	 * @returns object Link DOM Node
+	 **/
+	var generateWebsiteWidgetCSSLink=function(type,targetDoc)
+	{
+		type=((type==="reset")?"reset":"theme");
+		
+		var cssLink=targetDoc.createElement("link");
+		cssLink.setAttribute("id","teaTimer-alertWidget"+((type==="reset")?"Reset":"Theme")+"CSS");
+		cssLink.setAttribute("href","chrome://teatimer/skin/widgetAlert/"+((type==="reset")?"reset":"default/widget")+".css");
+		cssLink.setAttribute("media","all");
+		cssLink.setAttribute("rel","stylesheet");
+		cssLink.setAttribute("type","text/css");
+		
+		return cssLink;
+	}
 	
 	/**
 	 * Once called, this public method decreases the opacity of the teaTimer-alertWidget, until the opacity is 0. Finally it removes the widget.
 	 **/
 	this.fadeOutWidgetAlert=function()
 	{
-		var targetWindow=document.commandDispatcher.focusedWindow;
-		var targetDoc=targetWindow.document;
+		var targetWindow=gBrowser.selectedBrowser.contentWindow;
+		var targetBody=getWebsiteWidgetTargetDoc();
+		var targetDoc=targetBody.ownerDocument;
+		
+		//var targetWindow=document.commandDispatcher.focusedWindow;
+		//var targetDoc=targetWindow.document;
 		var widget=targetDoc.getElementById("teaTimer-alertWidget");
 		if(widget!==null)
 		{
@@ -621,7 +592,9 @@ function teaTimer()
 	 **/
 	this.removeWidgetAlert=function()
 	{
-		var targetDoc=document.commandDispatcher.focusedWindow.document;
+		//var targetDoc=document.commandDispatcher.focusedWindow.document;
+		var targetBody=getWebsiteWidgetTargetDoc();
+		var targetDoc=targetBody.ownerDocument;
 		var nodesToRemove=new Array("teaTimer-alertWidget","teaTimer-alertWidgetResetCSS","teaTimer-alertWidgetThemeCSS");
 		for(var i=0; i<nodesToRemove.length; i++)
 		{

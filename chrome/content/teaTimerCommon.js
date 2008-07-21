@@ -141,7 +141,11 @@ function teaTimerCommon()
 		========================
 	*/
 	
-	
+	/**
+	 * This public method can be used to write the widget alert show time (=time until fade out is started) into the stored preferences.
+	 * @param integer time
+	 * @throws teaTimerInvalidWidgetAlertShowTimeException
+	 **/
 	this.setWidgetAlertShowTime=function(time)
 	{
 		if(!(typeof time==="number" && time>=0))
@@ -153,6 +157,11 @@ function teaTimerCommon()
 		alertPrefs.setIntPref("widgetAlertShowTime",time);
 	}
 	
+	/**
+	 * This public method can be used to query the time when the website widget should fade out.
+	 * @returns integer time in seconds (standard=5)
+	 * @throws teaTimerInvalidWidgetAlertShowTimeException
+	 **/
 	this.getWidgetAlertShowTime=function()
 	{
 		var time=5;

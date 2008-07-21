@@ -33,23 +33,35 @@
   caption-side: top;
   cursor: auto;
   direction: ltr;
+  display: block;
   empty-cells: show;
+  float: none;
   font-size: 1em;
   font-size-adjust: none;
   font-stretch: normal;
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
+  height: auto;
   letter-spacing: normal;
   line-height: normal;
   list-style-image: none;
   list-style-position: outside;
   list-style-type: disc;
+  padding: 0;
+  position: static;
   text-align: left;
   text-indent: 0;
   text-transform: none;
   white-space: normal;
+  width: 100%;
   word-spacing: normal;
+}
+
+#teaTimer-alertWidget p
+{
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 @media print {
