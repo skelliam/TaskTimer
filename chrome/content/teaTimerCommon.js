@@ -21,7 +21,8 @@ function teaTimerCommon()
     var debug=true;
     var self=this;
     const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-    const alertPrefs=storedPrefs.getBranch("teatimer.alerts.");
+	const teaTimerPrefs=storedPrefs.getBranch("extensions.teatimer.");
+    const alertPrefs=storedPrefs.getBranch("extensions.teatimer.alerts.");
     const quitObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
     quitObserver.addObserver(this,"quit-application-granted",false);
     
@@ -133,6 +134,51 @@ function teaTimerCommon()
 		}
 		
 		alertPrefs.setBoolPref("do"+type+"Alert",status);
+	}
+	
+	/*
+		=======================
+		| Tea Sorting methods |
+		=======================
+	*/
+	
+	this.getSortingOrder=function()
+	{
+		var sorting="id";
+		try
+		{
+			sorting=teaTimerPrefs.getCharPref("sortingOrder");
+			self.validateSortingOrder(sorting);
+		}
+		catch(e)
+		{
+			self.setSortingOrder(sorting);
+		}
+		
+		return sorting;
+	}
+	
+	this.setSortingOrder=function(sorting)
+	{
+		self.validateSortingOrder(sorting);
+		teaTimerPrefs.setCharPref("sortingOrder",sorting);
+	}
+	
+	this.validateSortingOrder=function(sorting)
+	{
+		switch(sorting)
+		{
+			case "id":
+			case "name ASC":
+			case "name DESC":
+			case "time ASC":
+			case "time DESC":
+				break;
+			default:
+				throw new teaTimerInvalidSortOrderException("validateSortOrdering: '"+sorting+"' is no valid sort order.");
+		}
+		
+		return true;
 	}
 	
 	/*
@@ -422,9 +468,9 @@ function teaTimerCommon()
 	}
     
     /*
-	=========================
-	| string helper methods |
-	=========================
+		=========================
+		| string helper methods |
+		=========================
     */
 	
     /**
@@ -672,5 +718,11 @@ function teaTimerInvalidSoundTypeException(msg)
 function teaTimerInvalidSoundIDException(msg)
 {
 	this.name="teaTimerInvalidSoundIDException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidSortOrderException(msg)
+{
+	this.name="teaTimerInvalidSortOrderException";
 	this.message=((msg===undefined)?null:msg);
 }

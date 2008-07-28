@@ -35,12 +35,16 @@ function teaTimer()
 	var steepingTimeOfCurrentTea=null; 
 	var countdownInProgress=false; //flag
 	var idOfCurrentSteepingTea=null;
+	var uninstallFlag=false; //this flag is set to true, if the extension is going to be uninstalled when browser is closed
+	const uninstObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
 	
 	/**
 	 * The public init method of teaTimer. 
 	 **/
 	this.init=function()
 	{
+		migrateOldPreferences();
+		
 		teatimerPanel=document.getElementById("teatimer-panel");
 		teatimerBox=document.getElementById("teatimer-box");
 		
@@ -69,6 +73,9 @@ function teaTimer()
 		teatimerContextMenu.addEventListener("popupshowing",teaTimerInstance.prepareTeaSelectMenu,false);
 		
 		resetCountdown();
+		
+		uninstObserver.addObserver(this,"em-action-requested",false);
+		uninstObserver.addObserver(this,"quit-application-granted",false);
 	}
 		
 	/*
@@ -83,8 +90,8 @@ function teaTimer()
 	 **/
 	this.prepareTeaSelectMenu=function()
 	{
-		var teas=teaDB.getDataOfAllTeas();
-
+		var teas=teaDB.getDataOfAllTeas(false,common.getSortingOrder());
+		
 		var separator=document.getElementById("teatimer-endTealistSeparator");
 		while(separator.previousSibling)
 		{
@@ -630,6 +637,163 @@ function teaTimer()
 		window.clearInterval(statusbarAlertInterval);
 		teatimerCountdown.removeAttribute("class");
 		teatimerPanel.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
+	}
+	
+	var migrateOldPreferences=function()
+	{
+		const storedPreferences=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+		const oldBranch=storedPreferences.getBranch("teatimer.");
+		const newBranch=storedPreferences.getBranch("extensions.teatimer.");
+		
+		var childListOfOldBranch=new Object();
+		oldBranch.getChildList("",childListOfOldBranch);
+		if(childListOfOldBranch.value>0)
+		{
+			var prefs2Migrate= [
+				{"pref":"alerts.doPopupAlert","type":"bool"},
+				{"pref":"alerts.doStatusbarAlert","type":"bool"},
+				{"pref":"alerts.doWidgetAlert","type":"bool"},
+				{"pref":"alerts.endSound","type":"string"},
+				{"pref":"alerts.startSound","type":"string"},
+				{"pref":"alerts.widgetAlertShowTime","type":"integer"}
+			]
+			
+			for(var i=0; i<prefs2Migrate.length; i++)
+			{
+				try
+				{
+					var value=null;
+					switch(prefs2Migrate[i]["type"])
+					{
+						case "bool":
+							value=oldBranch.getBoolPref(prefs2Migrate[i]["pref"]);
+							newBranch.setBoolPref(prefs2Migrate[i]["pref"],value);
+							break;
+						case "integer":
+							value=oldBranch.getIntPref(prefs2Migrate[i]["pref"]);
+							newBranch.setIntPref(prefs2Migrate[i]["pref"],value);
+							break;
+						case "string":
+							value=oldBranch.getCharPref(prefs2Migrate[i]["pref"]);
+							newBranch.setCharPref(prefs2Migrate[i]["pref"],value);
+							break;
+					}
+				}
+				catch(e)
+				{
+					//dump("\n\n-----------\n"+i+" "+prefs2Migrate[i]["type"]+" "+prefs2Migrate[i]["pref"]+" "+value+"\n")
+					//dump(e);
+					common.log("Main class","Error while migrating pref '"+prefs2Migrate[i]["pref"]+"' into new branch.");
+				}
+			}
+			
+			const offset=23;
+			var end=offset;
+			var teaProperties=[
+				{"pref":"name","type":"string"},
+				{"pref":"time","type":"integer"},
+				{"pref":"checked","type":"bool"},
+				{"pref":"hidden","type":"bool"}
+			];
+			
+			for(var i=1; i<end; i++)
+			{
+				for(var z=0; z<teaProperties.length; z++)
+				{
+					try
+					{
+						newBranch.setCharPref("teas."+i+".name",oldBranch.getCharPref("teas."+i+".name"));
+						newBranch.setIntPref("teas."+i+".time",oldBranch.getIntPref("teas."+i+".time"));
+						
+						try
+						{
+							newBranch.setBoolPref("teas."+i+".checked",oldBranch.getBoolPref("teas."+i+".checked"));
+						}
+						catch(e)
+						{
+							//write safe value, if there was an error.
+							newBranch.setBoolPref("teas."+i+".checked",false);
+						}
+						
+						try
+						{
+							newBranch.setBoolPref("teas."+i+".hidden",oldBranch.getBoolPref("teas."+i+".hidden"));
+						}
+						catch(e)
+						{
+							//write safe value, if there was an error.
+							newBranch.setBoolPref("teas."+i+".hidden",false);
+						}
+						
+						end=i+offset;
+					}
+					catch(e)
+					{
+						//do nothing, it just means, that there was no tea with the ID i
+					}
+				}
+			}
+			
+			storedPreferences.getBranch("").deleteBranch("teatimer.");	
+		}
+	}
+	
+	/*
+		==================================
+		| Uninstall and clean up methods |
+		==================================
+		
+		A observer is used to get notified, when the extension is marked for uninstalling.
+	*/
+	
+	
+	/**
+	 * This public method will be called every time when a action occurred in the extension/addon-manager.
+	 * It then detects, if the called action is to uninstall this extension and sets a flag.
+	 * This method will also be called when the browser is closed and if the flag is set, it does some uninstalling-/cleaning-actions.
+	 *
+	 * @param object xpconnect
+	 * @param string requested action ID
+	 * @param string requested action value
+	 * @returns bool true, if everything was okay
+	 **/
+	this.observe=function(subject,actionID,actionValue)
+	{
+		if(actionID==="em-action-requested")
+		{
+			subject.QueryInterface(Components.interfaces.nsIUpdateItem);
+			if(subject.id==="teatimer@codepaintedby.philipp-soehnlein.de")
+			{
+				if(actionValue==="item-uninstalled")
+				{
+					uninstallFlag=true;
+				}
+				else if(actionValue==="item-cancel-action")
+				{
+					uninstallFlag=false;
+				}
+			}
+		}
+		else if(actionID==="quit-application-granted")
+		{
+			if(uninstallFlag)
+			{
+				uninstall();
+			}
+			uninstObserver.removeObserver(this,"em-action-requested");
+			uninstObserver.removeObserver(this,"quit-application-granted");
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * This private method does some cleaning, when the extension is uninstalled.
+	 **/
+	var uninstall=function()
+	{
+		const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+		storedPrefs.deleteBranch("extensions.teatimer.");
 	}
 }
 	

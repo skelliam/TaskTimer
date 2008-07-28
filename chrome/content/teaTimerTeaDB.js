@@ -22,7 +22,7 @@ function teaTimerTeaDB()
     const common=new teaTimerCommon();
     
     const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-    const teaDB=storedPrefs.getBranch("teatimer.teas.");
+    const teaDB=storedPrefs.getBranch("extensions.teatimer.teas.");
     
     /**
      * This method generates a basic preconfigured tea database.
@@ -52,26 +52,26 @@ function teaTimerTeaDB()
      **/
     this.getNumberOfTeas=function()
     {
-	var teas=0;
+		var teas=0;
         const offset=23;
         var end=offset;
-	for(var i=1; i<=end; i++) 
-	{
-	    try
-	    {
-		if(self.checkTeaWithID(i))
+		for(var i=1; i<=end; i++) 
 		{
-		    teas++;
+		    try
+		    {
+				if(self.checkTeaWithID(i))
+				{
+				    teas++;
                     end=i+offset;
+				}
+		    }
+		    catch(ex)
+		    {
+				//do nothing
+		    }
 		}
-	    }
-	    catch(ex)
-	    {
-		//do nothing
-	    }
-	}
-	
-	return teas;
+		
+		return teas;
     }
     
     /**
@@ -82,12 +82,12 @@ function teaTimerTeaDB()
      **/
     var checkIfTeaIsHidden=function(id)
     {
-	if(checkTeaWithID(id)===false)
-	{
-	    throw new teaTimerInvalidTeaIDException("checkIfTeaIsHidden: Invalid call, first parameter must be a tea ID.");
-	}
-	
-	return ((getTeaData(id)["hidden"]===true)?true:false);
+		if(checkTeaWithID(id)===false)
+		{
+			throw new teaTimerInvalidTeaIDException("checkIfTeaIsHidden: Invalid call, first parameter must be a tea ID.");
+		}
+		
+		return ((getTeaData(id)["hidden"]===true)?true:false);
     }
     
     /**
@@ -211,7 +211,7 @@ function teaTimerTeaDB()
         teaDB.clearUserPref(id+".name");
         teaDB.clearUserPref(id+".time");
         teaDB.clearUserPref(id+".checked");
-	teaDB.clearUserPref(id+".hidden");
+		teaDB.clearUserPref(id+".hidden");
     }
     
     /**
@@ -222,24 +222,24 @@ function teaTimerTeaDB()
      **/
     this.checkTeaWithID=function(id)
     {
-	var result=false;
-	try
-	{
-	    if(
-		teaDB.getCharPref(id+".name").length>0 &&
-		teaDB.getIntPref(id+".time")>0 &&
-		typeof teaDB.getBoolPref(id+".checked")==="boolean"
-		)
-	    {
-		result=true;
-	    }
-	}
-	catch(e)
-	{
-	    
-	}
+		var result=false;
+		try
+		{
+			if(
+				teaDB.getCharPref(id+".name").length>0 &&
+				teaDB.getIntPref(id+".time")>0 &&
+				typeof teaDB.getBoolPref(id+".checked")==="boolean"
+			)
+			{
+				result=true;
+		    }
+		}
+		catch(e)
+		{
+			
+		}
 	
-	return result;
+		return result;
     }
 	
     /**
@@ -281,19 +281,22 @@ function teaTimerTeaDB()
      *		2=>Array(ID,name,time,choosen)
      *		...
      * 		)
+     *
+     * @param bool includehidden (include hidden teas also)
+     * @param string sorting (id, name ASC, name DESC, time ASC, time DESC)
      * @returns array
      **/
-    this.getDataOfAllTeas=function(includehidden)
+    this.getDataOfAllTeas=function(includehidden,sorting)
     {
-	includehidden=((includehidden===true)?true:false);
-	var teaIDs=self.getIDsOfTeas(includehidden);
-	var teas=new Array();
-	for(var i in teaIDs)
-	{
-	    teas.push(self.getTeaData(teaIDs[i]));
-	}
-	
-	return teas;
+		includehidden=((includehidden===true)?true:false);
+		var teaIDs=self.getIDsOfTeas(includehidden,sorting);
+		var teas=new Array();
+		for(var i in teaIDs)
+		{
+			teas.push(self.getTeaData(teaIDs[i]));
+		}
+		
+		return teas;
     }
 	
     /**
@@ -319,36 +322,81 @@ function teaTimerTeaDB()
 	
     /**
      * This method returns an array with all available tea IDs.
+     * @param bool includehidden (include hidden teas also)
+     * @param string sorting (id, name ASC, name DESC, time ASC, time DESC)
      * @returns array teaIDs
      **/
-    this.getIDsOfTeas=function(includehidden)
+    this.getIDsOfTeas=function(includehidden,sorting)
     {
-	includehidden=((includehidden===true)?true:false);
-	var teas=new Array();
-	var numberOfTeas=self.getNumberOfTeas();
+		includehidden=((includehidden===true)?true:false);
+		try
+		{
+			common.validateSortingOrder(sorting);
+		}
+		catch(e)
+		{
+			sorting="id";
+		}
+		
+		var teas=new Array();
+		var numberOfTeas=self.getNumberOfTeas();
         const offset=23;
         var end=offset;
-	for(var i=1; i<=end; i++)
-	{
-	    if(self.checkTeaWithID(i))
-	    {
-		if(
-		   (includehidden===false && self.getTeaData(i)["hidden"]===false) ||
-		   (includehidden===true)
-		)
+		for(var i=1; i<=end; i++)
 		{
-		    teas.push(i);
-                    end=i+offset;
-		}
-	    }
+			if(self.checkTeaWithID(i))
+			{
+				if(
+				   (includehidden===false && self.getTeaData(i)["hidden"]===false) ||
+				   (includehidden===true)
+				)
+				{
+					teas.push(i);
+					end=i+offset;
+				}
+			}
 	    
-	    if(teas.length-1===numberOfTeas)
-	    {
-		break;
-	    }
-	}
+			if(teas.length-1===numberOfTeas)
+			{
+				break;
+			}
+		}
+		
+		if(sorting!=="id")
+		{
+			try
+			{
+				var stop=true;
+				do
+				{
+					stop=true;
+					for(i=0; i<teas.length-1; i++)
+					{
+						var thisTea=self.getTeaData(teas[i]);
+						var nextTea=self.getTeaData(teas[i+1]);
+						if(
+							(sorting==="time ASC" && thisTea.time>nextTea.time) ||
+							(sorting==="time DESC" && thisTea.time<nextTea.time) ||
+							(sorting==="name ASC" && thisTea.name>nextTea.name) ||
+							(sorting==="name DESC" && thisTea.name<nextTea.name)
+						)
+						{
+							tmp=teas[i];
+							teas[i]=teas[i+1];
+							teas[i+1]=tmp;
+							stop=false;
+						}
+					}
+				}
+				while(stop===false);
+			}
+			catch(e)
+			{
+				//if there was an error, ignore it, because it's better to return a wrong sorted list instead of failing at all.
+			}
+		}
 	
-	return teas;
+		return teas;
     }
     
     /**

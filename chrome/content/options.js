@@ -26,6 +26,7 @@ function teaTimerOptionsWindow()
     var deleteButton=null; //container for the tea delete button
     var nameTxtField=document.getElementById("teaTimer-optionsNewTeaName");
     var timeTxtField=document.getElementById("teaTimer-optionsNewTeaTime");
+	var selSortingOrder=null; //container for select box with sorting order
 	var btnPreviewStartSound=null; //container for start sound preview button
 	var btnPreviewEndSound=null; //container for end sound preview button
 	var widgetShowTimeTxtField=null;
@@ -52,6 +53,9 @@ function teaTimerOptionsWindow()
 		deleteButton.addEventListener("command",teaTimerOptionsWindowInstance.deleteSelectedTeas,false);
 		
 		fillTreeWithDBValues();
+		
+		selSortingOrder=document.getElementById("teaTimer-sortingOrder");
+		initSortingSelectBox();
         
         //alerts tab
 		var chkPopupAlert=document.getElementById("teaTimer-optionsPopupAlert");
@@ -266,14 +270,28 @@ function teaTimerOptionsWindow()
 				}
 				else
 				{
-					var widgetShowTime=parseInt(widgetShowTimeTxtField.value,10);
-					if(!(widgetShowTime>=0))
+					var sortOrderValid=false;
+					try
 					{
-						alert("Please check your input in the text field 'Number of seconds the widget disappears automatically'. Only numbers greater or equal zero are allowed.");
+						common.validateSortingOrder(selSortingOrder.value);
+						sortOrderValid=true;
 					}
-					else
+					catch(e)
 					{
-						valid=true;
+						alert("There's something wrong with the sorting order you have choosen. Please check your choice.");
+					}
+					
+					if(sortOrderValid)
+					{
+						var widgetShowTime=parseInt(widgetShowTimeTxtField.value,10);
+						if(!(widgetShowTime>=0))
+						{
+							alert("Please check your input in the text field 'Number of seconds the widget disappears automatically'. Only numbers greater or equal zero are allowed.");
+						}
+						else
+						{
+							valid=true;
+						}
 					}
 				}
             }
@@ -288,6 +306,7 @@ function teaTimerOptionsWindow()
             if(valid)
             {
                 writeTreeTeasinDB();
+				saveSortingOrder();
 				saveAlerts();
 				saveSounds();
                 window.close();
@@ -468,6 +487,24 @@ function teaTimerOptionsWindow()
 		}
     }
     
+	/**
+	 * This private method inits either the sorting select box (menulist).
+	 * That means, it sets the currently saved sorting mechanism as selected.
+	 **/
+	var initSortingSelectBox=function()
+	{
+		sortingOrder=common.getSortingOrder();
+		var sortingOrderParentNode=selSortingOrder.getElementsByTagName("menupopup")[0];
+		for(var i=0; i<sortingOrderParentNode.childNodes.length; i++)
+		{
+			var child=sortingOrderParentNode.childNodes[i];
+			if(child.getAttribute("value")===sortingOrder)
+			{
+				selSortingOrder.selectedIndex=i;
+				break;
+			}
+		}
+	}
 	
 	/**
 	 * This private method inits either the startsound or the endsound select box (menulist).
@@ -606,6 +643,14 @@ function teaTimerOptionsWindow()
 		common.setAlert("widget",widgetValue);
 		
 		common.setWidgetAlertShowTime(parseInt(widgetShowTimeTxtField.value,10));
+	}
+	
+	/**
+	 * This private method saves the sorting order in the options "database".
+	 **/
+	var saveSortingOrder=function()
+	{
+		common.setSortingOrder(selSortingOrder.value);
 	}
 	
 	/**

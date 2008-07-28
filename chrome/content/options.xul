@@ -74,9 +74,26 @@
 							</treechildren>
 						</tree>
                     </groupbox>
+				
                     <hbox align="right">
                         <button id="teaTimer-optionsBtnDelTea" label="Delete selected tea" disabled="true" />
                     </hbox>
+					
+					<groupbox>
+						<caption label="Sorting" />
+						<hbox>
+							<label control="teaTimer-sortingOrder" value="Sort teas in TeaTimer context menu" />
+							 <menulist id="teaTimer-sortingOrder">
+								<menupopup>
+									<menuitem label="alphabetically ascending." value="name ASC" />
+									<menuitem label="alphabetically descending." value="name DESC" />
+									<menuitem label="by time ascending." value="time ASC" />
+									<menuitem label="by time descending." value="time DESC" />
+									<menuitem label="exactly like the list above." value="id" />
+								</menupopup>
+							</menulist>
+						</hbox>
+					</groupbox>
                 </vbox>
             </tabpanel>
             <tabpanel id="teaTimer-optionsAlertsTab">

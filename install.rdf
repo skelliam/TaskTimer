@@ -1,43 +1,28 @@
 <?xml version="1.0"?>
-<!--
-	TeaTimer: A Firefox extension that protects you from oversteeped tea.
-	Copyright (C) 2008 Philipp Söhnlein
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License version 3 as 
-	published by the Free Software Foundation.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
-	<Description about="urn:mozilla:install-manifest">
-		<em:id>teatimer@codepaintedby.philipp-soehnlein.de</em:id>
-		<em:version>0.7</em:version>
-		<em:name>TeaTimer</em:name>
-		<em:description>A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3, see my website for more informations.</em:description>
-		<em:creator>Philipp Söhnlein</em:creator>
-		<em:homepageURL>http://codepaintedby.philipp-soehnlein.de/</em:homepageURL>
-		<em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
-		<em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
-		<em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
-		<em:contributor>Fanfare Sound released under Soundsnap license by shriek (shriek-music.com) on soundsnap.com</em:contributor>
-		<em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
-		<em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
-		<em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
-		<em:iconURL>chrome://teatimer/skin/icon32.png</em:iconURL>
-		<em:type>2</em:type>
-		<em:targetApplication>
-			<Description>
-				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-				<em:minVersion>1.5</em:minVersion>
-				<em:maxVersion>3.0.*</em:maxVersion>
-			</Description>
-		</em:targetApplication>
-	</Description>      
-</RDF>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:install-manifest"
+                   em:id="teatimer@codepaintedby.philipp-soehnlein.de"
+                   em:version="0.8pre"
+                   em:name="TeaTimer"
+                   em:description="A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3, see my website for more informations."
+                   em:creator="Philipp Söhnlein"
+                   em:homepageURL="http://codepaintedby.philipp-soehnlein.de/"
+                   em:iconURL="chrome://teatimer/skin/icon32.png"
+                   em:optionsURL="chrome://teatimer/content/options.xul"
+                   em:type="2">
+    <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
+    <em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
+    <em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
+    <em:contributor>Fanfare Sound released under Soundsnap license by shriek (shriek-music.com) on soundsnap.com</em:contributor>
+    <em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
+    <em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
+    <em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
+    <em:targetApplication RDF:resource="rdf:#$rdYLa2"/>
+  </RDF:Description>
+  <RDF:Description RDF:about="rdf:#$rdYLa2"
+                   em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+                   em:minVersion="1.5"
+                   em:maxVersion="3.0.*" />
+</RDF:RDF>
