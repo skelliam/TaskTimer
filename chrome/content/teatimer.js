@@ -44,7 +44,6 @@ function teaTimer()
 	this.init=function()
 	{
 		migrateOldPreferences();
-		
 		teatimerPanel=document.getElementById("teatimer-panel");
 		teatimerBox=document.getElementById("teatimer-box");
 		
@@ -74,8 +73,8 @@ function teaTimer()
 		
 		resetCountdown();
 		
-		uninstObserver.addObserver(this,"em-action-requested",false);
-		uninstObserver.addObserver(this,"quit-application-granted",false);
+		uninstObserver.addObserver(self,"em-action-requested",false);
+		uninstObserver.addObserver(self,"quit-application-granted",false);
 	}
 		
 	/*
@@ -780,8 +779,8 @@ function teaTimer()
 			{
 				uninstall();
 			}
-			uninstObserver.removeObserver(this,"em-action-requested");
-			uninstObserver.removeObserver(this,"quit-application-granted");
+			uninstObserver.removeObserver(self,"em-action-requested");
+			uninstObserver.removeObserver(self,"quit-application-granted");
 		}
 		
 		return true;
