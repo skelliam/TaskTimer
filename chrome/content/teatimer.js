@@ -44,6 +44,7 @@ function teaTimer()
 	this.init=function()
 	{
 		migrateOldPreferences();
+		
 		teatimerPanel=document.getElementById("teatimer-panel");
 		teatimerBox=document.getElementById("teatimer-box");
 		
@@ -638,6 +639,13 @@ function teaTimer()
 		teatimerPanel.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
 	
+	/**
+	 * This method was written to migrate preferences stored in "teatimer."-branch to "extensions.teatimer"-branch.
+	 *
+	 * All preferences, except the teaDB, are migrated without special treatment.
+	 * The teaDB migration is special: We can't use the teaDB class, so we have to poll for teas with a certain id. This happens in a loop with a special offset.
+	 * If there's any problem, the whole teaDB migration proccess will be restarted up to three times.
+	 **/
 	var migrateOldPreferences=function()
 	{
 		const storedPreferences=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
@@ -648,6 +656,7 @@ function teaTimer()
 		oldBranch.getChildList("",childListOfOldBranch);
 		if(childListOfOldBranch.value>0)
 		{
+			//migrate alert preferences
 			var prefs2Migrate= [
 				{"pref":"alerts.doPopupAlert","type":"bool"},
 				{"pref":"alerts.doStatusbarAlert","type":"bool"},
@@ -665,16 +674,16 @@ function teaTimer()
 					switch(prefs2Migrate[i]["type"])
 					{
 						case "bool":
-							value=oldBranch.getBoolPref(prefs2Migrate[i]["pref"]);
-							newBranch.setBoolPref(prefs2Migrate[i]["pref"],value);
+							try { value=oldBranch.getBoolPref(prefs2Migrate[i]["pref"]); } catch(e) {}
+							if(typeof value==="boolean") { newBranch.setBoolPref(prefs2Migrate[i]["pref"],value); }
 							break;
 						case "integer":
-							value=oldBranch.getIntPref(prefs2Migrate[i]["pref"]);
-							newBranch.setIntPref(prefs2Migrate[i]["pref"],value);
+							try { value=oldBranch.getIntPref(prefs2Migrate[i]["pref"]); } catch(e) {}
+							if(typeof value==="number") { newBranch.setIntPref(prefs2Migrate[i]["pref"],value); }
 							break;
 						case "string":
-							value=oldBranch.getCharPref(prefs2Migrate[i]["pref"]);
-							newBranch.setCharPref(prefs2Migrate[i]["pref"],value);
+							try { value=oldBranch.getCharPref(prefs2Migrate[i]["pref"]); } catch(e) {}
+							if(typeof value==="string") { newBranch.setCharPref(prefs2Migrate[i]["pref"],value); }
 							break;
 					}
 				}
@@ -682,54 +691,51 @@ function teaTimer()
 				{
 					//dump("\n\n-----------\n"+i+" "+prefs2Migrate[i]["type"]+" "+prefs2Migrate[i]["pref"]+" "+value+"\n")
 					//dump(e);
-					common.log("Main class","Error while migrating pref '"+prefs2Migrate[i]["pref"]+"' into new branch.");
+					common.log("Main class","Error while migrating pref '"+prefs2Migrate[i]["pref"]+"' into new branch.\n");
 				}
 			}
 			
+			//migrate teas
 			const offset=23;
 			var end=offset;
-			var teaProperties=[
-				{"pref":"name","type":"string"},
-				{"pref":"time","type":"integer"},
-				{"pref":"checked","type":"bool"},
-				{"pref":"hidden","type":"bool"}
-			];
 			
-			for(var i=1; i<end; i++)
+			var tries=3;
+			for(var t=0; t<tries; t++)
 			{
-				for(var z=0; z<teaProperties.length; z++)
+				var retry=false;
+				
+				for(var i=1; i<end; i++)
 				{
+					var teaExists=false;
+					
 					try
 					{
 						newBranch.setCharPref("teas."+i+".name",oldBranch.getCharPref("teas."+i+".name"));
-						newBranch.setIntPref("teas."+i+".time",oldBranch.getIntPref("teas."+i+".time"));
+						teaExists=true;
+					}
+					catch(e)
+					{ /* do nothing, it just means, that there was no tea with the ID i */ }
+					
+					if(teaExists)
+					{
+						var teaTimeValue=1; //fallback value; 1 second is not very useful, but the user will definitely recognize that he/she has to edit the tea steeping time.
+						var teaCheckedValue=false; //fallback value;
+						var teaHiddenValue=false; //fallback value;
+						try { teaTimeValue=oldBranch.getIntPref("teas."+i+".time"); } catch (e) { retry=true; }
+						try { teaCheckedValue=oldBranch.getBoolPref("teas."+i+".checked"); } catch (e) { retry=true;}
+						try { teaHiddenValue=oldBranch.getBoolPref("teas."+i+".hidden"); } catch (e) { retry=true; }
 						
-						try
-						{
-							newBranch.setBoolPref("teas."+i+".checked",oldBranch.getBoolPref("teas."+i+".checked"));
-						}
-						catch(e)
-						{
-							//write safe value, if there was an error.
-							newBranch.setBoolPref("teas."+i+".checked",false);
-						}
-						
-						try
-						{
-							newBranch.setBoolPref("teas."+i+".hidden",oldBranch.getBoolPref("teas."+i+".hidden"));
-						}
-						catch(e)
-						{
-							//write safe value, if there was an error.
-							newBranch.setBoolPref("teas."+i+".hidden",false);
-						}
+						try { newBranch.setIntPref("teas."+i+".time",teaTimeValue); } catch (e) { retry=true; }
+						try { newBranch.setBoolPref("teas."+i+".checked",teaCheckedValue); } catch (e) { retry=true; }
+						try { newBranch.setBoolPref("teas."+i+".hidden",teaHiddenValue); } catch (e) { retry=true; }
 						
 						end=i+offset;
 					}
-					catch(e)
-					{
-						//do nothing, it just means, that there was no tea with the ID i
-					}
+				}
+				
+				if(!retry)
+				{
+					break; //everything was okay.
 				}
 			}
 			
