@@ -137,6 +137,48 @@ function teaTimerCommon()
 	}
 	
 	/*
+		=====================
+		| View mode methods |
+		=====================
+	*/
+	
+	this.getViewMode=function()
+	{
+		var viewMode="timeAndIcon";
+		try
+		{
+			viewMode=teaTimerPrefs.getCharPref("viewMode");
+			self.validateViewMode(viewMode);
+		}
+		catch(e)
+		{
+			self.setViewMode(viewMode);
+		}
+		
+		return viewMode;
+	}
+	
+	this.setViewMode=function(mode)
+	{
+		self.validateViewMode(mode);
+		teaTimerPrefs.setCharPref("viewMode",mode);
+	}
+	
+	this.validateViewMode=function(mode)
+	{
+		switch(mode)
+		{
+			case "timeAndIcon":
+			case "iconOnly":
+				break;
+			default:
+				throw new teaTimerInvalidViewModeException("validateViewMode: '"+mode+"' is no valid view mode.");
+		}
+		
+		return true;
+	}
+	
+	/*
 		=======================
 		| Tea Sorting methods |
 		=======================
@@ -584,11 +626,58 @@ function teaTimerCommon()
     
     
     /*
-	=========================
-	| Miscellaneous methods |
-	=========================
+		=========================
+		| Miscellaneous methods |
+		=========================
     */
-    
+	
+	this.addCSSClass=function(object,className)
+	{
+		var oldClassStr=object.getAttribute("class");
+		var newClassStr="";
+		if(oldClassStr.length>0)
+		{
+			var classes=oldClassStr.split(" ");
+			if(!self.in_array(className,classes))
+			{
+				newClassStr=oldClassStr+" "+className;
+			}
+			else
+			{
+				newClassStr=oldClassStr;
+			}
+		}
+		else
+		{
+			newClassStr=className;
+		}
+		
+		object.setAttribute("class",newClassStr);
+	}
+	
+    this.removeCSSClass=function(object,className)
+	{
+		var oldClassStr=object.getAttribute("class");
+		var classes=oldClassStr.split(" ");
+		var newClassStr="";
+		for(var i=0; i<classes.length; i++)
+		{
+			if(classes[i]!==className)
+			{
+				newClassStr+=classes[i]+" ";
+			}
+		}
+		newClassStr=self.trim(newClassStr);
+		if(newClassStr.length>0)
+		{
+			object.setAttribute("class",newClassStr);
+		}
+		else
+		{
+			object.removeAttribute("class");
+		}
+	}
+	
     /**
      * Checks if a value exists in an array
      *
@@ -724,5 +813,11 @@ function teaTimerInvalidSoundIDException(msg)
 function teaTimerInvalidSortOrderException(msg)
 {
 	this.name="teaTimerInvalidSortOrderException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidViewModeException(msg)
+{
+	this.name="teaTimerInvalidViewModeException";
 	this.message=((msg===undefined)?null:msg);
 }

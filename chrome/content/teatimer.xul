@@ -9,7 +9,7 @@
 
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
@@ -22,8 +22,13 @@
 	<statusbar id="status-bar">
 		<statusbarpanel id="teatimer-panel" context="teatimer-contextMenu">
 			<box id="teatimer-box"> <!-- This extra box is needed, because FF<3 can not handle CSS background images for statusbarpanel elements -->
-				<label id="teatimer-countdown" value="TeaTimer" />
+				<box id="teatimer-countdownbox">
+					<label id="teatimer-countdown" value="TeaTimer" />
+				</box>
 				<popup id="teatimer-contextMenu" position="before_end">
+					<menuitem id="teatimer-showModeIconAndTime" label="Show icon and time" name="teatimer-viewMode" value="iconAndText" type="radio" />
+					<menuitem id="teatimer-showModeIconOnly" label="Show icon only" name="teatimer-viewMode" value="iconOnly" type="radio" />
+					<menuseparator id="teatimer-endViewModeSeparator" />
 					<menuseparator id="teatimer-endTealistSeparator" />
 					<menuitem id="teatimer-options" label="Options..." />
 					<menuitem id="teatimer-cancel" label="Cancel" />

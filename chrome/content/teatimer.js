@@ -23,9 +23,12 @@ function teaTimer()
 	const common=new teaTimerCommon();
 	
 	var teatimerPanel=null; //container for teatimer-panel (statusbarpanel)
-	var teatimerBox=null; //container for teatimer-panel (box)
+	var teatimerBox=null; //container for teatimer-box (box)
+	var teatimerCountdownBox=null;
 	var teatimerCountdown=null; //container for quick timer XUL element reference 'teatimer-countdown' (label)
 	var teatimerContextMenu=document.getElementById("teatimer-contextMenu");
+	var teatimerViewModeIconAndTime=null; //container for view mode icon and text menuitem
+	var teatimerViewModeIconOnly=null; //container for view mode icon only menuitem
 	const sound=Components.classes["@mozilla.org/sound;1"].createInstance().QueryInterface(Components.interfaces.nsISound);
 	
 	var self=this;
@@ -48,8 +51,11 @@ function teaTimer()
 		teatimerPanel=document.getElementById("teatimer-panel");
 		teatimerBox=document.getElementById("teatimer-box");
 		
+		teatimerCountdownBox=document.getElementById("teatimer-countdownbox");
+		teatimerCountdownBox.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+
 		teatimerCountdown=document.getElementById("teatimer-countdown");
-		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		//teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		sound.init();
 		document.getElementById("teatimer-options").addEventListener("command",teaTimerInstance.openOptionsWindow,false);
 		document.getElementById("teatimer-quicktimer").addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
@@ -72,6 +78,23 @@ function teaTimer()
 		teatimerContextMenu=document.getElementById("teatimer-contextMenu");
 		teatimerContextMenu.addEventListener("popupshowing",teaTimerInstance.prepareTeaSelectMenu,false);
 		
+		teatimerViewModeIconAndTime=document.getElementById("teatimer-showModeIconAndTime");
+		teatimerViewModeIconOnly=document.getElementById("teatimer-showModeIconOnly");
+		if(common.getViewMode()==="iconOnly")
+		{
+			teatimerViewModeIconAndTime.setAttribute("checked","false");
+			teatimerViewModeIconOnly.setAttribute("checked","true");
+		}
+		else
+		{
+			teatimerViewModeIconAndTime.setAttribute("checked","true");
+			teatimerViewModeIconOnly.setAttribute("checked","false");
+		}
+		
+		renderViewMode();
+		teatimerViewModeIconAndTime.addEventListener("command",teaTimerInstance.viewModeChanged,false);
+		teatimerViewModeIconOnly.addEventListener("command",teaTimerInstance.viewModeChanged,false);
+		
 		resetCountdown();
 		
 		uninstObserver.addObserver(self,"em-action-requested",false);
@@ -92,13 +115,21 @@ function teaTimer()
 	{
 		var teas=teaDB.getDataOfAllTeas(false,common.getSortingOrder());
 		
-		var separator=document.getElementById("teatimer-endTealistSeparator");
-		while(separator.previousSibling)
+		var startSeparator=document.getElementById("teatimer-endViewModeSeparator");
+		var endSeparator=document.getElementById("teatimer-endTealistSeparator");
+		var i=0;
+		while(endSeparator.previousSibling)
 		{
-			separator.parentNode.removeChild(separator.previousSibling);
+			if(endSeparator.previousSibling==startSeparator || i>100) //i>100=endless loop prevention
+			{
+				break;
+			}
+			endSeparator.parentNode.removeChild(endSeparator.previousSibling);
+			
+			i++;
 		}
 		
-		for(var i=0; i<teas.length; i++)
+		for(i=0; i<teas.length; i++)
 		{
 			tea=teas[i];
 			var teaNode=document.createElement("menuitem");
@@ -113,7 +144,7 @@ function teaTimer()
 			
 			teaNode.addEventListener("command",function(){teaTimerInstance.teaChoosen(parseInt(this.getAttribute("value")));},false); //extract the numeric ID from the menuitem ID which should be something like 'teatimer-tea1"
 			
-			teatimerContextMenu.insertBefore(teaNode,separator);
+			teatimerContextMenu.insertBefore(teaNode,endSeparator);
 		}
 	}
 	
@@ -179,7 +210,27 @@ function teaTimer()
 		}
 	}
 	
+	this.viewModeChanged=function(event)
+	{
+		var viewMode=(teatimerViewModeIconAndTime.getAttribute("checked"))?"timeAndIcon":"iconOnly";
+		common.setViewMode(viewMode);
+		event.preventDefault();
+		event.stopPropagation();
+		//go on here: events on teatimer box are wrong, because popup is iside of box
+		renderViewMode();
+	}
 	
+	var renderViewMode=function()
+	{
+		if(teatimerViewModeIconAndTime.getAttribute("checked")==="true")
+		{
+			common.removeCSSClass(teatimerBox,"iconOnlyView");
+		}
+		else
+		{
+			common.addCSSClass(teatimerBox,"iconOnlyView");
+		}
+	}
 	
 	
 	/*
@@ -201,6 +252,7 @@ function teaTimer()
 		}
 		
 		teatimerCountdown.setAttribute("value",common.getTimeStringFromTime(time));
+		//teatimerCountdownBox.setAttribute("value",common.getTimeStringFromTime(time));
 	}
 	
 	/**
@@ -209,7 +261,6 @@ function teaTimer()
 	this.startCountdown=function()
 	{
 		self.cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it		
-		teatimerCountdown.setAttribute("tooltiptext","Currently steeping...");
 		countdownInProgress=true;
 		if(idOfCurrentSteepingTea==="quicktimer")
 		{
@@ -220,8 +271,10 @@ function teaTimer()
 			idOfCurrentSteepingTea=teaDB.getIdOfCurrentTea();
 			steepingTimeOfCurrentTea=teaDB.getSteepingTimeOfCurrentTea();
 		}
-		
-		teatimerBox.setAttribute("class","steeping");
+		//teatimerPanel.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(steepingTimeOfCurrentTea)+") ...");
+		//teatimerBox.setAttribute("class","steeping");
+		teatimerBox.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(steepingTimeOfCurrentTea)+") ...");
+		common.addCSSClass(teatimerBox,"steeping");
 		
 		startingTSofCurrentCountdown=new Date().getTime();
 		
@@ -267,12 +320,15 @@ function teaTimer()
 	{
 		reset=(reset===false)?false:true;
 		self.cancelStatusbarAlert(); //maybe the statusbar alert ('blink-blink') is still on, so we have to cancel it
+		common.removeCSSClass(teatimerBox,"finished");
 		if(reset)
 		{
 			resetCountdown();
 		}
-		teatimerCountdown.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
-		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		//teatimerCountdown.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
+		//teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		teatimerCountdownBox.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
+		teatimerCountdownBox.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 	}
 	
 	/**
@@ -292,6 +348,8 @@ function teaTimer()
 		common.log("Main class","steeping time of current tea: "+currentTime+"\n");
 		currentTime=steepingTimeOfCurrentTea-parseInt(difference/1000);
 		common.log("Main class","new statusbartime: "+currentTime+"\n\n");
+		//teatimerPanel.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(currentTime)+") ...");
+		teatimerBox.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(currentTime)+") ...");
 		self.setCountdown(currentTime);	
 		if(currentTime<=0)
 		{
@@ -309,8 +367,9 @@ function teaTimer()
 		window.clearInterval(countdownInterval);
 		startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
 		countdownInProgress=false;
-		teatimerBox.removeAttribute("class");
-		teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		common.removeCSSClass(teatimerBox,"steeping");
+		//teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		teatimerCountdownBox.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 	}
 	
 	/**
@@ -321,13 +380,19 @@ function teaTimer()
 	{
 		self.stopCountdown();
 		teatimerCountdown.setAttribute("value","Ready!");
-		teatimerCountdown.setAttribute("class","readyAlert");
-		teatimerCountdown.setAttribute("tooltiptext","Tea ready. Click here to reload timer.");
+		//teatimerCountdown.setAttribute("class","readyAlert");
+		//common.addCSSClass(teatimerCountdown,"readyAlert");
+		common.addCSSClass(teatimerBox,"finished");
+		//teatimerPanel.setAttribute("tooltiptext","Tea ready. Click here to reload timer.");
+		teatimerBox.setAttribute("tooltiptext","Tea ready. Click here to reload timer.");
 		shootAlerts();
 		idOfCurrentSteepingTea=startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
-		teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
-		teatimerCountdown.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
-		teatimerCountdown.addEventListener("click",teaTimerInstance.reloadCountdown,false);
+		//teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		//teatimerCountdown.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
+		//teatimerCountdown.addEventListener("click",teaTimerInstance.reloadCountdown,false);
+		teatimerCountdownBox.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+		teatimerCountdownBox.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
+		teatimerCountdownBox.addEventListener("click",teaTimerInstance.reloadCountdown,false);
 		teatimerPanel.addEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
 	
@@ -345,7 +410,8 @@ function teaTimer()
 	 **/
 	var resetCountdown=function()
 	{
-		teatimerCountdown.setAttribute("tooltiptext","Click here to start tea timer, right click for more options.");
+		//teatimerPanel.setAttribute("tooltiptext","Click here to start tea timer, right click for more options.");
+		teatimerBox.setAttribute("tooltiptext","Click here to start tea timer, right click for more options.");
 		self.setCountdown(teaDB.getSteepingTimeOfCurrentTea());
 	}
 	
@@ -420,7 +486,8 @@ function teaTimer()
 	 **/
 	var doStatusbarAlert=function()
 	{
-		teatimerCountdown.setAttribute("tooltiptext","Tea ready. Click here to cancel alert.")
+		teatimerBox.setAttribute("tooltiptext","Tea ready. Click here to cancel alert.")
+		common.addCSSClass(teatimerBox,"readyAlert");
 		statusbarAlertInterval=window.setInterval(teaTimerInstance.toggleStatusbarAlertStyle,400);
 	}
 	
@@ -619,13 +686,18 @@ function teaTimer()
 	 **/
 	this.toggleStatusbarAlertStyle=function()
 	{
-		if(teatimerCountdown.getAttribute("class").indexOf("invisible")>0)
+		//if(teatimerCountdown.getAttribute("class").indexOf("invisible")>-1)
+		if(teatimerBox.getAttribute("class").indexOf("invisible")>-1)
 		{
-			teatimerCountdown.setAttribute("class","readyAlert");
+			//common.removeCSSClass(teatimerCountdown,"invisible");
+			common.removeCSSClass(teatimerBox,"invisible");
 		}
 		else
 		{
-			teatimerCountdown.setAttribute("class","readyAlert invisible");
+			//common.addCSSClass(teatimerCountdown,"readyAlert");
+			common.addCSSClass(teatimerBox,"readyAlert");
+			//common.addCSSClass(teatimerCountdown,"invisible");
+			common.addCSSClass(teatimerBox,"invisible");
 		}
 	}
 	
@@ -635,7 +707,11 @@ function teaTimer()
 	this.cancelStatusbarAlert=function()
 	{
 		window.clearInterval(statusbarAlertInterval);
-		teatimerCountdown.removeAttribute("class");
+		//teatimerCountdown.removeAttribute("class");
+		//common.removeCSSClass(teatimerCountdown,"readyAlert");
+		common.removeCSSClass(teatimerBox,"readyAlert");
+		//common.removeCSSClass(teatimerCountdown,"invisible");
+		common.removeCSSClass(teatimerBox,"invisible");
 		teatimerPanel.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
 	

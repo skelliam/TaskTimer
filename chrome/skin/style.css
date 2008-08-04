@@ -14,27 +14,36 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 #teatimer-box
 {
-	padding-left: 20px;
-    background-image: url(chrome://teatimer/skin/icon-inactive.png);
-    background-repeat: no-repeat;
     height: 16px;
 }
 
-#teatimer-box.steeping
-{
-	background-image: url(chrome://teatimer/skin/icon-steeping.png);
-}
-
-#teatimer-countdown.invisible
+#teatimer-box.iconOnlyView.readyAlert.invisible #teatimer-countdownbox, /* When in icon only view and statusbar alert is set then blink icon, too */
+#teatimer-box.invisible #teatimer-countdown
 {
     visibility: hidden;
 }
 
-#teatimer-countdown.readyAlert
+#teatimer-box.finished
 {
     color: #090;
 }
 
+#teatimer-box.iconOnlyView #teatimer-countdown
+{
+	display: none;
+}
+
+#teatimer-box #teatimer-countdownbox
+{
+	padding-left: 21px;
+    background-image: url(chrome://teatimer/skin/icon-inactive.png);
+    background-repeat: no-repeat;	
+}
+
+#teatimer-box.steeping #teatimer-countdownbox,
+#teatimer-box.readyAlert.iconOnlyView #teatimer-countdownbox /* in icon only view show the colored version of the icon, when doing statusbar alert ('blink-blink') */
+{
+	background-image: url(chrome://teatimer/skin/icon-steeping.png);
+}
