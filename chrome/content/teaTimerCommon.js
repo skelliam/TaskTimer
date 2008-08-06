@@ -142,40 +142,35 @@ function teaTimerCommon()
 		=====================
 	*/
 	
+	/**
+	 * This public method returns the current view mode identifier ("iconOnly" or "timeAndIcon")
+	 *
+	 * @returns string view mode
+	 **/
 	this.getViewMode=function()
 	{
-		var viewMode="timeAndIcon";
-		try
-		{
-			viewMode=teaTimerPrefs.getCharPref("viewMode");
-			self.validateViewMode(viewMode);
-		}
-		catch(e)
-		{
-			self.setViewMode(viewMode);
-		}
-		
-		return viewMode;
+		return getOption("viewMode");
 	}
 	
+	/**
+	 * This public method can be used to set the view mode.
+	 *
+	 * @param string view mode (currently "iconOnly" or "timeAndIcon" are valid)
+	 **/
 	this.setViewMode=function(mode)
 	{
-		self.validateViewMode(mode);
-		teaTimerPrefs.setCharPref("viewMode",mode);
+		setOption("viewMode",mode);
 	}
 	
+	/**
+	 * This public method can be used to check, if the given string is a valid view mode identifier.
+	 * 
+	 * @param string suspected view mode identifier
+	 * @returns boolean true or false
+	 **/
 	this.validateViewMode=function(mode)
 	{
-		switch(mode)
-		{
-			case "timeAndIcon":
-			case "iconOnly":
-				break;
-			default:
-				throw new teaTimerInvalidViewModeException("validateViewMode: '"+mode+"' is no valid view mode.");
-		}
-		
-		return true;
+		return validateOption("viewMode",mode); 
 	}
 	
 	/*
@@ -184,40 +179,147 @@ function teaTimerCommon()
 		=======================
 	*/
 	
+	/**
+	 * This public method returns the current tea sorting identifier ("id", "name ASC", "name DESC", "time ASC" or "time DESC")
+	 *
+	 * @returns string tea sorting
+	 **/
 	this.getSortingOrder=function()
 	{
-		var sorting="id";
+		return getOption("sortingOrder");
+	}
+	
+	/**
+	 * This public method can be used to set the new tea sorting mode.
+	 *
+	 * @param string view mode (currently "id", "name ASC", "name DESC", "time ASC" or "time DESC" are valid)
+	 **/
+	this.setSortingOrder=function(sorting)
+	{
+		setOption("sortingOrder",sorting);
+		
+	}
+	
+	/**
+	 * This public method can be used to check, if the given string is a valid tea sorting identifier.
+	 * 
+	 * @param string suspected tea sorting identifier
+	 * @returns boolean true or false
+	 **/
+	this.validateSortingOrder=function(sorting)
+	{
+		validateOptionValue("sortingOrder",sorting);
+	}
+	
+	/*
+		==================
+		| Option methods |
+		==================
+	*/
+	
+	/**
+	 * This private method is used, to read options.
+	 *
+	 * @param name of option (valid values are "sortingOrder" and "viewMode")
+	 **/
+	var getOption=function(name)
+	{
+		validateOptionName(name);
+		var value=null;
+		switch(name) //setting standard value
+		{
+			case "sortingOrder":
+				value="id";
+				break;
+			case "viewMode":
+				value="timeAndIcon";
+				break;
+		}
+		
 		try
 		{
-			sorting=teaTimerPrefs.getCharPref("sortingOrder");
-			self.validateSortingOrder(sorting);
+			value=teaTimerPrefs.getCharPref(name);
+			validateOptionValue(name,value);
 		}
 		catch(e)
 		{
-			self.setSortingOrder(sorting);
+			setOption(name,value);
 		}
-		
-		return sorting;
+				
+		return value;
 	}
 	
-	this.setSortingOrder=function(sorting)
+	/**
+	 * This private method can be used, to set general tea timer options (Noote that alerts and teas are manipulated with dedicated methods, not with this one.).
+	 *
+	 * @param string option name
+	 * @param string option value
+	 **/
+	var setOption=function(name,value)
 	{
-		self.validateSortingOrder(sorting);
-		teaTimerPrefs.setCharPref("sortingOrder",sorting);
+		validateOptionName(name);
+		validateOptionValue(name,value);
+		teaTimerPrefs.setCharPref(name,value);
 	}
 	
-	this.validateSortingOrder=function(sorting)
+	/**
+	 * Internal private method for validating given option names.
+	 *
+	 * @param string suspected option name
+	 * @returns boolean true (if first parameter was either "sortingOrder" or "viewMode")
+	 * @throws teaTimerInvalidOptionNameException
+	 **/
+	var validateOptionName=function(name)
 	{
-		switch(sorting)
+		switch(name)
 		{
-			case "id":
-			case "name ASC":
-			case "name DESC":
-			case "time ASC":
-			case "time DESC":
+			case "sortingOrder":
+			case "viewMode":
 				break;
 			default:
-				throw new teaTimerInvalidSortOrderException("validateSortOrdering: '"+sorting+"' is no valid sort order.");
+				throw new teaTimerInvalidOptionNameException("validateOptionName: '"+name+"' is no valid option.");
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Internal private method for validating given option values.
+	 *
+	 * @param string name of option that should have the given value
+	 * @param string value2check
+	 * @returns boolean true 
+	 * @throws teaTimerInvalidSortOrderException
+	 * @throws teaTimerInvalidViewModeException
+	 **/
+	var validateOptionValue=function(group,value)
+	{
+		validateOptionName(group);
+		switch(group)
+		{
+			case "sortingOrder":
+				switch(value)
+				{
+					case "id":
+					case "name ASC":
+					case "name DESC":
+					case "time ASC":
+					case "time DESC":
+						break;
+					default:
+						throw new teaTimerInvalidSortOrderException("validateOptionValue(sortingOrder): '"+value+"' is no valid sort order.");
+				}
+				break;
+			case "viewMode":
+				switch(value)
+				{
+					case "timeAndIcon":
+					case "iconOnly":
+						break;
+					default:
+						throw new teaTimerInvalidViewModeException("validateOptionValue(viewMode): '"+value+"' is no valid view mode.");
+				}
+				break;
 		}
 		
 		return true;
@@ -631,6 +733,11 @@ function teaTimerCommon()
 		=========================
     */
 	
+	/**
+	 * This public method can be used to add a CSS class to a specific DOM element.
+	 * @param object the DOM element
+	 * @param string the class that should be added.
+	 **/
 	this.addCSSClass=function(object,className)
 	{
 		var oldClassStr=object.getAttribute("class");
@@ -655,6 +762,13 @@ function teaTimerCommon()
 		object.setAttribute("class",newClassStr);
 	}
 	
+	/**
+	 * This public method removes a certain CSS class from a specific DOM element.
+	 * If there's no class left the class attribute will be removed from the object.
+	 * 
+	 * @param object the DOM element
+	 * @param string the class that should be removed
+	 **/
     this.removeCSSClass=function(object,className)
 	{
 		var oldClassStr=object.getAttribute("class");
@@ -819,5 +933,11 @@ function teaTimerInvalidSortOrderException(msg)
 function teaTimerInvalidViewModeException(msg)
 {
 	this.name="teaTimerInvalidViewModeException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidOptionNameException(msg)
+{
+	this.name="teaTimerInvalidOptionNameException";
 	this.message=((msg===undefined)?null:msg);
 }

@@ -24,8 +24,8 @@ function teaTimer()
 	
 	var teatimerPanel=null; //container for teatimer-panel (statusbarpanel)
 	var teatimerBox=null; //container for teatimer-box (box)
-	var teatimerCountdownBox=null;
-	var teatimerCountdown=null; //container for quick timer XUL element reference 'teatimer-countdown' (label)
+	var teatimerCountdownBox=null; //container for 'teatimer-countdownbox' (box; wraps teatimer-countdown)
+	var teatimerCountdown=null; //container for XUL element reference  to 'teatimer-countdown' (label)
 	var teatimerContextMenu=document.getElementById("teatimer-contextMenu");
 	var teatimerViewModeIconAndTime=null; //container for view mode icon and text menuitem
 	var teatimerViewModeIconOnly=null; //container for view mode icon only menuitem
@@ -55,7 +55,6 @@ function teaTimer()
 		teatimerCountdownBox.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 
 		teatimerCountdown=document.getElementById("teatimer-countdown");
-		//teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		sound.init();
 		document.getElementById("teatimer-options").addEventListener("command",teaTimerInstance.openOptionsWindow,false);
 		document.getElementById("teatimer-quicktimer").addEventListener("command",teaTimerInstance.quicktimerMenuitemCommand,false);
@@ -80,6 +79,7 @@ function teaTimer()
 		
 		teatimerViewModeIconAndTime=document.getElementById("teatimer-showModeIconAndTime");
 		teatimerViewModeIconOnly=document.getElementById("teatimer-showModeIconOnly");
+		
 		if(common.getViewMode()==="iconOnly")
 		{
 			teatimerViewModeIconAndTime.setAttribute("checked","false");
@@ -200,8 +200,7 @@ function teaTimer()
 		{
 			if(countdownInProgress===true)
 			{
-				//self.stopCountdown();
-				//teatimerCountdown.setAttribute("tooltiptext","Timer paused. Click to proceed.");
+				//timer pausing code was here
 			}
 			else
 			{
@@ -210,16 +209,19 @@ function teaTimer()
 		}
 	}
 	
-	this.viewModeChanged=function(event)
+	/**
+	 * This public method is called, when the view mode is changed from icon only mode to icon and text mode or vice versa
+	 **/
+	this.viewModeChanged=function()
 	{
 		var viewMode=(teatimerViewModeIconAndTime.getAttribute("checked"))?"timeAndIcon":"iconOnly";
 		common.setViewMode(viewMode);
-		event.preventDefault();
-		event.stopPropagation();
-		//go on here: events on teatimer box are wrong, because popup is iside of box
 		renderViewMode();
 	}
 	
+	/**
+	 * This method changes the UI according to the current set view mode.
+	 **/
 	var renderViewMode=function()
 	{
 		if(teatimerViewModeIconAndTime.getAttribute("checked")==="true")
@@ -252,7 +254,6 @@ function teaTimer()
 		}
 		
 		teatimerCountdown.setAttribute("value",common.getTimeStringFromTime(time));
-		//teatimerCountdownBox.setAttribute("value",common.getTimeStringFromTime(time));
 	}
 	
 	/**
@@ -271,8 +272,6 @@ function teaTimer()
 			idOfCurrentSteepingTea=teaDB.getIdOfCurrentTea();
 			steepingTimeOfCurrentTea=teaDB.getSteepingTimeOfCurrentTea();
 		}
-		//teatimerPanel.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(steepingTimeOfCurrentTea)+") ...");
-		//teatimerBox.setAttribute("class","steeping");
 		teatimerBox.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(steepingTimeOfCurrentTea)+") ...");
 		common.addCSSClass(teatimerBox,"steeping");
 		
@@ -325,8 +324,6 @@ function teaTimer()
 		{
 			resetCountdown();
 		}
-		//teatimerCountdown.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
-		//teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		teatimerCountdownBox.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
 		teatimerCountdownBox.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 	}
@@ -348,7 +345,6 @@ function teaTimer()
 		common.log("Main class","steeping time of current tea: "+currentTime+"\n");
 		currentTime=steepingTimeOfCurrentTea-parseInt(difference/1000);
 		common.log("Main class","new statusbartime: "+currentTime+"\n\n");
-		//teatimerPanel.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(currentTime)+") ...");
 		teatimerBox.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(currentTime)+") ...");
 		self.setCountdown(currentTime);	
 		if(currentTime<=0)
@@ -368,7 +364,6 @@ function teaTimer()
 		startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
 		countdownInProgress=false;
 		common.removeCSSClass(teatimerBox,"steeping");
-		//teatimerCountdown.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 		teatimerCountdownBox.addEventListener("click",teaTimerInstance.countdownAreaClicked,false);
 	}
 	
@@ -380,20 +375,21 @@ function teaTimer()
 	{
 		self.stopCountdown();
 		teatimerCountdown.setAttribute("value","Ready!");
-		//teatimerCountdown.setAttribute("class","readyAlert");
-		//common.addCSSClass(teatimerCountdown,"readyAlert");
 		common.addCSSClass(teatimerBox,"finished");
-		//teatimerPanel.setAttribute("tooltiptext","Tea ready. Click here to reload timer.");
 		teatimerBox.setAttribute("tooltiptext","Tea ready. Click here to reload timer.");
 		shootAlerts();
 		idOfCurrentSteepingTea=startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
-		//teatimerCountdown.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
-		//teatimerCountdown.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
-		//teatimerCountdown.addEventListener("click",teaTimerInstance.reloadCountdown,false);
-		teatimerCountdownBox.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
-		teatimerCountdownBox.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
-		teatimerCountdownBox.addEventListener("click",teaTimerInstance.reloadCountdown,false);
-		teatimerPanel.addEventListener("click",teaTimerInstance.reloadCountdown,false);
+		if(common.isAlertDesired("statusbar")===false && common.getViewMode()==="iconOnly")
+		{
+			self.reloadCountdown();
+		}
+		else
+		{
+			teatimerCountdownBox.removeEventListener("click",teaTimerInstance.countdownAreaClicked,false);
+			teatimerCountdownBox.addEventListener("dblclick",teaTimerInstance.stopCountdown,false); //special treament of double clicks, otherwise the next countdown would be started immediately, because the normal click event will be raised to. We don't want that. That's why we stop the countdown right after that.
+			teatimerCountdownBox.addEventListener("click",teaTimerInstance.reloadCountdown,false);
+			teatimerPanel.addEventListener("click",teaTimerInstance.reloadCountdown,false);
+		}
 	}
 	
 	/**
@@ -410,8 +406,7 @@ function teaTimer()
 	 **/
 	var resetCountdown=function()
 	{
-		//teatimerPanel.setAttribute("tooltiptext","Click here to start tea timer, right click for more options.");
-		teatimerBox.setAttribute("tooltiptext","Click here to start tea timer, right click for more options.");
+		teatimerBox.setAttribute("tooltiptext","Click here to start timer with the currently active tea, right click for more options.");
 		self.setCountdown(teaDB.getSteepingTimeOfCurrentTea());
 	}
 	
@@ -446,9 +441,6 @@ function teaTimer()
 			}
 			catch(e)
 			{
-				//alert(e.name);
-				//alert(e.message);
-				
 				//if websiteWidgetAlert fails and no other alert is active, do anyhow a popupalert. It's better than having no alert at all.
 				if(!common.isAlertDesired("statusbar") && !common.isAlertDesired("popup") && common.getIdOfEndSound()==="none")
 				{
@@ -634,8 +626,6 @@ function teaTimer()
 		var targetBody=getWebsiteWidgetTargetDoc();
 		var targetDoc=targetBody.ownerDocument;
 		
-		//var targetWindow=document.commandDispatcher.focusedWindow;
-		//var targetDoc=targetWindow.document;
 		var widget=targetDoc.getElementById("teaTimer-alertWidget");
 		if(widget!==null)
 		{
@@ -666,7 +656,6 @@ function teaTimer()
 	 **/
 	this.removeWidgetAlert=function()
 	{
-		//var targetDoc=document.commandDispatcher.focusedWindow.document;
 		var targetBody=getWebsiteWidgetTargetDoc();
 		var targetDoc=targetBody.ownerDocument;
 		var nodesToRemove=new Array("teaTimer-alertWidget","teaTimer-alertWidgetResetCSS","teaTimer-alertWidgetThemeCSS");
@@ -686,17 +675,13 @@ function teaTimer()
 	 **/
 	this.toggleStatusbarAlertStyle=function()
 	{
-		//if(teatimerCountdown.getAttribute("class").indexOf("invisible")>-1)
 		if(teatimerBox.getAttribute("class").indexOf("invisible")>-1)
 		{
-			//common.removeCSSClass(teatimerCountdown,"invisible");
 			common.removeCSSClass(teatimerBox,"invisible");
 		}
 		else
 		{
-			//common.addCSSClass(teatimerCountdown,"readyAlert");
 			common.addCSSClass(teatimerBox,"readyAlert");
-			//common.addCSSClass(teatimerCountdown,"invisible");
 			common.addCSSClass(teatimerBox,"invisible");
 		}
 	}
@@ -707,10 +692,7 @@ function teaTimer()
 	this.cancelStatusbarAlert=function()
 	{
 		window.clearInterval(statusbarAlertInterval);
-		//teatimerCountdown.removeAttribute("class");
-		//common.removeCSSClass(teatimerCountdown,"readyAlert");
 		common.removeCSSClass(teatimerBox,"readyAlert");
-		//common.removeCSSClass(teatimerCountdown,"invisible");
 		common.removeCSSClass(teatimerBox,"invisible");
 		teatimerPanel.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
