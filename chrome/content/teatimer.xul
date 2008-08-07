@@ -25,7 +25,7 @@
 				<box id="teatimer-countdownbox">
 					<label id="teatimer-countdown" value="TeaTimer" />
 				</box>
-				<popup id="teatimer-contextMenu" position="before_end">
+				<popup id="teatimer-contextMenu" position="before_end" tooltiptext="">
 					<menuitem id="teatimer-showModeIconAndTime" label="Show icon and time" name="teatimer-viewMode" value="iconAndText" type="radio" />
 					<menuitem id="teatimer-showModeIconOnly" label="Show icon only" name="teatimer-viewMode" value="iconOnly" type="radio" />
 					<menuseparator id="teatimer-endViewModeSeparator" />
