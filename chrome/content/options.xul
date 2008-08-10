@@ -17,42 +17,43 @@
 -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://teatimer/skin/options.css" type="text/css"?>
-<window title="TeaTimer - Options" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<!DOCTYPE window SYSTEM "chrome://teatimer/locale/teatimer.dtd">
+<window title="&options.windowTitle;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/options.js" />
     
     <tabbox>
         <tabs>
-            <tab label="Tea varities" />
-            <tab label="Alerts" />
+            <tab label="&options.tabs.teavarities;" />
+            <tab label="&options.tabs.alerts;" />
         </tabs>
         <tabpanels>
             <tabpanel id="teaTimer-optionsVaritiesTab">
                 <vbox flex="1">
                     <groupbox>
-                        <caption label="Add a new tea" />
+                        <caption label="&options.varities.addANewTea;" />
                         <hbox align="end">
                             <vbox flex="1">
-                                <label control="teaTimer-optionsNewTeaName" value="Tea" />
+                                <label control="teaTimer-optionsNewTeaName" value="&options.varities.newTea.name.label;" />
                                 <textbox id="teaTimer-optionsNewTeaName" />
                             </vbox>
                             <vbox>
-                                <label control="teaTimer-optionsNewTeaTime" value="Time" />
+                                <label control="teaTimer-optionsNewTeaTime" value="&options.varities.newTea.time.label;" />
                                 <textbox id="teaTimer-optionsNewTeaTime" />
                             </vbox>
-                            <button id="teaTimer-optionsBtnAddTea" label="Add" />
+                            <button id="teaTimer-optionsBtnAddTea" label="&options.varities.newTea.button;" />
                         </hbox>
                     </groupbox>
                     
 					<groupbox>
-						<caption label="Manage existing teas" />
+						<caption label="&options.varities.manageExistingTeas;" />
 						
 						<tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
-							<treecols  editable="true">
-							<treecol label="ID" id="teaTimer-optionsTeas-idColumn" hidden="true" />
-							<treecol label="Tea" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
-							<treecol label="Time" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
+							<treecols editable="true">
+							<treecol label="&options.varities.manageExistingTeas.tree.id;" id="teaTimer-optionsTeas-idColumn" hidden="true" />
+							<treecol label="&options.varities.manageExistingTeas.tree.name;" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
+							<treecol label="&options.varities.manageExistingTeas.tree.time;" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
 							</treecols>
 							<treechildren id="teaTimer-optionsTeasTreeChildren">
 							<!--
@@ -76,19 +77,19 @@
                     </groupbox>
 				
                     <hbox align="right">
-                        <button id="teaTimer-optionsBtnDelTea" label="Delete selected tea" disabled="true" />
+                        <button id="teaTimer-optionsBtnDelTea" label="&options.varities.manageExistingTeas.deleteSelectedTea;" disabled="true" />
                     </hbox>
 					
 					<groupbox align="center" orient="horizontal">
-						<caption label="Sorting" />
-						<label control="teaTimer-sortingOrder" value="Sort teas in TeaTimer context menu" />
+						<caption label="&options.varities.sorting;" />
+						<label control="teaTimer-sortingOrder" value="&options.varities.sorting.sortTeasInTeaTimerContextMenu;" />
 						<menulist id="teaTimer-sortingOrder">
 							<menupopup>
-								<menuitem label="alphabetically ascending." value="name ASC" />
-								<menuitem label="alphabetically descending." value="name DESC" />
-								<menuitem label="by time ascending." value="time ASC" />
-								<menuitem label="by time descending." value="time DESC" />
-								<menuitem label="exactly like the list above." value="id" />
+								<menuitem label="&options.varities.sorting.nameASC;" value="name ASC" />
+								<menuitem label="&options.varities.sorting.nameDESC;" value="name DESC" />
+								<menuitem label="&options.varities.sorting.timeASC;" value="time ASC" />
+								<menuitem label="&options.varities.sorting.timeDESC;" value="time DESC" />
+								<menuitem label="&options.varities.sorting.id;" value="id" />
 							</menupopup>
 						</menulist>
 					</groupbox>
@@ -97,49 +98,49 @@
             <tabpanel id="teaTimer-optionsAlertsTab">
 				<vbox>
 				<groupbox>
-					<caption label="General Alerts" />
-					<checkbox id="teaTimer-optionsPopupAlert" label="Show dialog window when timer finishes" />
-					<checkbox id="teaTimer-optionsStatusbarAlert" label="Blink statusbar when timer finishes" />
+					<caption label="&options.alerts.general.groupboxcaption;" />
+					<checkbox id="teaTimer-optionsPopupAlert" label="&options.alerts.general.showDialogAlert;" />
+					<checkbox id="teaTimer-optionsStatusbarAlert" label="&options.alerts.general.showStatusbarAlert;" />
 				</groupbox>
 				<groupbox>
-					<caption label="Website Widget Alert" />
-					<description>The Website Widget appears directly in the website you are currently reading.</description>
-					<checkbox id="teaTimer-optionsWidgetAlert" label="Show website widget when timer finishes" />
+					<caption label="&options.alerts.widgetAlert.groupboxcaption;" />
+					<description>&options.alerts.widgetAlert.description;</description>
+					<checkbox id="teaTimer-optionsWidgetAlert" label="&options.alerts.widgetAlert.activateCheckboxLabel;" />
 					<hbox align="center">
-						<label control="teaTimer-optionsWidgetShowTime" value="Number of seconds the widget disappears automatically (0=never):" />
+						<label control="teaTimer-optionsWidgetShowTime" value="&options.alerts.widgetAlert.showTimeLabel;" />
 						<textbox id="teaTimer-optionsWidgetShowTime" />
 					</hbox>
 				</groupbox>
                 <groupbox>
-                    <caption label="Sound Alerts" />
+                    <caption label="&options.alerts.soundAlerts.groupboxcaption;" />
                     <vbox>
                         <hbox align="center">
-                            <label control="teaTimer-optionsStartSound" value="Play this sound, when timer is started:" />
+                            <label control="teaTimer-optionsStartSound" value="&options.alerts.soundAlerts.startSound.label;" />
                             <spacer flex="1" />
                             <menulist id="teaTimer-optionsStartSound">
                                 <menupopup>
-                                    <menuitem label="None" value="none" />
-                                    <menuitem label="Cup" value="cup" />
-                                    <menuitem label="Egg Timer" value="eggtimer" />
-                                    <menuitem label="Pour" value="pour" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.none;" value="none" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.cup;" value="cup" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.eggtimer;" value="eggtimer" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.pour;" value="pour" />
                                 </menupopup>
                             </menulist>
-                            <button id="teaTimer-optionsBtnPreviewStartSound" label="Preview" />
+                            <button id="teaTimer-optionsBtnPreviewStartSound" label="&options.alerts.soundAlerts.startSound.preview;" />
                         </hbox>
                         
                         <hbox align="center">
-                            <label control="teaTimer-optionsEndSound" value="Play this sound, when timer finishes:" />
+                            <label control="teaTimer-optionsEndSound" value="&options.alerts.soundAlerts.endSound.label;" />
                             <spacer flex="1" />
                             <menulist id="teaTimer-optionsEndSound">
                                 <menupopup>
-                                    <menuitem label="None" value="none" />
-                                    <menuitem label="Egg Timer" value="eggtimer" />
-                                    <menuitem label="Fanfare" value="fanfare" />
-                                    <menuitem label="Slurp" value="slurp" />
-                                    <menuitem label="Speech" value="speech" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.none;" value="none" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.eggtimer;" value="eggtimer" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.fanfare;" value="fanfare" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.slurp;" value="slurp" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.speech;" value="speech" />
                                 </menupopup>
                             </menulist>
-                            <button id="teaTimer-optionsBtnPreviewEndSound" label="Preview" />
+                            <button id="teaTimer-optionsBtnPreviewEndSound" label="&options.alerts.soundAlerts.endSound.preview;" />
                         </hbox>
                     </vbox>  
                 </groupbox>
@@ -149,7 +150,7 @@
     </tabbox>
     
     <hbox align="right">
-        <button label="Cancel" id="teaTimer-optionsWinBtnCancel" accesskey="c" />
-        <button label="OK" id="teaTimer-optionsWinBtnOk" accesskey="o" />
+        <button label="&options.buttons.cancel.label;" id="teaTimer-optionsWinBtnCancel" accesskey="&options.buttons.cancel.accesskey;" />
+        <button label="&options.buttons.ok.label;" id="teaTimer-optionsWinBtnOk" accesskey="&options.buttons.ok.accesskey;" />
     </hbox>
 </window>

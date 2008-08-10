@@ -15,6 +15,7 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
+<!DOCTYPE window SYSTEM "chrome://teatimer/locale/teatimer.dtd">
 <overlay id="teatimer-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
 	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
@@ -26,13 +27,13 @@
 					<label id="teatimer-countdown" value="TeaTimer" />
 				</box>
 				<popup id="teatimer-contextMenu" position="before_end" tooltiptext="">
-					<menuitem id="teatimer-showModeIconAndTime" label="Show icon and time" name="teatimer-viewMode" value="iconAndText" type="radio" />
-					<menuitem id="teatimer-showModeIconOnly" label="Show icon only" name="teatimer-viewMode" value="iconOnly" type="radio" />
+					<menuitem id="teatimer-showModeIconAndTime" label="&main.contextMenu.showIconAndTime;" name="teatimer-viewMode" value="iconAndText" type="radio" />
+					<menuitem id="teatimer-showModeIconOnly" label="&main.contextMenu.showIconOnly;" name="teatimer-viewMode" value="iconOnly" type="radio" />
 					<menuseparator id="teatimer-endViewModeSeparator" />
 					<menuseparator id="teatimer-endTealistSeparator" />
-					<menuitem id="teatimer-options" label="Options..." />
-					<menuitem id="teatimer-cancel" label="Cancel" />
-					<menuitem id="teatimer-quicktimer" label="Quick Timer..." />
+					<menuitem id="teatimer-options" label="&main.contextMenu.options;" />
+					<menuitem id="teatimer-cancel" label="&main.contextMenu.cancel;" />
+					<menuitem id="teatimer-quicktimer" label="&main.contextMenu.quicktimer;" />
 				</popup>
 			</box>
 		</statusbarpanel>

@@ -30,6 +30,7 @@
 					skin/widgetAlert/default/widget.html
 					skin/widgetAlert/default/widget.css
 					skin/widgetAlert/default/bg.png
+					locale/en-US/teatimer.dtd
 					" /> 
 	</target>
 

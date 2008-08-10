@@ -17,15 +17,16 @@
 -->
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="chrome://teatimer/skin/teaReadyDialog.css" type="text/css"?>
-<dialog title="TeaTimer - Your tea is ready"
+<!DOCTYPE window SYSTEM "chrome://teatimer/locale/teatimer.dtd">
+<dialog title="&teaready.windowTitle;"
    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    buttons="accept"
-   buttonlabelaccept="OK"
+   buttonlabelaccept="&teaready.buttons.ok.label;"
    ondialogaccept="window.close();">
 	<script type="application/x-javascript" src="chrome://teatimer/content/teaReadyDialog.js" />
 	<box orient="vertical" id="wrapper">
-	  <description value="TeaTimer says:" class="header" />
-	  <description id="messageline" value="Steeping complete." />
-	  <description id="teanameline" value="Enjoy your {$TEANAME} :-)" />
+	  <description value="&teaready.header;" class="header" />
+	  <description id="messageline" value="&teaready.message;" />
+	  <description id="teanameline" value="&teaready.teaname; :-)" />
 	</box>
 </dialog>
