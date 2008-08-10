@@ -155,7 +155,7 @@ function teaTimerOptionsWindow()
         
 	if(teaName.length<=0)
 	{
-	    alert("Please type in a name for the new tea.");
+	    alert(common.getString("options.validate.nameErrorNoName"));
 	    nameTxtField.focus();
 	}
 	else
@@ -170,14 +170,14 @@ function teaTimerOptionsWindow()
 		var errorMsg="";
 		if(e.name==="teaTimerTimeInputToShortException")
 		{
-		    errorMsg="Your time input was to short.";
+		    errorMsg=common.getString("options.validate.timeInputToShort");
 		}
 		else
 		{
-		    errorMsg="Your time input was in the wrong format."
+		    errorMsg=common.getString("options.validate.timeInputInWrongFormat");
 		}
 		  
-		errorMsg+="\nYou should enter the time in seconds (130 for example) or as minute:seconds (2:10 for example).";
+		errorMsg+="\n"+common.getString("options.validate.timeInputAdvice");
 		alert(errorMsg);
 		timeTxtField.focus();
 	    }
@@ -253,7 +253,7 @@ function teaTimerOptionsWindow()
     {
         if(treeBody.getElementsByTagName("treerow").length===0)
         {
-            alert("Ah, come on, there must be some tea you like. Please add at least one, otherwise this extension would be quite useless, don't you think?");
+            alert(common.getString("options.validate.noTeaInList"));
         }
         else
         {
@@ -266,7 +266,7 @@ function teaTimerOptionsWindow()
 					common.checkSoundId("end",getValueOfSoundSelectBox("end"))===false
 				)
 				{
-					alert("There's something wrong with the sounds you have choosen. Please check your choice.");
+					alert(common.getString("options.validate.soundError"));
 				}
 				else
 				{
@@ -278,7 +278,7 @@ function teaTimerOptionsWindow()
 					}
 					catch(e)
 					{
-						alert("There's something wrong with the sorting order you have choosen. Please check your choice.");
+						alert(common.getString("options.validate.sortingError"));
 					}
 					
 					if(sortOrderValid)
@@ -286,7 +286,7 @@ function teaTimerOptionsWindow()
 						var widgetShowTime=parseInt(widgetShowTimeTxtField.value,10);
 						if(!(widgetShowTime>=0))
 						{
-							alert("Please check your input in the text field 'Number of seconds the widget disappears automatically'. Only numbers greater or equal zero are allowed.");
+							alert(common.getString("options.validate.widgetAlertShowTimeError"));
 						}
 						else
 						{
@@ -297,7 +297,7 @@ function teaTimerOptionsWindow()
             }
             catch(e)
             {
-                if(e.name==="teaTimerInvalidTeaNameException" || e.name==="teaTimerInvalidTeaTimeException")
+                if(e.name==="teaTimerInvalidTeaNameException" || e.name==="teaTimerInvalidTimeException")
                 {
                     alert(e.message);
                 }
@@ -318,7 +318,7 @@ function teaTimerOptionsWindow()
      * This private function checks if the fields in the tealist (tree) are valid.
      * @returns boolean true, if everything is okay
      * @throws teaTimerInvalidTeaNameException
-     * @throws teaTimerInvalidTeaTimeException
+     * @throws teaTimerInvalidTimeException
      **/
     var validateTeasInTree=function()
     {
@@ -330,7 +330,7 @@ function teaTimerOptionsWindow()
             var treeTeaTime=treecells[2].getAttribute("label");
             if(common.trim(treeTeaName).length<=0)
             {
-                throw new teaTimerInvalidTeaNameException("Tea name in row "+(i+1)+" is not valid.");
+                throw new teaTimerInvalidTeaNameException(common.getStringf("options.validate.nameErrorInvalidName",new Array(""+(i+1))));
             }
             
             try
@@ -339,7 +339,7 @@ function teaTimerOptionsWindow()
             }
             catch(e)
             {
-                throw new teaTimerInvalidTeaTimeException("Tea time of tea "+treeTeaName+" is not valid. You should enter the time in seconds (130 for example) or as minute:seconds (2:10 for example).\nPlease correct.");
+                throw new teaTimerInvalidTimeException(common.getStringf("options.validate.timeInputWrong",new Array(treeTeaName+"")));
             }
         }
         

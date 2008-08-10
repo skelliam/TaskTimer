@@ -23,6 +23,7 @@
    buttons="accept"
    buttonlabelaccept="&teaready.buttons.ok.label;"
    ondialogaccept="window.close();">
+	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
 	<script type="application/x-javascript" src="chrome://teatimer/content/teaReadyDialog.js" />
 	<box orient="vertical" id="wrapper">
 	  <description value="&teaready.header;" class="header" />

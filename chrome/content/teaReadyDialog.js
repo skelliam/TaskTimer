@@ -17,6 +17,7 @@
 
 function teaReadyDialog()
 {
+	const common=new teaTimerCommon();
 	this.init=function()
 	{
 		var el=document.getElementById('teanameline');
@@ -26,7 +27,7 @@ function teaReadyDialog()
 		{
 			var descEl=document.createElement("description");
 			descEl.setAttribute("id","websitewidgeterrorline");
-			descEl.setAttribute("value","You see this popup instead of the website widget alert, because there was something wrong with the widget.");
+			descEl.setAttribute("value",common.getString("teaready.widgetErrorMsg"));
 			document.getElementById("wrapper").appendChild(descEl);
 		}
 	}

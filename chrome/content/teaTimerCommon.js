@@ -21,8 +21,9 @@ function teaTimerCommon()
     var debug=true;
     var self=this;
     const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-	const teaTimerPrefs=storedPrefs.getBranch("extensions.teatimer.");
+    const teaTimerPrefs=storedPrefs.getBranch("extensions.teatimer.");
     const alertPrefs=storedPrefs.getBranch("extensions.teatimer.alerts.");
+    const strings=Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle("chrome://teatimer/locale/teatimer.properties");
     const quitObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
     quitObserver.addObserver(this,"quit-application-granted",false);
     
@@ -724,6 +725,32 @@ function teaTimerCommon()
 	return self.ltrim(self.rtrim(text));
     }
     
+    /**
+     * This public method returns the localized string (property) with the specified ID.
+     * A list of names/values can be found in locale folder (teatimer.properties)
+     * In fact this method is just a wrapper for GetStringFromName of the stringbundle XPC
+     * 
+     * @param string name
+     * @returns string the localized string.
+     **/
+    this.getString=function(name)
+    {
+        return strings.GetStringFromName(name);
+    }
+    
+    /**
+     * This public method returns the localized string (property) with the specified ID, but in difference to getString this method is for formatted strings (strings with variables).
+     * A list of names/values can be found in locale folder (teatimer.properties)
+     * In fact this method is just a wrapper for formatStringFromName of the stringbundle XPC
+     * 
+     * @param string name
+     * @param array values for placeholders as array (NOTE: this array must be a real array. Objects, like {0:"foo"} are not working.)
+     * @returns string the localized string.
+     **/
+    this.getStringf=function(name,params)
+    {
+        return strings.formatStringFromName(name,params,params.length);
+    }
     
     
     
@@ -868,6 +895,12 @@ function teaTimerCommon()
 		
 		return true;
     }
+}
+
+function teaTimerInvalidTeaNameException(msg)
+{
+    this.name="teaTimerInvalidTeaNameException";
+    this.message=((msg===undefined)?null:msg);
 }
 
 function teaTimerTimeInputToShortException(msg)

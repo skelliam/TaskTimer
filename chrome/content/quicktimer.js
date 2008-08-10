@@ -72,14 +72,14 @@ function teaTimerQuickTimer()
             var errorMsg="";
             if(e.name==="teaTimerTimeInputToShortException")
             {
-                errorMsg="Your input was to short.";
+                errorMsg=common.getString("quicktimer.validate.timeInputToShort");
             }
             else
             {
-                errorMsg="Your input was in the wrong format."
+                errorMsg=common.getString("quicktimer.validate.timeInputInWrongFormat");
             }
 	      
-            errorMsg+="\nYou should enter the time in seconds (130 for example) or as minute:seconds (2:10 for example).\nPlease try again or hit the cancel button.";
+            errorMsg+="\n"+common.getString("quicktimer.validate.timeInputAdvice");
             alert(errorMsg);
         }
         

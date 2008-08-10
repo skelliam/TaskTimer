@@ -272,7 +272,7 @@ function teaTimer()
 			idOfCurrentSteepingTea=teaDB.getIdOfCurrentTea();
 			steepingTimeOfCurrentTea=teaDB.getSteepingTimeOfCurrentTea();
 		}
-		teatimerBox.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(steepingTimeOfCurrentTea)+") ...");
+		teatimerBox.setAttribute("tooltiptext",common.getStringf("teatimer.currentlySteeping",new Array(common.getTimeStringFromTime(steepingTimeOfCurrentTea))));
 		common.addCSSClass(teatimerBox,"steeping");
 		
 		startingTSofCurrentCountdown=new Date().getTime();
@@ -345,7 +345,7 @@ function teaTimer()
 		common.log("Main class","steeping time of current tea: "+currentTime+"\n");
 		currentTime=steepingTimeOfCurrentTea-parseInt(difference/1000);
 		common.log("Main class","new statusbartime: "+currentTime+"\n\n");
-		teatimerBox.setAttribute("tooltiptext","Currently steeping ("+common.getTimeStringFromTime(currentTime)+") ...");
+		teatimerBox.setAttribute("tooltiptext",common.getStringf("teatimer.currentlySteeping",new Array(common.getTimeStringFromTime(currentTime))));
 		self.setCountdown(currentTime);	
 		if(currentTime<=0)
 		{
@@ -376,7 +376,7 @@ function teaTimer()
 		self.stopCountdown();
 		teatimerCountdown.setAttribute("value","Ready!");
 		common.addCSSClass(teatimerBox,"finished");
-		teatimerBox.setAttribute("tooltiptext","Tea ready. Click here to reload timer.");
+		teatimerBox.setAttribute("tooltiptext",common.getString("teatimer.teaReadyAndReload"));
 		shootAlerts();
 		idOfCurrentSteepingTea=startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
 		if(common.isAlertDesired("statusbar")===false && common.getViewMode()==="iconOnly")
@@ -406,7 +406,7 @@ function teaTimer()
 	 **/
 	var resetCountdown=function()
 	{
-		teatimerBox.setAttribute("tooltiptext","Click here to start timer with the currently active tea, right click for more options.");
+		teatimerBox.setAttribute("tooltiptext",common.getString("teatimer.startAndRightClickForMore"));
 		self.setCountdown(teaDB.getSteepingTimeOfCurrentTea());
 	}
 	
@@ -441,6 +441,7 @@ function teaTimer()
 			}
 			catch(e)
 			{
+				dump(e);
 				//if websiteWidgetAlert fails and no other alert is active, do anyhow a popupalert. It's better than having no alert at all.
 				if(!common.isAlertDesired("statusbar") && !common.isAlertDesired("popup") && common.getIdOfEndSound()==="none")
 				{
@@ -464,7 +465,7 @@ function teaTimer()
 		var teaName=null;
 		if(idOfCurrentSteepingTea==="quicktimer")
 		{
-			teaName="... whatever you timed";
+			teaName=common.getString("teatimer.readyMessageTeaNameQuickTimer");
 		}
 		else
 		{
@@ -478,7 +479,7 @@ function teaTimer()
 	 **/
 	var doStatusbarAlert=function()
 	{
-		teatimerBox.setAttribute("tooltiptext","Tea ready. Click here to cancel alert.")
+		teatimerBox.setAttribute("tooltiptext",common.getString("teatimer.teaReadyAndCancelAlert"));
 		common.addCSSClass(teatimerBox,"readyAlert");
 		statusbarAlertInterval=window.setInterval(teaTimerInstance.toggleStatusbarAlertStyle,400);
 	}
@@ -524,16 +525,17 @@ function teaTimer()
 				var teaName=null;
 				if(idOfCurrentSteepingTea==="quicktimer")
 				{
-					teaName="... whatever you timed";
+					teaName=common.getString("teatimer.readyMessageTeaNameQuickTimer");
 				}
 				else
 				{
 					teaName=teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
 				}
 				
-				wdoc.getElementById("teaTimer-alertWidgetHeadline").appendChild(wdoc.createTextNode("TeaTimer says:"));
-				wdoc.getElementById("teaTimer-alertWidgetCompleteMessage").appendChild(wdoc.createTextNode("Steeping complete."));
-				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePrefix").appendChild(wdoc.createTextNode("Enjoy your "));
+				wdoc.getElementById("teaTimer-alertWidgetHeadline").appendChild(wdoc.createTextNode(common.getString("teatimer.widgetAlert.headline")));
+				wdoc.getElementById("teaTimer-alertWidgetCompleteMessage").appendChild(wdoc.createTextNode(common.getString("teatimer.widgetAlert.steepingComplete")));
+				dump(common.getStringf("teatimer.widgetAlert.enjoyYourTeaName",new Array("")));
+				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePrefix").appendChild(wdoc.createTextNode(common.getStringf("teatimer.widgetAlert.enjoyYourTeaName",new Array(""))));
 				wdoc.getElementById("teaTimer-alertWidgetTeaName").appendChild(wdoc.createTextNode(teaName));
 				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePostfix").appendChild(wdoc.createTextNode(":-) ."));
 				widget.addEventListener("click",teaTimerInstance.removeWidgetAlert,false);
@@ -865,8 +867,6 @@ function teaTimerAlertWidgetAlreadyInDocumentException(msg)
     this.name="teaTimerAlertWidgetAlreadyInDocumentException";
     this.message=((msg===undefined)?null:msg);
 }
-
-
 
 var teaTimerInstance=new teaTimer();
 window.addEventListener("load",teaTimerInstance.init,false);
