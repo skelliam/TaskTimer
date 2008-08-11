@@ -26,8 +26,8 @@
 <!ENTITY options.alerts.general.groupboxcaption "General Alerts">
 <!ENTITY options.alerts.general.showDialogAlert "Show dialog window when timer finishes">
 <!ENTITY options.alerts.general.showStatusbarAlert "Blink statusbar when timer finishes">
-<!ENTITY options.alerts.widgetAlert.groupboxcaption "Website Widget Alert">
-<!ENTITY options.alerts.widgetAlert.description "The Website Widget appears directly in the website you are currently reading.">
+<!ENTITY options.alerts.widgetAlert.groupboxcaption "Website-Widget Alert">
+<!ENTITY options.alerts.widgetAlert.description "The Website-Widget appears directly in the website when timer finishes.">
 <!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Show website widget when timer finishes">
 <!ENTITY options.alerts.widgetAlert.showTimeLabel "Number of seconds the widget disappears automatically (0=never):">
 <!ENTITY options.alerts.soundAlerts.groupboxcaption "Sound Alerts">

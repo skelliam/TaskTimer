@@ -96,7 +96,7 @@
                 </vbox>
             </tabpanel>
             <tabpanel id="teaTimer-optionsAlertsTab">
-				<vbox>
+				<vbox flex="1">
 				<groupbox>
 					<caption label="&options.alerts.general.groupboxcaption;" />
 					<checkbox id="teaTimer-optionsPopupAlert" label="&options.alerts.general.showDialogAlert;" />

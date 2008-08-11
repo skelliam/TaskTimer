@@ -1,0 +1,64 @@
+<!ENTITY main.contextMenu.showIconAndTime "Zeige Icon und Zeit">
+<!ENTITY main.contextMenu.showIconOnly "Zeige nur Icon">
+<!ENTITY main.contextMenu.options "Einstellungen…">
+<!ENTITY main.contextMenu.cancel "Abbrechen">
+<!ENTITY main.contextMenu.quicktimer "Schnell-Timer…">
+
+<!ENTITY options.windowTitle "TeaTimer - Einstellungen">
+<!ENTITY options.tabs.teavarities "Teesorten">
+<!ENTITY options.tabs.alerts "Benachrichtungen">
+<!ENTITY options.varities.addANewTea "Eine neue Sorte hizufügen">
+<!ENTITY options.varities.newTea.name.label "Tee">
+<!ENTITY options.varities.newTea.time.label "Zeit">
+<!ENTITY options.varities.newTea.button "Hinzufügen">
+<!ENTITY options.varities.manageExistingTeas "Teesorten verwalten">
+<!ENTITY options.varities.manageExistingTeas.tree.id "ID">
+<!ENTITY options.varities.manageExistingTeas.tree.name "Name">
+<!ENTITY options.varities.manageExistingTeas.tree.time "Zeit">
+<!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "Markierten Tee entfernen">
+<!ENTITY options.varities.sorting "Sortierung">
+<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "Sortiere Teesorten im TeaTimer Menü">
+<!ENTITY options.varities.sorting.nameASC "alphabetisch aufsteigend.">
+<!ENTITY options.varities.sorting.nameDESC "alphabetisch absteigend.">
+<!ENTITY options.varities.sorting.timeASC "nach Zeit aufsteigend.">
+<!ENTITY options.varities.sorting.timeDESC "nach Zeit absteigend.">
+<!ENTITY options.varities.sorting.id "genau wie oben in der Liste.">
+<!ENTITY options.alerts.general.groupboxcaption "Allgemeine Benachrichtigungen">
+<!ENTITY options.alerts.general.showDialogAlert "Zeige Dialogfenster wenn Zeit abgelaufen ist">
+<!ENTITY options.alerts.general.showStatusbarAlert "Lasse Statusleiste blinken wenn Zeit abgelaufen ist.">
+<!ENTITY options.alerts.widgetAlert.groupboxcaption "Website-Widget Benachrichtigung">
+<!ENTITY options.alerts.widgetAlert.description "Das Website-Widget erscheint direkt in der Webseite, wenn der Countdown abgelaufen ist.">
+<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Zeige Website-Widget wenn die Zeit abgelaufen ist.">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "Anzahl der Sekunden nach denen das Widget verschwindet (0=nie):">
+<!ENTITY options.alerts.soundAlerts.groupboxcaption "Audio Benachrichtigungen">
+<!ENTITY options.alerts.soundAlerts.startSound.label "Spiele diesen Sound beim Starten des Timers:">
+<!ENTITY options.alerts.soundAlerts.endSound.label "Spiele diesen Sound wenn Timer abgelaufen ist:">
+<!ENTITY options.alerts.soundAlerts.startSound.preview "Vorschau">
+<!ENTITY options.alerts.soundAlerts.endSound.preview "Vorschau">
+<!ENTITY options.alerts.soundAlerts.sounds.none "Keinen">
+<!ENTITY options.alerts.soundAlerts.sounds.cup "Tasse">
+<!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Eieruhr">
+<!ENTITY options.alerts.soundAlerts.sounds.pour "Aufgießen">
+<!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfare">
+<!ENTITY options.alerts.soundAlerts.sounds.slurp "Schlürfen">
+<!ENTITY options.alerts.soundAlerts.sounds.speech "Spruch">
+<!ENTITY options.buttons.ok.label "OK">
+<!ENTITY options.buttons.ok.accesskey "o">
+<!ENTITY options.buttons.cancel.label "Abbrechen">
+<!ENTITY options.buttons.cancel.accesskey "a">
+
+<!ENTITY quicktimer.windowTitle "TeaTimer - Schnell-Timer">
+<!ENTITY quicktimer.countdownTime.label "Bitte Countdown-Zeit eingeben:">
+<!ENTITY quicktimer.countdownTime.accesskey "z">
+<!ENTITY quicktimer.startCountdownRightNow.label "Starte Countdown direkt nach dem Klicken auf OK.">
+<!ENTITY quicktimer.startCountdownRightNow.accesskey "s">
+<!ENTITY quicktimer.buttons.ok.label "OK">
+<!ENTITY quicktimer.buttons.ok.accesskey "o">
+<!ENTITY quicktimer.buttons.cancel.label "Abbrechen">
+<!ENTITY quicktimer.buttons.cancel.accesskey "a">
+
+<!ENTITY teaready.windowTitle "TeaTimer - Dein Tee ist fertig">
+<!ENTITY teaready.buttons.ok.label "OK">
+<!ENTITY teaready.header "TeaTimer sagt:">
+<!ENTITY teaready.message "Dein Tee ist fertig.">
+<!ENTITY teaready.teaname "Genieße deinen {$TEANAME}">
