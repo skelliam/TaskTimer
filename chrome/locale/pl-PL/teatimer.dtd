@@ -1,0 +1,64 @@
+<!ENTITY main.contextMenu.showIconAndTime "Pokaż ikonkę i licznik">
+<!ENTITY main.contextMenu.showIconOnly "Pokaż tylko ikonkę">
+<!ENTITY main.contextMenu.options "Opcje…">
+<!ENTITY main.contextMenu.cancel "Anuluj">
+<!ENTITY main.contextMenu.quicktimer "Szybkie odliczanie…">
+
+<!ENTITY options.windowTitle "TeaTimer - Opcje">
+<!ENTITY options.tabs.teavarities "Rodzaje herbat">
+<!ENTITY options.tabs.alerts "Powiadomienia">
+<!ENTITY options.varities.addANewTea "Dodaj nową herbatę">
+<!ENTITY options.varities.newTea.name.label "Herbata">
+<!ENTITY options.varities.newTea.time.label "Czas">
+<!ENTITY options.varities.newTea.button "Dodaj">
+<!ENTITY options.varities.manageExistingTeas "Zarządzaj swoimi herbatami">
+<!ENTITY options.varities.manageExistingTeas.tree.id "ID">
+<!ENTITY options.varities.manageExistingTeas.tree.name "Nazwa">
+<!ENTITY options.varities.manageExistingTeas.tree.time "Time">
+<!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "Usuń wybraną herbatę">
+<!ENTITY options.varities.sorting "Sorting">
+<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "Ustaw kolejność herbat w menu kontekstowym">
+<!ENTITY options.varities.sorting.nameASC "alfabetycznie rosnąco.">
+<!ENTITY options.varities.sorting.nameDESC "alfabetycznie malejąco.">
+<!ENTITY options.varities.sorting.timeASC "wg czasu rosnąco.">
+<!ENTITY options.varities.sorting.timeDESC "wg czasu malejąco.">
+<!ENTITY options.varities.sorting.id "tak jak na liście powyżej.">
+<!ENTITY options.alerts.general.groupboxcaption "Powiadomienia">
+<!ENTITY options.alerts.general.showDialogAlert "Pokaż okno dialogowe po odliczeniu czasu">
+<!ENTITY options.alerts.general.showStatusbarAlert "Mrugaj paskiem statusu po odliczeniu czasu">
+<!ENTITY options.alerts.widgetAlert.groupboxcaption "Alarm z gadżetem na stronie www">
+<!ENTITY options.alerts.widgetAlert.description "Po odliczenia czasu na przeglądanej stronie pojawi się alarmujący gadżet">
+<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Pokaż gadżet na stronie www po odliczeniu czasu">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "Liczba sekund, po której gadżet ma znikać automatycznie (0=nigdy):">
+<!ENTITY options.alerts.soundAlerts.groupboxcaption "Powiadomienia dźwiękowe">
+<!ENTITY options.alerts.soundAlerts.startSound.label "Odtwórz ten dźwięk, kiedy licznik wystartuje:">
+<!ENTITY options.alerts.soundAlerts.endSound.label "Odtwórz ten dźwięk, kiedy czas zostanie odliczony:">
+<!ENTITY options.alerts.soundAlerts.startSound.preview "Odtwórz">
+<!ENTITY options.alerts.soundAlerts.endSound.preview "Odtwórz">
+<!ENTITY options.alerts.soundAlerts.sounds.none "Brak">
+<!ENTITY options.alerts.soundAlerts.sounds.cup "Filiżanka">
+<!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Licznik do jajek">
+<!ENTITY options.alerts.soundAlerts.sounds.pour "Napełnianie">
+<!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfary">
+<!ENTITY options.alerts.soundAlerts.sounds.slurp "Siorbanie">
+<!ENTITY options.alerts.soundAlerts.sounds.speech "Mowa">
+<!ENTITY options.buttons.ok.label "OK">
+<!ENTITY options.buttons.ok.accesskey "o">
+<!ENTITY options.buttons.cancel.label "Anuluj">
+<!ENTITY options.buttons.cancel.accesskey "c">
+
+<!ENTITY quicktimer.windowTitle "TeaTimer - Szybkie odliczanie">
+<!ENTITY quicktimer.countdownTime.label "Podaj czas do odliczenia:">
+<!ENTITY quicktimer.countdownTime.accesskey "t">
+<!ENTITY quicktimer.startCountdownRightNow.label "Zacznij odliczanie od razu po naciśnięciu OK.">
+<!ENTITY quicktimer.startCountdownRightNow.accesskey "s">
+<!ENTITY quicktimer.buttons.ok.label "OK">
+<!ENTITY quicktimer.buttons.ok.accesskey "o">
+<!ENTITY quicktimer.buttons.cancel.label "Anuluj">
+<!ENTITY quicktimer.buttons.cancel.accesskey "c">
+
+<!ENTITY teaready.windowTitle "TeaTimer - Herbata gotowa">
+<!ENTITY teaready.buttons.ok.label "OK">
+<!ENTITY teaready.header "Powiadomienie TeaTimera:">
+<!ENTITY teaready.message "Zaparzanie dobiegło końca. Twoja herbata – {$TEANAME} – gotowa.">
+<!ENTITY teaready.teaname "Smacznego :-)">

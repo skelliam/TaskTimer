@@ -3,22 +3,17 @@
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
-                   em:id="teatimer@codepaintedby.philipp-soehnlein.de"
-                   em:version="1.0pre"
-                   em:name="TeaTimer"
-                   em:description="A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3. See my website for more informations."
-                   em:creator="Philipp Söhnlein"
-                   em:homepageURL="http://codepaintedby.philipp-soehnlein.de/"
-                   em:iconURL="chrome://teatimer/skin/icon32.png"
-                   em:optionsURL="chrome://teatimer/content/options.xul"
-                   em:type="2">
-    <em:localized>
-        <Description>
-            <em:locale>de-DE</em:locale>
-            <em:name>TeaTimer</em:name>
-            <em:description>Eine Firefox-Erweiterung die dich vor überzogenem Tee schützt. - Bereitgestellt unter den Lizenzbedinungen der GPL v3. Schau auf meine Webseite für weitere Informationen.</em:description>
-        </Description>
-    </em:localized>
+                    em:id="teatimer@codepaintedby.philipp-soehnlein.de"
+                    em:version="1.0pre"
+                    em:name="TeaTimer"
+                    em:description="A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3. See my website for more informations."
+                    em:creator="Philipp Söhnlein"
+                    em:homepageURL="http://codepaintedby.philipp-soehnlein.de/"
+                    em:iconURL="chrome://teatimer/skin/icon32.png"
+                    em:optionsURL="chrome://teatimer/content/options.xul"
+                    em:type="2">
+    <!-- for Firefox<3 --> 
+    <em:translator>Polish locale by Pawel Sobczak (http://blog.pawelsobczak.pl/)</em:translator>
     <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
     <em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
     <em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
@@ -26,6 +21,51 @@
     <em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
     <em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
     <em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
+    
+    <em:localized> <!-- for Firefox >3 -->
+        <Description>
+            <em:locale>en-US</em:locale>
+            <em:name>TeaTimer</em:name>
+            <em:description>A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3. See my website for more informations.</em:description>
+            <em:creator>Philipp Söhnlein</em:creator>
+            <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
+            <em:translator>Polish locale by Pawel Sobczak (http://blog.pawelsobczak.pl/)</em:translator>
+            <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
+            <em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
+            <em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
+            <em:contributor>Fanfare Sound released under Soundsnap license by shriek (shriek-music.com) on soundsnap.com</em:contributor>
+            <em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
+            <em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
+            <em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
+        </Description>
+    </em:localized>
+    <em:localized> <!-- for Firefox >3 -->
+        <Description>
+            <em:locale>de</em:locale>
+            <em:name>TeaTimer</em:name>
+            <em:description>Eine Firefox-Erweiterung die dich vor überzogenem Tee schützt. - Bereitgestellt unter den Lizenzbedingungen der GPL v3. Schau auf meine Webseite für weitere Informationen.</em:description>
+            <em:creator>Philipp Söhnlein</em:creator>
+            <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
+            <em:translator>Polnische Lokalisierung von Pawel Sobczak (http://blog.pawelsobczak.pl/)</em:translator>
+            <em:contributor>Icon basierend auf dem Coffe Cup Icon von Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
+            <em:contributor>Egg Timer Sound veröffentlicht unter CC Sampling Plus 1.0 license von xyzr_kx bei freesound.org</em:contributor>
+            <em:contributor>Cup Sound veröffentlicht unter CC Sampling Plus 1.0 license von Andre Rocha bei freesound.org</em:contributor>
+            <em:contributor>Fanfare Sound veröffentlicht unter Soundsnap license von shriek (shriek-music.com) bei soundsnap.com</em:contributor>
+            <em:contributor>Pouring Sound veröffentlicht unter CC Sampling Plus 1.0 license von stijn bei freesound.org</em:contributor>
+            <em:contributor>Slurp Sound veröffentlicht unter Soundsnap license von audiofruit (audiofruit.co.uk) bei soundsnap.com</em:contributor>
+            <em:contributor>Speech Sound veröffentlicht unter CC Sampling Plus 1.0 license von alphahog (mikevendetti.com) bei freesound.org</em:contributor>
+        </Description>
+    </em:localized>
+    <em:localized> <!-- for Firefox >3 -->
+        <Description>
+            <em:locale>pl-PL</em:locale>
+            <em:name>TeaTimer</em:name>
+            <em:description>Rozszerzenie, które pilnuje, żeby herbata była taka, jaką lubisz. Dostępne na licencji GPL v3. Odwiedź moją stronę internetową po więcej informacji.</em:description>
+            <em:creator>Philipp Söhnlein</em:creator>
+            <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
+        </Description>
+    </em:localized>
+        
     <em:targetApplication RDF:resource="rdf:#$rdYLa2"/>
   </RDF:Description>
   <RDF:Description RDF:about="rdf:#$rdYLa2"
