@@ -32,8 +32,10 @@
 					skin/widgetAlert/default/bg.png
 					locale/en-US/teatimer.dtd
 					locale/en-US/teatimer.properties
-					locale/de-DE/teatimer.dtd
-					locale/de-DE/teatimer.properties
+					locale/de/teatimer.dtd
+					locale/de/teatimer.properties
+					locale/pl-PL/teatimer.dtd
+					locale/pl-PL/teatimer.properties
 					" /> 
 	</target>
 
