@@ -15,6 +15,7 @@
     <em:localized>
         <Description>
             <em:locale>de-DE</em:locale>
+            <em:name>TeaTimer</em:name>
             <em:description>Eine Firefox-Erweiterung die dich vor überzogenem Tee schützt. - Bereitgestellt unter den Lizenzbedinungen der GPL v3. Schau auf meine Webseite für weitere Informationen.</em:description>
         </Description>
     </em:localized>

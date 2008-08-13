@@ -6,7 +6,7 @@
 
 <!ENTITY options.windowTitle "TeaTimer - Einstellungen">
 <!ENTITY options.tabs.teavarities "Teesorten">
-<!ENTITY options.tabs.alerts "Benachrichtungen">
+<!ENTITY options.tabs.alerts "Benachrichtigungen">
 <!ENTITY options.varities.addANewTea "Eine neue Sorte hizufügen">
 <!ENTITY options.varities.newTea.name.label "Tee">
 <!ENTITY options.varities.newTea.time.label "Zeit">

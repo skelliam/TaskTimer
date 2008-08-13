@@ -25,6 +25,8 @@ content			teatimer	chrome/content/ contentaccessible=yes
 
 overlay			chrome://browser/content/browser.xul	        chrome://teatimer/content/teatimer.xul
 
+#locale			teatimer	en-US 								jar:chrome/teaTimer.jar!/locale/en-US/
+#locale			teatimer	de-DE								jar:chrome/teaTimer.jar!/locale/de-DE/
 locale			teatimer	en-US 								chrome/locale/en-US/
 locale			teatimer	de-DE								chrome/locale/de-DE/
 
