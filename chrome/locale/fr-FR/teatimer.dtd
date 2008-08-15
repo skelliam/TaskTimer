@@ -1,0 +1,65 @@
+<!ENTITY main.contextMenu.showIconAndTime "Affiche symbole et le temps">
+<!ENTITY main.contextMenu.showIconOnly "Affiche seulement le symbole ">
+<!ENTITY main.contextMenu.options "Options…">
+<!ENTITY main.contextMenu.cancel "Annuler">
+<!ENTITY main.contextMenu.quicktimer "Minuteur rapide…">
+
+<!ENTITY options.windowTitle "TeaTimer - Options">
+<!ENTITY options.tabs.teavarities " Variantes de thé">
+<!ENTITY options.tabs.alerts "Avertissements">
+<!ENTITY options.varities.addANewTea "Ajoute un nouveau thé">
+<!ENTITY options.varities.newTea.name.label "Thé">
+<!ENTITY options.varities.newTea.time.label "Temps">
+<!ENTITY options.varities.newTea.button "Ajouter">
+<!ENTITY options.varities.manageExistingTeas "Administre les thés disponibles">
+<!ENTITY options.varities.manageExistingTeas.tree.id "ID">
+<!ENTITY options.varities.manageExistingTeas.tree.name "Nom">
+<!ENTITY options.varities.manageExistingTeas.tree.time "Temps">
+<!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "Supprime thé sélectionné">
+<!ENTITY options.varities.sorting "Classer">
+<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "Classe thés dans le menu contextuel de TeaTimer">
+<!ENTITY options.varities.sorting.nameASC "classe par ordre alphabétique.">
+<!ENTITY options.varities.sorting.nameDESC "classe par ordre décroissant.">
+<!ENTITY options.varities.sorting.timeASC "par temps croissant.">
+<!ENTITY options.varities.sorting.timeDESC "par temps décroissant.">
+<!ENTITY options.varities.sorting.id "exactement comme la liste ci-dessus.">
+<!ENTITY options.alerts.general.groupboxcaption "Avertissements générals">
+<!ENTITY options.alerts.general.showDialogAlert "Affiche dialogue quand minuteur est fini">
+<!ENTITY options.alerts.general.showStatusbarAlert "Clignote barre d'état quand minuteur est fini">
+<!ENTITY options.alerts.widgetAlert.groupboxcaption "Avertissement du widget web">
+<!ENTITY options.alerts.widgetAlert.description "Le widget web apparaît directement dans le site web quand le minuteur est fini.">
+<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Affiche widget web quand minuteur est fini">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "Secondes jusqu'à ce que le widget disparaît automatiquement (0=jamais):">
+<!ENTITY options.alerts.soundAlerts.groupboxcaption "Avertissements acoustiques">
+<!ENTITY options.alerts.soundAlerts.startSound.label "Passe ce son quand le minuteur a commencé:">
+<!ENTITY options.alerts.soundAlerts.endSound.label "Passe ce son quand le minuteur est fini:">
+<!ENTITY options.alerts.soundAlerts.startSound.preview "Bande-annonce">
+<!ENTITY options.alerts.soundAlerts.endSound.preview "Bande-annonce">
+<!ENTITY options.alerts.soundAlerts.sounds.none "Muet">
+<!ENTITY options.alerts.soundAlerts.sounds.cup "Tasse">
+<!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Minuteur">
+<!ENTITY options.alerts.soundAlerts.sounds.pour "Verser">
+<!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfare">
+<!ENTITY options.alerts.soundAlerts.sounds.slurp "Siroter">
+<!ENTITY options.alerts.soundAlerts.sounds.speech "Voix">
+<!ENTITY options.buttons.ok.label "OK">
+<!ENTITY options.buttons.ok.accesskey "o">
+<!ENTITY options.buttons.cancel.label "Annuler">
+<!ENTITY options.buttons.cancel.accesskey "a">
+
+<!ENTITY quicktimer.windowTitle "TeaTimer - minuteur rapide">
+<!ENTITY quicktimer.countdownTime.label "Entre la durée spécifique du compte à rebours, s'il te plaît:">
+<!ENTITY quicktimer.countdownTime.accesskey "e">
+<!ENTITY quicktimer.startCountdownRightNow.label "Commence compte à rebours tout de suite après avoir cliqué sur OK.">
+<!ENTITY quicktimer.startCountdownRightNow.accesskey "c">
+<!ENTITY quicktimer.buttons.ok.label "OK">
+<!ENTITY quicktimer.buttons.ok.accesskey "o">
+<!ENTITY quicktimer.buttons.cancel.label "Annuler">
+<!ENTITY quicktimer.buttons.cancel.accesskey "a">
+
+<!ENTITY teaready.windowTitle "TeaTimer - ton thé est prêt">
+<!ENTITY teaready.buttons.ok.label "OK">
+<!ENTITY teaready.header "TeaTimer dit:">
+<!ENTITY teaready.message "Complètement infusé.">
+<!ENTITY teaready.teaname "Savoure ton {$TEANAME}. :-)">
+
