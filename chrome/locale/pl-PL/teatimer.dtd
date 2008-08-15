@@ -45,20 +45,20 @@
 <!ENTITY options.buttons.ok.label "OK">
 <!ENTITY options.buttons.ok.accesskey "o">
 <!ENTITY options.buttons.cancel.label "Anuluj">
-<!ENTITY options.buttons.cancel.accesskey "c">
+<!ENTITY options.buttons.cancel.accesskey "a">
 
 <!ENTITY quicktimer.windowTitle "TeaTimer - Szybkie odliczanie">
 <!ENTITY quicktimer.countdownTime.label "Podaj czas do odliczenia:">
-<!ENTITY quicktimer.countdownTime.accesskey "t">
+<!ENTITY quicktimer.countdownTime.accesskey "c">
 <!ENTITY quicktimer.startCountdownRightNow.label "Zacznij odliczanie od razu po naciśnięciu OK.">
-<!ENTITY quicktimer.startCountdownRightNow.accesskey "s">
+<!ENTITY quicktimer.startCountdownRightNow.accesskey "z">
 <!ENTITY quicktimer.buttons.ok.label "OK">
 <!ENTITY quicktimer.buttons.ok.accesskey "o">
 <!ENTITY quicktimer.buttons.cancel.label "Anuluj">
-<!ENTITY quicktimer.buttons.cancel.accesskey "c">
+<!ENTITY quicktimer.buttons.cancel.accesskey "a">
 
 <!ENTITY teaready.windowTitle "TeaTimer - Herbata gotowa">
 <!ENTITY teaready.buttons.ok.label "OK">
 <!ENTITY teaready.header "Powiadomienie TeaTimera:">
-<!ENTITY teaready.message "Zaparzanie dobiegło końca. Twoja herbata – {$TEANAME} – gotowa.">
-<!ENTITY teaready.teaname "Smacznego :-)">
+<!ENTITY teaready.message "Zaparzanie dobiegło końca.">
+<!ENTITY teaready.teaname "Twoja herbata – {$TEANAME} – gotowa. Smacznego :-)">
