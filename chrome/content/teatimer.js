@@ -532,12 +532,16 @@ function teaTimer()
 					teaName=teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
 				}
 				
+				var str=common.getStringf("teatimer.widgetAlert.enjoyYourTeaName",new Array("{TEANAME}"));
+				var strPrefix=str.substr(0,str.indexOf("{TEANAME}"));
+				var strPostfix=str.substr(str.indexOf("{TEANAME}")+9);
+				
 				wdoc.getElementById("teaTimer-alertWidgetHeadline").appendChild(wdoc.createTextNode(common.getString("teatimer.widgetAlert.headline")));
 				wdoc.getElementById("teaTimer-alertWidgetCompleteMessage").appendChild(wdoc.createTextNode(common.getString("teatimer.widgetAlert.steepingComplete")));
-				dump(common.getStringf("teatimer.widgetAlert.enjoyYourTeaName",new Array("")));
-				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePrefix").appendChild(wdoc.createTextNode(common.getStringf("teatimer.widgetAlert.enjoyYourTeaName",new Array(""))));
+				
+				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePrefix").appendChild(wdoc.createTextNode(strPrefix));
 				wdoc.getElementById("teaTimer-alertWidgetTeaName").appendChild(wdoc.createTextNode(teaName));
-				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePostfix").appendChild(wdoc.createTextNode(":-) ."));
+				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePostfix").appendChild(wdoc.createTextNode(strPostfix));
 				widget.addEventListener("click",teaTimerInstance.removeWidgetAlert,false);
 				targetBody.appendChild(widget);
 				

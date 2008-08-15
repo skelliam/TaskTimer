@@ -28,6 +28,6 @@
 	<box orient="vertical" id="wrapper">
 	  <description value="&teaready.header;" class="header" />
 	  <description id="messageline" value="&teaready.message;" />
-	  <description id="teanameline" value="&teaready.teaname; :-)" />
+	  <description id="teanameline" value="&teaready.teaname;" />
 	</box>
 </dialog>

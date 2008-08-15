@@ -61,4 +61,4 @@
 <!ENTITY teaready.buttons.ok.label "OK">
 <!ENTITY teaready.header "TeaTimer sagt:">
 <!ENTITY teaready.message "Dein Tee ist fertig.">
-<!ENTITY teaready.teaname "Genieße deinen {$TEANAME}">
+<!ENTITY teaready.teaname "Genieße deinen {$TEANAME}. :-)">
