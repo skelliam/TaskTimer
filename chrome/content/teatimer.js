@@ -374,7 +374,7 @@ function teaTimer()
 	var brewingComplete=function()
 	{
 		self.stopCountdown();
-		teatimerCountdown.setAttribute("value","Ready!");
+		teatimerCountdown.setAttribute("value",common.getString("teatimer.teaReady"));
 		common.addCSSClass(teatimerBox,"finished");
 		teatimerBox.setAttribute("tooltiptext",common.getString("teatimer.teaReadyAndReload"));
 		shootAlerts();
