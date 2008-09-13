@@ -538,9 +538,36 @@ function teaTimer()
 				wdoc.getElementById("teaTimer-alertWidgetHeadline").appendChild(wdoc.createTextNode(common.getString("teatimer.widgetAlert.headline")));
 				wdoc.getElementById("teaTimer-alertWidgetCompleteMessage").appendChild(wdoc.createTextNode(common.getString("teatimer.widgetAlert.steepingComplete")));
 				
-				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePrefix").appendChild(wdoc.createTextNode(strPrefix));
-				wdoc.getElementById("teaTimer-alertWidgetTeaName").appendChild(wdoc.createTextNode(teaName));
-				wdoc.getElementById("teaTimer-alertWidgetEnjoyMessagePostfix").appendChild(wdoc.createTextNode(strPostfix));
+				var elementTargetMap=[
+						{"source":strPrefix,"target":"teaTimer-alertWidgetEnjoyMessagePrefix"},
+						{"source":teaName,"target":"teaTimer-alertWidgetTeaName"},
+						{"source":strPostfix,"target":"teaTimer-alertWidgetEnjoyMessagePostfix"}
+				]
+				
+				for(var i=0;i<elementTargetMap.length;i++)
+				{
+					var text=elementTargetMap[i].source;
+					var target=elementTargetMap[i].target;
+					if(text.indexOf("\n")>=0)
+					{
+						if(text.indexOf("\n")===0)
+						{
+							wdoc.getElementById(target).appendChild(targetDoc.createElement("br"));
+						}
+						
+						var parts=text.split("\n");
+						for(var p=0; p<parts.length;p++)
+						{
+							wdoc.getElementById(target).appendChild(wdoc.createTextNode(parts[p]));
+							wdoc.getElementById(target).appendChild(targetDoc.createElement("br"));
+						}
+					}
+					else
+					{
+						wdoc.getElementById(target).appendChild(wdoc.createTextNode(text));
+					}
+				}
+				
 				widget.addEventListener("click",teaTimerInstance.removeWidgetAlert,false);
 				targetBody.appendChild(widget);
 				
@@ -556,7 +583,6 @@ function teaTimer()
 		}
 		catch(e)
 		{
-			//alert(e);
 			throw e;
 		}
 	}
