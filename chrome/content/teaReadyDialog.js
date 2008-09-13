@@ -20,8 +20,11 @@ function teaReadyDialog()
 	const common=new teaTimerCommon();
 	this.init=function()
 	{
-		var el=document.getElementById('teanameline');
-		el.setAttribute('value',el.getAttribute('value').replace('{$TEANAME}',window.arguments[0]));
+		var teanameline=document.getElementById('teanameline');
+		teanameline.firstChild.data=teanameline.firstChild.data.replace('{$TEANAME}',window.arguments[0]);
+		teanameline.firstChild.data=teanameline.firstChild.data.replace('\\n',"\n");
+		var messageline=document.getElementById('messageline');
+		messageline.firstChild.data=messageline.firstChild.data.replace('\\n',"\n");
 		
 		if(window.arguments[1]===true)
 		{

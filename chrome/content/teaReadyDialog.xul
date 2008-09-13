@@ -27,7 +27,7 @@
 	<script type="application/x-javascript" src="chrome://teatimer/content/teaReadyDialog.js" />
 	<box orient="vertical" id="wrapper">
 	  <description value="&teaready.header;" class="header" />
-	  <description id="messageline" value="&teaready.message;" />
-	  <description id="teanameline" value="&teaready.teaname;" />
+	  <description id="messageline">&teaready.message;</description>
+	  <description id="teanameline">&teaready.teaname;</description>
 	</box>
 </dialog>

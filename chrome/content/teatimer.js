@@ -441,7 +441,6 @@ function teaTimer()
 			}
 			catch(e)
 			{
-				dump(e);
 				//if websiteWidgetAlert fails and no other alert is active, do anyhow a popupalert. It's better than having no alert at all.
 				if(!common.isAlertDesired("statusbar") && !common.isAlertDesired("popup") && common.getIdOfEndSound()==="none")
 				{

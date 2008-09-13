@@ -29,6 +29,11 @@ dialog
 	padding-top: 8px;
 }
 
+#wrapper description
+{
+	white-space: pre;
+}
+
 #messageline,
 #teanameline,
 #websitewidgeterrorline
