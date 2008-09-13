@@ -61,4 +61,4 @@
 <!ENTITY teaready.buttons.ok.label "OK">
 <!ENTITY teaready.header "Powiadomienie TeaTimera:">
 <!ENTITY teaready.message "Zaparzanie dobiegło końca.">
-<!ENTITY teaready.teaname "Twoja herbata – {$TEANAME} – gotowa. Smacznego :-)">
+<!ENTITY teaready.teaname "Twoja herbata – {$TEANAME} – gotowa.\nSmacznego :-)">
