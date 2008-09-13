@@ -16,7 +16,7 @@
 <!ENTITY options.varities.manageExistingTeas.tree.name "Nazwa">
 <!ENTITY options.varities.manageExistingTeas.tree.time "Time">
 <!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "Usuń wybraną herbatę">
-<!ENTITY options.varities.sorting "Sorting">
+<!ENTITY options.varities.sorting "Szeregowanie">
 <!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "Ustaw kolejność herbat w menu kontekstowym">
 <!ENTITY options.varities.sorting.nameASC "alfabetycznie rosnąco.">
 <!ENTITY options.varities.sorting.nameDESC "alfabetycznie malejąco.">
