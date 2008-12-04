@@ -44,3 +44,10 @@ window
 {
     width: 3em;
 }
+
+#teaTimer-optionsTwitterUsernameLabel,
+#teaTimer-optionsTwitterPasswordLabel
+{
+    width: 6em;
+    text-align: right;
+}

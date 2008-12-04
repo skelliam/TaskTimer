@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <!--
-	TeaTimer: A Firefox extension that protects you from oversteeped tea.
-	Copyright (C) 2008 Philipp Söhnlein
+    TeaTimer: A Firefox extension that protects you from oversteeped tea.
+    Copyright (C) 2008 Philipp Söhnlein
 
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License version 3 as 
-	published by the Free Software Foundation.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License version 3 as
+    published by the Free Software Foundation.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://teatimer/skin/options.css" type="text/css"?>
@@ -27,6 +27,7 @@
         <tabs>
             <tab label="&options.tabs.teavarities;" />
             <tab label="&options.tabs.alerts;" />
+            <tab label="Twitter" />
         </tabs>
         <tabpanels>
             <tabpanel id="teaTimer-optionsVaritiesTab">
@@ -46,71 +47,71 @@
                         </hbox>
                     </groupbox>
                     
-					<groupbox>
-						<caption label="&options.varities.manageExistingTeas;" />
-						
-						<tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
-							<treecols editable="true">
-							<treecol label="&options.varities.manageExistingTeas.tree.id;" id="teaTimer-optionsTeas-idColumn" hidden="true" />
-							<treecol label="&options.varities.manageExistingTeas.tree.name;" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
-							<treecol label="&options.varities.manageExistingTeas.tree.time;" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
-							</treecols>
-							<treechildren id="teaTimer-optionsTeasTreeChildren">
-							<!--
-							<treeitem>
-								<treerow>
-								<treecell label="1" />
-								<treecell editable="true" label="Earl Grey" />
-								<treecell editable="true" label="3:00" />
-								</treerow>
-							</treeitem>
-							<treeitem>
-								<treerow>
-								<treecell label="2" />
-								<treecell editable="true" label="Rooibos" />
-								<treecell editable="true" label="7:00" />
-								</treerow>
-							</treeitem>
-							-->
-							</treechildren>
-						</tree>
+                    <groupbox>
+                        <caption label="&options.varities.manageExistingTeas;" />
+                        
+                        <tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
+                            <treecols editable="true">
+                            <treecol label="&options.varities.manageExistingTeas.tree.id;" id="teaTimer-optionsTeas-idColumn" hidden="true" />
+                            <treecol label="&options.varities.manageExistingTeas.tree.name;" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
+                            <treecol label="&options.varities.manageExistingTeas.tree.time;" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
+                            </treecols>
+                            <treechildren id="teaTimer-optionsTeasTreeChildren">
+                            <!--
+                            <treeitem>
+                                <treerow>
+                                <treecell label="1" />
+                                <treecell editable="true" label="Earl Grey" />
+                                <treecell editable="true" label="3:00" />
+                                </treerow>
+                            </treeitem>
+                            <treeitem>
+                                <treerow>
+                                <treecell label="2" />
+                                <treecell editable="true" label="Rooibos" />
+                                <treecell editable="true" label="7:00" />
+                                </treerow>
+                            </treeitem>
+                            -->
+                            </treechildren>
+                        </tree>
                     </groupbox>
-				
+                
                     <hbox align="right">
                         <button id="teaTimer-optionsBtnDelTea" label="&options.varities.manageExistingTeas.deleteSelectedTea;" disabled="true" />
                     </hbox>
-					
-					<groupbox align="center" orient="horizontal">
-						<caption label="&options.varities.sorting;" />
-						<label control="teaTimer-sortingOrder" value="&options.varities.sorting.sortTeasInTeaTimerContextMenu;" />
-						<menulist id="teaTimer-sortingOrder">
-							<menupopup>
-								<menuitem label="&options.varities.sorting.nameASC;" value="name ASC" />
-								<menuitem label="&options.varities.sorting.nameDESC;" value="name DESC" />
-								<menuitem label="&options.varities.sorting.timeASC;" value="time ASC" />
-								<menuitem label="&options.varities.sorting.timeDESC;" value="time DESC" />
-								<menuitem label="&options.varities.sorting.id;" value="id" />
-							</menupopup>
-						</menulist>
-					</groupbox>
+                    
+                    <groupbox align="center" orient="horizontal">
+                        <caption label="&options.varities.sorting;" />
+                        <label control="teaTimer-sortingOrder" value="&options.varities.sorting.sortTeasInTeaTimerContextMenu;" />
+                        <menulist id="teaTimer-sortingOrder">
+                            <menupopup>
+                                <menuitem label="&options.varities.sorting.nameASC;" value="name ASC" />
+                                <menuitem label="&options.varities.sorting.nameDESC;" value="name DESC" />
+                                <menuitem label="&options.varities.sorting.timeASC;" value="time ASC" />
+                                <menuitem label="&options.varities.sorting.timeDESC;" value="time DESC" />
+                                <menuitem label="&options.varities.sorting.id;" value="id" />
+                            </menupopup>
+                        </menulist>
+                    </groupbox>
                 </vbox>
             </tabpanel>
             <tabpanel id="teaTimer-optionsAlertsTab">
-				<vbox flex="1">
-				<groupbox>
-					<caption label="&options.alerts.general.groupboxcaption;" />
-					<checkbox id="teaTimer-optionsPopupAlert" label="&options.alerts.general.showDialogAlert;" />
-					<checkbox id="teaTimer-optionsStatusbarAlert" label="&options.alerts.general.showStatusbarAlert;" />
-				</groupbox>
-				<groupbox>
-					<caption label="&options.alerts.widgetAlert.groupboxcaption;" />
-					<description>&options.alerts.widgetAlert.description;</description>
-					<checkbox id="teaTimer-optionsWidgetAlert" label="&options.alerts.widgetAlert.activateCheckboxLabel;" />
-					<hbox align="center">
-						<label control="teaTimer-optionsWidgetShowTime" value="&options.alerts.widgetAlert.showTimeLabel;" />
-						<textbox id="teaTimer-optionsWidgetShowTime" />
-					</hbox>
-				</groupbox>
+                <vbox flex="1">
+                <groupbox>
+                    <caption label="&options.alerts.general.groupboxcaption;" />
+                    <checkbox id="teaTimer-optionsPopupAlert" label="&options.alerts.general.showDialogAlert;" />
+                    <checkbox id="teaTimer-optionsStatusbarAlert" label="&options.alerts.general.showStatusbarAlert;" />
+                </groupbox>
+                <groupbox>
+                    <caption label="&options.alerts.widgetAlert.groupboxcaption;" />
+                    <description>&options.alerts.widgetAlert.description;</description>
+                    <checkbox id="teaTimer-optionsWidgetAlert" label="&options.alerts.widgetAlert.activateCheckboxLabel;" />
+                    <hbox align="center">
+                        <label control="teaTimer-optionsWidgetShowTime" value="&options.alerts.widgetAlert.showTimeLabel;" />
+                        <textbox id="teaTimer-optionsWidgetShowTime" />
+                    </hbox>
+                </groupbox>
                 <groupbox>
                     <caption label="&options.alerts.soundAlerts.groupboxcaption;" />
                     <vbox>
@@ -144,7 +145,52 @@
                         </hbox>
                     </vbox>  
                 </groupbox>
-				</vbox>
+                </vbox>
+            </tabpanel>
+            <tabpanel id="teaTimer-optionsTwitterTab">
+                <vbox flex="1">
+                    <checkbox  label="Twitter TeaTimer events" id="teaTimer-optionsTwitterActive" />
+                    
+                    <groupbox>
+                        <caption label="Twitter credentials" />
+                        <hbox>
+                            <vbox>
+                                <hbox align="center">
+                                    <label control="teaTimer-optionsTwitterUsername" value="Username:" id="teaTimer-optionsTwitterUsernameLabel" disabled="true" />
+                                    <textbox id="teaTimer-optionsTwitterUsername" disabled="true" />   
+                                </hbox>
+                                
+                                <hbox align="center">
+                                    <label control="teaTimer-optionsTwitterPassword" value="Password:" id="teaTimer-optionsTwitterPasswordLabel" disabled="true" />
+                                    <textbox id="teaTimer-optionsTwitterPassword" type="password" disabled="true" />
+                                </hbox>
+                            </vbox>
+                            <button id="teaTimer-optionsTwitterTestConnection" label="Do test Tweet" disabled="true" />
+                        </hbox>
+                    </groupbox>
+                   
+                    <groupbox>
+                        <caption label="Start Timer message" />
+                        
+                        <checkbox label="Twitter this when Countdown starts:" id="teaTimer-optionsTwitterStartMessageCheckbox" disabled="true" />
+                        <label control="teaTimer-optionsTwitterStartMessage" value="Message (use %t to insert tea name)" id="teaTimer-optionsTwitterStartMessageLabel" disabled="true" />
+                        <textbox id="teaTimer-optionsTwitterStartMessage" multiline="true" disabled="true" />
+                    </groupbox>
+                   
+                   <groupbox>
+                        <caption label="End Timer message" />
+                        
+                        <checkbox label="Twitter this when Countdown ends:" id="teaTimer-optionsTwitterFinishMessageCheckbox" disabled="true" />
+                        <label control="teaTimer-optionsTwitterFinishMessage" value="Message (use %t to insert tea name)" id="teaTimer-optionsTwitterFinishMessageLabel" disabled="true" />
+                        <textbox id="teaTimer-optionsTwitterFinishMessage" multiline="true" disabled="true" />
+                    </groupbox>
+                    
+                    <groupbox>
+                        <caption label="Misc." />
+                        
+                        <checkbox label="Alert when there was a communication error between TeaTimer and Twitter" id="teaTimer-optionsTwitterAlertCommunicationErrors" disabled="true" />
+                    </groupbox>
+                </vbox>
             </tabpanel>
         </tabpanels>
     </tabbox>

@@ -221,7 +221,7 @@ function teaTimerCommon()
 	/**
 	 * This private method is used, to read options.
 	 *
-	 * @param name of option (valid values are "sortingOrder" and "viewMode")
+	 * @param name of option (valid values are "sortingOrder", "twitter.on", "viewMode")
 	 **/
 	var getOption=function(name)
 	{
@@ -232,22 +232,61 @@ function teaTimerCommon()
 			case "sortingOrder":
 				value="id";
 				break;
+			case "twitter.on":
+			case "twitter.twitterOnStart":
+			case "twitter.twitterOnFinish":
+			case "twitter.showCommunicationErrors":
+				value=false;
+				break;
+			case "twitter.username":
+			case "twitter.password":
+			case "twitter.startTweetText":
+			case "twitter.finishTweetText":
+				value="";
+				break;
 			case "viewMode":
 				value="timeAndIcon";
 				break;
 		}
 		
+		var type=getTypeOfOption(name);
+		
 		try
 		{
-			value=teaTimerPrefs.getCharPref(name);
+			value=(type==="char")?teaTimerPrefs.getCharPref(name):teaTimerPrefs.getBoolPref(name);
 			validateOptionValue(name,value);
 		}
 		catch(e)
 		{
 			setOption(name,value);
 		}
-				
+		
 		return value;
+	}
+	
+	var getTypeOfOption=function(name)
+	{
+		validateOptionName(name);
+		var type=null;
+		switch(name)
+		{
+			case "sortingOrder":
+			case "viewMode":
+			case "twitter.username":
+			case "twitter.password":
+			case "twitter.startTweetText":
+			case "twitter.finishTweetText":
+				type="char";
+				break;
+			case "twitter.on":
+			case "twitter.twitterOnStart":
+			case "twitter.twitterOnFinish":
+			case "twitter.showCommunicationErrors":
+				type="bool";
+				break;
+		}
+		
+		return type;
 	}
 	
 	/**
@@ -260,14 +299,23 @@ function teaTimerCommon()
 	{
 		validateOptionName(name);
 		validateOptionValue(name,value);
-		teaTimerPrefs.setCharPref(name,value);
+		var type=getTypeOfOption(name);
+		
+		if(type==="char")
+		{
+			teaTimerPrefs.setCharPref(name,value);
+		}
+		else
+		{
+			teaTimerPrefs.setBoolPref(name,value);
+		}
 	}
 	
 	/**
 	 * Internal private method for validating given option names.
 	 *
 	 * @param string suspected option name
-	 * @returns boolean true (if first parameter was either "sortingOrder" or "viewMode")
+	 * @returns boolean true (if first parameter was either "sortingOrder", "twitter.on" or "viewMode")
 	 * @throws teaTimerInvalidOptionNameException
 	 **/
 	var validateOptionName=function(name)
@@ -275,6 +323,14 @@ function teaTimerCommon()
 		switch(name)
 		{
 			case "sortingOrder":
+			case "twitter.on":
+			case "twitter.username":
+			case "twitter.password":
+			case "twitter.startTweetText":
+			case "twitter.finishTweetText":
+			case "twitter.twitterOnStart":
+			case "twitter.twitterOnFinish":
+			case "twitter.showCommunicationErrors":
 			case "viewMode":
 				break;
 			default:
@@ -309,6 +365,48 @@ function teaTimerCommon()
 						break;
 					default:
 						throw new teaTimerInvalidSortOrderException("validateOptionValue(sortingOrder): '"+value+"' is no valid sort order.");
+				}
+				break;
+			case "twitter.on":
+				if(typeof value!=="boolean")
+				{
+					throw new teaTimerInvalidTwitterOnException("validateOptionValue(twitter.on): value is no bool.");
+				}
+				break;
+			case "twitter.username":
+				if(typeof value!=="string")
+				{
+					throw new teaTimerInvalidTwitterUsernameException("validateOptionValue(twitter.username): value is no string.");
+				}
+				break;
+			case "twitter.password":
+				if(typeof value!=="string")
+				{
+					throw new teaTimerInvalidTwitterPasswordException("validateOptionValue(twitter.password): value is no string.");
+				}
+				break;
+			case "twitter.startTweetText":
+				if(typeof value!=="string")
+				{
+					throw new teaTimerInvalidTwitterTweetTextException("validateOptionValue("+group+"): value is no string.");
+				}
+				break;
+			case "twitter.twitterOnStart":
+				if(typeof value!=="boolean")
+				{
+					throw new teaTimerInvalidTwitterOnStartValueException("validateOptionValue(twitter.twitterOnStart): value is no bool.");
+				}
+				break;
+			case "twitter.twitterOnFinish":
+				if(typeof value!=="boolean")
+				{
+					throw new teaTimerInvalidTwitterOnFinishValueException("validateOptionValue(twitter.twitterOnFinish): value is no bool.");
+				}
+				break;
+			case "twitter.showCommunicationErrors":
+				if(typeof value!=="boolean")
+				{
+					throw new teaTimerInvalidTwitterShowCommunicationErrorsException("validateOptionValue(twitter.showCommunicationErrors): value is no bool.");
 				}
 				break;
 			case "viewMode":
@@ -610,6 +708,48 @@ function teaTimerCommon()
 		}
 		
 		return ((id!==null && self.checkSoundId(type,id))?true:false);
+	}
+	
+	/*
+		===================
+		| Twitter methods |
+		===================
+	
+    */
+	this.isTwitterFeatureOn=function()
+	{
+		return getOption("twitter.on");
+	}
+	
+	this.getTwitterUsername=function()
+	{
+		return getOption("twitter.username");
+	}
+	
+	this.getTwitterPassword=function()
+	{
+		return getOption("twitter.password");
+	}
+	
+	this.twitterOnStart=function()
+	{
+		return getOption("twitter.twitterOnStart");
+	}
+	
+	this.twitterOnFinish=function()
+	{
+		return getOption("twitter.twitterOnFinish");
+	}
+	
+	this.getTwitterTweetText=function(text)
+	{
+		text=(text==="start")?text:"finish";
+		return getOption("twitter."+text+"TweetText");
+	}
+	
+	this.showCommunicationErrors=function()
+	{
+		return getOption("twitter.showCommunicationErrors");
 	}
     
     /*
@@ -960,6 +1100,30 @@ function teaTimerInvalidSoundIDException(msg)
 function teaTimerInvalidSortOrderException(msg)
 {
 	this.name="teaTimerInvalidSortOrderException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidTwitterOnException(msg)
+{
+	this.name="teaTimerInvalidTwitterOnException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidTwitterUsernameException(msg)
+{
+	this.name="teaTimerInvalidTwitterUsernameException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidTwitterPasswordException(msg)
+{
+	this.name="teaTimerInvalidTwitterPasswordException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidTwitterTweetTextException(msg)
+{
+	this.name="teaTimerInvalidTwitterTweetTextException";
 	this.message=((msg===undefined)?null:msg);
 }
 

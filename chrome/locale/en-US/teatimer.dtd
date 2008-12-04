@@ -7,6 +7,7 @@
 <!ENTITY options.windowTitle "TeaTimer - Options">
 <!ENTITY options.tabs.teavarities "Tea varities">
 <!ENTITY options.tabs.alerts "Alerts">
+<!ENTITY options.tabs.twitter "Twitter">
 <!ENTITY options.varities.addANewTea "Add a new tea">
 <!ENTITY options.varities.newTea.name.label "Tea">
 <!ENTITY options.varities.newTea.time.label "Time">

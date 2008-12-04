@@ -108,6 +108,71 @@ function teaTimerOptionsWindow()
         {
             btnPreviewEndSound.setAttribute("disabled",true);
         }
+		
+		//twitter tab
+		var twitterActiveCheckbox=document.getElementById("teaTimer-optionsTwitterActive");
+		twitterActiveCheckbox.addEventListener("command",teaTimerOptionsWindowInstance.twitterActiveCommand,false);
+		
+		var twitterOnCountdownStartCheckbox=document.getElementById("teaTimer-optionsTwitterStartMessageCheckbox");
+		twitterOnCountdownStartCheckbox.addEventListener("command",function() { teaTimerOptionsWindowInstance.twitterMessageBoxStateChanged("start"); },false);
+		
+		var twitterOnCountdownFinishCheckbox=document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox");
+		twitterOnCountdownFinishCheckbox.addEventListener("command",function() { teaTimerOptionsWindowInstance.twitterMessageBoxStateChanged("finish"); },false);
+		
+		var twitterIsOn=common.isTwitterFeatureOn();
+		if(twitterIsOn)
+		{
+			twitterActiveCheckbox.checked=true;
+			changeTwitterInputFieldsState("activate");
+		}
+		
+		var twitterUsername=common.getTwitterUsername();
+		if(twitterUsername)
+		{
+			document.getElementById("teaTimer-optionsTwitterUsername").value=twitterUsername;
+		}
+		
+		var twitterPassword=common.getTwitterPassword();
+		if(twitterPassword)
+		{
+			document.getElementById("teaTimer-optionsTwitterPassword").value=twitterPassword;
+		}
+		
+		if(common.twitterOnStart())
+		{
+			twitterOnCountdownStartCheckbox.checked=true;
+			if(twitterIsOn)
+			{
+				self.twitterMessageBoxStateChanged("start");
+			}
+		}
+		
+		var tweetStartText=common.getTwitterTweetText("start");
+		if(tweetStartText)
+		{
+			document.getElementById("teaTimer-optionsTwitterStartMessage").value=tweetStartText;
+		}
+		
+		if(common.twitterOnFinish())
+		{
+			twitterOnCountdownFinishCheckbox.checked=true;
+			if(twitterIsOn)
+			{
+				self.twitterMessageBoxStateChanged("finish");
+			}
+		}
+		
+		var tweetFinishText=common.getTwitterTweetText("finish");
+		if(tweetFinishText)
+		{
+			document.getElementById("teaTimer-optionsTwitterFinishMessage").value=tweetFinishText;
+		}
+		
+		if(common.showCommunicationErrors())
+		{
+			document.getElementById("teaTimer-optionsTwitterAlertCommunicationErrors").checked=true;
+		}
+		
     }
     
     /**
@@ -660,6 +725,62 @@ function teaTimerOptionsWindow()
 	{
 		common.setSound("start",getValueOfSoundSelectBox("start"));
 		common.setSound("end",getValueOfSoundSelectBox("end"));
+	}
+	
+	
+	this.twitterActiveCommand=function()
+	{
+		var twitterActiveCheckbox=document.getElementById("teaTimer-optionsTwitterActive");
+		changeTwitterInputFieldsState((twitterActiveCheckbox.checked)?"activate":"deactivate");
+	}
+	
+	var changeTwitterInputFieldsState=function(mode)
+	{
+		mode=(mode==="activate")?"activate":"deactivate";
+		var fields=["teaTimer-optionsTwitterUsernameLabel","teaTimer-optionsTwitterUsername","teaTimer-optionsTwitterPasswordLabel","teaTimer-optionsTwitterPassword","teaTimer-optionsTwitterTestConnection","teaTimer-optionsTwitterStartMessageCheckbox","teaTimer-optionsTwitterStartMessageLabel","teaTimer-optionsTwitterStartMessage","teaTimer-optionsTwitterFinishMessageCheckbox","teaTimer-optionsTwitterFinishMessageLabel","teaTimer-optionsTwitterFinishMessage","teaTimer-optionsTwitterAlertCommunicationErrors"];
+		
+		for(var i in fields)
+		{
+			var field=document.getElementById(fields[i]);
+			
+			if(
+				((fields[i]==="teaTimer-optionsTwitterStartMessageLabel" || fields[i]==="teaTimer-optionsTwitterStartMessage") && !document.getElementById("teaTimer-optionsTwitterStartMessageCheckbox").checked) ||
+				((fields[i]==="teaTimer-optionsTwitterFinishMessageLabel" || fields[i]==="teaTimer-optionsTwitterFinishMessage") && !document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox").checked)
+			)
+			{
+				///field.removeAttribute("disabled");
+				continue;
+			}
+			
+			if(mode==="activate")
+			{
+				field.removeAttribute("disabled");
+			}
+			else
+			{
+				field.setAttribute("disabled","true");
+			}
+		}
+	}
+	
+	this.twitterMessageBoxStateChanged=function(which)
+	{
+		which=(which==="start")?"start":"finish";
+		var chkbox=document.getElementById("teaTimer-optionsTwitter"+((which==="start")?"Start":"Finish")+"MessageCheckbox");
+		var txtbox=document.getElementById("teaTimer-optionsTwitter"+((which==="start")?"Start":"Finish")+"Message");
+		var label=document.getElementById("teaTimer-optionsTwitter"+((which==="start")?"Start":"Finish")+"MessageLabel");
+		
+		if(chkbox.checked)
+		{
+			txtbox.removeAttribute("disabled");
+			label.removeAttribute("disabled");
+		}
+		else
+		{
+			txtbox.setAttribute("disabled","true");
+			label.setAttribute("disabled","true");
+		}
+		
 	}
 }
 
