@@ -751,6 +751,71 @@ function teaTimerCommon()
 	{
 		return getOption("twitter.showCommunicationErrors");
 	}
+	
+	this.setTwitterFeature=function(value)
+	{
+		return setOption("twitter.on",value);
+	}
+	
+	this.setTwitterUsername=function(username)
+	{
+		if(!(typeof username==="string" && username.length>0))
+		{
+			throw new teaTimerInvalidTwitterUsernameException("setTwitterUsername: Username must be a string with more than 0 chars.");
+		}
+		return setOption("twitter.username",username);
+	}
+	
+	this.setTwitterPassword=function(password)
+	{
+		if(!(typeof password==="string" && password.length>0))
+		{
+			throw new teaTimerInvalidTwitterPasswortException("setTwitterPassword: Password must be a string with more than 0 chars.");
+		}
+		return setOption("twitter.password",password);
+	}
+	
+	this.setTwitterEvent=function(event,value)
+	{
+		var optionName=null;
+		switch(event)
+		{
+			case "start":
+			case "finish":
+				optionName="twitter.twitterOn"+event.charAt(0).toUpperCase()+event.substr(1);
+				break;
+			default:
+				throw new teaTimerInvalidTwitterEventException("activateTwitterEvent: '"+event+"' is not a valid twitter event.");
+		}
+		
+		return setOption(optionName,value);
+	}
+	
+	this.setTweetText=function(tweetId,text)
+	{
+		var optionName=null;
+		switch(event)
+		{
+			case "start":
+			case "finish":
+				optionName="twitter."+tweetId+"TweetText";
+				break;
+			default:
+				throw new teaTimerInvalidTwitterEventException("setTweetText: '"+event+"' is not a valid tweet id.");
+		}
+		
+		if(!(typeof username==="string" && username.length>0))
+		{
+			throw new teaTimerInvalidTwitterTweetTextException("setTweetText: text must be a string with more than 0 chars.");
+		}
+		
+		return setOption(optionName,text);
+	}
+	
+	this.setShowCommunicationErrors=function(value)
+	{
+		return setOption("twitter.showCommunicationErrors",value);
+	}
     
     /*
 		=========================
@@ -1124,6 +1189,12 @@ function teaTimerInvalidTwitterPasswordException(msg)
 function teaTimerInvalidTwitterTweetTextException(msg)
 {
 	this.name="teaTimerInvalidTwitterTweetTextException";
+	this.message=((msg===undefined)?null:msg);
+}
+
+function teaTimerInvalidTwitterEventException(msg)
+{
+	this.name="teaTimerInvalidTwitterEventException";
 	this.message=((msg===undefined)?null:msg);
 }
 

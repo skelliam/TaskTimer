@@ -326,46 +326,16 @@ function teaTimerOptionsWindow()
             try
             {
                 validateTeasInTree();
-				if(
-					common.checkSoundId("start",getValueOfSoundSelectBox("start"))===false ||
-					common.checkSoundId("end",getValueOfSoundSelectBox("end"))===false
-				)
-				{
-					alert(common.getString("options.validate.soundError"));
-				}
-				else
-				{
-					var sortOrderValid=false;
-					try
-					{
-						common.validateSortingOrder(selSortingOrder.value);
-						sortOrderValid=true;
-					}
-					catch(e)
-					{
-						alert(common.getString("options.validate.sortingError"));
-					}
-					
-					if(sortOrderValid)
-					{
-						var widgetShowTime=parseInt(widgetShowTimeTxtField.value,10);
-						if(!(widgetShowTime>=0))
-						{
-							alert(common.getString("options.validate.widgetAlertShowTimeError"));
-						}
-						else
-						{
-							valid=true;
-						}
-					}
-				}
+				validateAlertSettings();
+				validateTwitterSettings();
+				valid=true;
             }
             catch(e)
             {
-                if(e.name==="teaTimerInvalidTeaNameException" || e.name==="teaTimerInvalidTimeException")
-                {
-                    alert(e.message);
-                }
+				if(e.humanReadableOutput)
+				{
+					alert(e.humanReadableOutput);
+				}
             }
             
             if(valid)
@@ -374,10 +344,91 @@ function teaTimerOptionsWindow()
 				saveSortingOrder();
 				saveAlerts();
 				saveSounds();
+				saveTwitterSettings();
                 window.close();
             }
         }
     }
+	
+	var validateAlertSettings=function()
+	{
+		if(
+			common.checkSoundId("start",getValueOfSoundSelectBox("start"))===false ||
+			common.checkSoundId("end",getValueOfSoundSelectBox("end"))===false
+		)
+		{
+			var ex=new teaTimerInvalidSoundIDException();
+			ex.humanReadableOutput=common.getString("options.validate.soundError");
+			throw ex;
+		}
+		
+		try
+		{
+			common.validateSortingOrder(selSortingOrder.value);
+		}
+		catch(e)
+		{
+			var ex=new teaTimerInvalidSortOrderException();
+			ex.humanReadbleOutput=common.getString("options.validate.sortingError");
+			throw ex;
+		}
+		
+		var widgetShowTime=parseInt(widgetShowTimeTxtField.value,10);
+		if(!(widgetShowTime>=0))
+		{
+			var ex=new teaTimerInvalidWidgetAlertShowTimeException();
+			ex.humanReadableOutput=common.getString("options.validate.widgetAlertShowTimeError");
+			throw ex;
+		}
+		
+		return true;
+	}
+	
+	var validateTwitterSettings=function()
+	{
+		var twitterActiveCheckbox=document.getElementById("teaTimer-optionsTwitterActive");
+		if(twitterActiveCheckbox.checked)
+		{
+			if(document.getElementById("teaTimer-optionsTwitterUsername").value.length<=0)
+			{
+				var ex=new teaTimerInvalidTwitterUsernameException();
+				ex.humanReadableOutput=common.getString("options.validate.noTwitterUsername");
+				throw ex;
+			}
+			
+			if(document.getElementById("teaTimer-optionsTwitterPassword").value.length<=0)
+			{
+				var ex=new teaTimerInvalidTwitterPasswordException();
+				ex.humanReadableOutput=common.getString("options.validate.noTwitterPassword");
+				throw ex;
+			}
+			
+			var twitterOnCountdownStartCheckbox=document.getElementById("teaTimer-optionsTwitterStartMessageCheckbox");
+			var twitterOnCountdownFinishCheckbox=document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox")
+			if(!twitterOnCountdownStartCheckbox.checked && !twitterOnCountdownFinishCheckbox.checked)
+			{
+				var ex=new teaTimerInvalidTwitterOnException();
+				ex.humanReadableOutput=common.getString("options.validate.twitterActiveButNoTweetSpecified");
+				throw ex;
+			}
+			
+			if(twitterOnCountdownStartCheckbox.checked && document.getElementById("teaTimer-optionsTwitterStartMessage").value.length<=0)
+			{
+				var ex=new teaTimerInvalidTwitterTweetTextException();
+				ex.humanReadableOutput=common.getString("options.validate.noTwitterStartMessage");
+				throw ex;
+			}
+			
+			if(twitterOnCountdownStartCheckbox.checked && document.getElementById("teaTimer-optionsTwitterFinishMessage").value.length<=0)
+			{
+				var ex=new teaTimerInvalidTwitterTweetTextException();
+				ex.humanReadableOutput=common.getString("options.validate.noTwitterFinishMessage");
+				throw ex;
+			}
+		}
+		
+		return true;
+	}
     
     /**
      * This private function checks if the fields in the tealist (tree) are valid.
@@ -395,7 +446,9 @@ function teaTimerOptionsWindow()
             var treeTeaTime=treecells[2].getAttribute("label");
             if(common.trim(treeTeaName).length<=0)
             {
-                throw new teaTimerInvalidTeaNameException(common.getStringf("options.validate.nameErrorInvalidName",new Array(""+(i+1))));
+				var ex=new teaTimerInvalidTeaNameException();
+				ex.humanReadableOutput=common.getStringf("options.validate.nameErrorInvalidName",new Array(""+(i+1)));
+                throw ex;
             }
             
             try
@@ -404,7 +457,9 @@ function teaTimerOptionsWindow()
             }
             catch(e)
             {
-                throw new teaTimerInvalidTimeException(common.getStringf("options.validate.timeInputWrong",new Array(treeTeaName+"")));
+                var ex=new teaTimerInvalidTimeException();
+				ex.humanReadbleOutput=common.getStringf("options.validate.timeInputWrong",new Array(treeTeaName+""));
+				throw ex;
             }
         }
         
@@ -782,7 +837,21 @@ function teaTimerOptionsWindow()
 		}
 		
 	}
+	
+	var saveTwitterSettings=function()
+	{
+		//go on here, testing
+		common.setTwitterFeature(document.getElementById("teaTimer-optionsTwitterActive").checked);
+		common.setTwitterUsername(document.getElementById("teaTimer-optionsTwitterUsername").value);
+		common.setTwitterPassword(document.getElementById("teaTimer-optionsTwitterPassword").value);
+		common.setTwitterEvent("start",document.getElementById("teaTimer-optionsTwitterStartMessageCheckbox").checked);
+		common.setTweetText("start",document.getElementById("teaTimer-optionsTwitterStartMessage").value);
+		common.setTwitterEvent("finish",document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox").checked);
+		common.setTweetText("finish",document.getElementById("teaTimer-optionsTwitterFinishMessage").value);
+		common.setShowCommunicationErrors(document.getElementById("teaTimer-optionsTwitterAlertCommunicationErrors").checked);
+	}
 }
 
 var teaTimerOptionsWindowInstance=new teaTimerOptionsWindow();
 window.addEventListener("load",teaTimerOptionsWindowInstance.init,false);
+
