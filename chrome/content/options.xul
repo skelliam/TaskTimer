@@ -22,6 +22,9 @@
     <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/options.js" />
+    <script type="application/x-javascript" src="chrome://teatimer/content/webtoolkit.base64.js" />
+	<script type="application/x-javascript" src="chrome://teatimer/content/twitter.js" />
+	<script type="application/x-javascript" src="chrome://teatimer/content/aes.js" />
     
     <tabbox>
         <tabs>
@@ -149,46 +152,46 @@
             </tabpanel>
             <tabpanel id="teaTimer-optionsTwitterTab">
                 <vbox flex="1">
-                    <checkbox  label="Twitter TeaTimer events" id="teaTimer-optionsTwitterActive" />
+                    <checkbox  label="&options.twitter.twitterActive;" id="teaTimer-optionsTwitterActive" />
                     
                     <groupbox>
-                        <caption label="Twitter credentials" />
+                        <caption label="&options.twitter.credentials.groupboxcaption;" />
                         <hbox>
                             <vbox>
                                 <hbox align="center">
-                                    <label control="teaTimer-optionsTwitterUsername" value="Username:" id="teaTimer-optionsTwitterUsernameLabel" disabled="true" />
+                                    <label control="teaTimer-optionsTwitterUsername" value="&options.twitter.credentials.username;:" id="teaTimer-optionsTwitterUsernameLabel" disabled="true" />
                                     <textbox id="teaTimer-optionsTwitterUsername" disabled="true" />   
                                 </hbox>
                                 
                                 <hbox align="center">
-                                    <label control="teaTimer-optionsTwitterPassword" value="Password:" id="teaTimer-optionsTwitterPasswordLabel" disabled="true" />
+                                    <label control="teaTimer-optionsTwitterPassword" value="&options.twitter.credentials.password;:" id="teaTimer-optionsTwitterPasswordLabel" disabled="true" />
                                     <textbox id="teaTimer-optionsTwitterPassword" type="password" disabled="true" />
                                 </hbox>
                             </vbox>
-                            <button id="teaTimer-optionsTwitterTestConnection" label="Do test Tweet" disabled="true" />
+                            <button id="teaTimer-optionsTwitterTestCredentials" label="&options.twitter.credentials.testbutton.caption;" disabled="true" />
                         </hbox>
                     </groupbox>
                    
                     <groupbox>
-                        <caption label="Start Timer message" />
+                        <caption label="&options.twitter.startmsg.groupbox.caption;" />
                         
-                        <checkbox label="Twitter this when Countdown starts:" id="teaTimer-optionsTwitterStartMessageCheckbox" disabled="true" />
-                        <label control="teaTimer-optionsTwitterStartMessage" value="Message (use %t to insert tea name)" id="teaTimer-optionsTwitterStartMessageLabel" disabled="true" />
+                        <checkbox label="&options.twitter.startmsg.checkbox.label;:" id="teaTimer-optionsTwitterStartMessageCheckbox" disabled="true" />
+                        <label control="teaTimer-optionsTwitterStartMessage" value="&options.twitter.startmsg.textfield.label;" id="teaTimer-optionsTwitterStartMessageLabel" disabled="true" />
                         <textbox id="teaTimer-optionsTwitterStartMessage" multiline="true" disabled="true" />
                     </groupbox>
                    
                    <groupbox>
-                        <caption label="End Timer message" />
+                        <caption label="&options.twitter.endmsg.groupbox.caption;" />
                         
-                        <checkbox label="Twitter this when Countdown ends:" id="teaTimer-optionsTwitterFinishMessageCheckbox" disabled="true" />
-                        <label control="teaTimer-optionsTwitterFinishMessage" value="Message (use %t to insert tea name)" id="teaTimer-optionsTwitterFinishMessageLabel" disabled="true" />
+                        <checkbox label="&options.twitter.endmsg.checkbox.label;:" id="teaTimer-optionsTwitterFinishMessageCheckbox" disabled="true" />
+                        <label control="teaTimer-optionsTwitterFinishMessage" value="&options.twitter.endmsg.textfield.label;" id="teaTimer-optionsTwitterFinishMessageLabel" disabled="true" />
                         <textbox id="teaTimer-optionsTwitterFinishMessage" multiline="true" disabled="true" />
                     </groupbox>
                     
                     <groupbox>
-                        <caption label="Misc." />
+                        <caption label="&options.twitter.misc.groupbox.caption;" />
                         
-                        <checkbox label="Alert when there was a communication error between TeaTimer and Twitter" id="teaTimer-optionsTwitterAlertCommunicationErrors" disabled="true" />
+                        <checkbox label="&options.twitter.misc.alertcommunicationerrors;" id="teaTimer-optionsTwitterAlertCommunicationErrors" disabled="true" />
                     </groupbox>
                 </vbox>
             </tabpanel>

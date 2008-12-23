@@ -42,6 +42,17 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfary">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Siorbanie">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Mowa">
+<!ENTITY options.twitter.twitterActive "">
+<!ENTITY options.twitter.credentials.groupboxcaption "">
+<!ENTITY options.twitter.credentials.username "">
+<!ENTITY options.twitter.credentials.password "">
+<!ENTITY options.twitter.credentials.testbutton.caption "">
+<!ENTITY options.twitter.startmsg.checkbox.label "">
+<!ENTITY options.twitter.startmsg.textfield.label "">
+<!ENTITY options.twitter.endmsg.checkbox.label "">
+<!ENTITY options.twitter.endmsg.textfield.label "">
+<!ENTITY options.twitter.options.twitter.misc.alertcommunicationerrors "">
+
 <!ENTITY options.buttons.ok.label "OK">
 <!ENTITY options.buttons.ok.accesskey "o">
 <!ENTITY options.buttons.cancel.label "Anuluj">

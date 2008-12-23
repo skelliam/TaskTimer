@@ -99,8 +99,9 @@ function teaTimer()
 		
 		uninstObserver.addObserver(self,"em-action-requested",false);
 		uninstObserver.addObserver(self,"quit-application-granted",false);
-	}
 		
+	}
+	
 	/*
 		==============
 		| UI methods |
@@ -284,6 +285,16 @@ function teaTimer()
 		{
 			sound.play(common.getURLtoSound("start",soundID,true));
 		}
+		
+		if(common.isTwitterFeatureOn() && common.twitterOnStart())
+		{
+			var twitterHandler=new jsTwitter(common.getTwitterUsername(),common.getTwitterPassword());
+			var tweetText=common.getTwitterTweetText("start");
+			var teaName=(idOfCurrentSteepingTea==="quicktimer")?common.getString("teatimer.twitter.teaNameQuickTimer"):teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
+			tweetText=tweetText.replace("%t",teaName);
+			dump("tweeting (start): "+tweetText+"\n");
+			tweet(twitterHandler,tweetText);
+		}
 	}
 	
 	/**
@@ -452,6 +463,16 @@ function teaTimer()
 		if(common.isAlertDesired("popup"))
 		{
 			doPopupAlert();
+		}
+		
+		if(common.isTwitterFeatureOn() && common.twitterOnFinish())
+		{
+			var twitterHandler=new jsTwitter(common.getTwitterUsername(),common.getTwitterPassword());
+			var tweetText=common.getTwitterTweetText("finish");
+			var teaName=(idOfCurrentSteepingTea==="quicktimer")?common.getString("teatimer.twitterTeaNameQuickTimer"):teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
+			tweetText=tweetText.replace("%t",teaName);
+			common.log("",("tweeting (finish): "+tweetText+"\n"));
+			tweet(twitterHandler,tweetText);
 		}
 	}
 	
@@ -726,6 +747,41 @@ function teaTimer()
 		common.removeCSSClass(teatimerBox,"readyAlert");
 		common.removeCSSClass(teatimerBox,"invisible");
 		teatimerPanel.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
+	}
+	
+	var tweet=function(twitterHandler,tweetText)
+	{
+		try
+		{
+			twitterHandler.sendTweet(tweetText);
+		}
+		catch(e)
+		{
+			if(common.showCommunicationErrors())
+			{
+				var errorMsg=common.getString("teatimer.twitter.communicationError");
+				if(e.name)
+				{
+					switch(e.name)
+					{
+						case "twitterHttpInternalServerErrorException":
+						case "twitterHttpBadGatewayException":
+						case "twitterHttpServiceUnavailableException":
+							errorMsg+=" "+common.getString("teatimer.twitter.failWhaleAlert");
+							break;
+						case "twitterHttpNotAuthorizedException":
+						case "twitterHttpForbiddenException":
+							errorMsg+=" "+common.getString("teatimer.twitter.checkCredentials");
+							break;
+					}
+				}
+				else
+				{
+					errorMsg+=" "+common.getString("teatimer.checkInternetConnection");
+				}
+				alert(errorMsg);
+			}
+		}
 	}
 	
 	/**

@@ -26,6 +26,8 @@ function teaTimerCommon()
     const strings=Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle("chrome://teatimer/locale/teatimer.properties");
     const quitObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
     quitObserver.addObserver(this,"quit-application-granted",false);
+	
+	const twitterPasswordKey="#}Z0fn_7)4!*>JHbP}+\rg#aAiiKr:]p3(@Go\"p,qbaF~m,HISoEU!eHwC!gypo";
     
     /**
      * This observer method is called, when the Firefox quits.
@@ -255,6 +257,10 @@ function teaTimerCommon()
 		{
 			value=(type==="char")?teaTimerPrefs.getCharPref(name):teaTimerPrefs.getBoolPref(name);
 			validateOptionValue(name,value);
+			if(name==="twitter.password")
+			{
+				value=AESDecryptCtr(value,twitterPasswordKey,256);
+			}
 		}
 		catch(e)
 		{
@@ -303,6 +309,10 @@ function teaTimerCommon()
 		
 		if(type==="char")
 		{
+			if(name==="twitter.password")
+			{
+				value=AESEncryptCtr(value,twitterPasswordKey,256);
+			}
 			teaTimerPrefs.setCharPref(name,value);
 		}
 		else
@@ -794,17 +804,17 @@ function teaTimerCommon()
 	this.setTweetText=function(tweetId,text)
 	{
 		var optionName=null;
-		switch(event)
+		switch(tweetId)
 		{
 			case "start":
 			case "finish":
 				optionName="twitter."+tweetId+"TweetText";
 				break;
 			default:
-				throw new teaTimerInvalidTwitterEventException("setTweetText: '"+event+"' is not a valid tweet id.");
+				throw new teaTimerInvalidTwitterEventException("setTweetText: '"+tweetId+"' is not a valid tweet id.");
 		}
 		
-		if(!(typeof username==="string" && username.length>0))
+		if(!(typeof text==="string" && text.length>0))
 		{
 			throw new teaTimerInvalidTwitterTweetTextException("setTweetText: text must be a string with more than 0 chars.");
 		}
@@ -833,36 +843,36 @@ function teaTimerCommon()
      **/
     this.validateEnteredTime=function(input)
     {
-	input=self.trim(input);
-	if(input.length<=0)
-	{
-	    throw new teaTimerTimeInputToShortException("Invalid time input, it's to short.");
-	}
-	
-	var time=null;
-	var validFormat1=/^[0-9]+$/; //allow inputs in seconds (example: 60)
-	var validFormat2=/^[0-9]+:[0-5][0-9]$/; //allow input in minute:seconds (example: 1:20)
-	var validFormat3=/^[0-9]+:[0-9]$/; //allow input in minute:seconds with one digit second (example: 1:9)
-	
-	if(validFormat1.test(input))
-	{
-	    time=parseInt(input,10);
-	}
-	else if(validFormat2.test(input) || validFormat3.test(input))
-	{
-	    time=self.getTimeFromTimeString(input);
-	}
-	else
-	{
-            throw new teaTimerInvalidTimeInputException("Invalid time input.");
-	}
-	
-	if(time<=0)
-	{
-	    throw new teaTimerInvalidTimeException("Entered Time is smaller or equal 0. That's of course an invalid time.");
-	}
-	
-	return time;
+		input=self.trim(input);
+		if(input.length<=0)
+		{
+			throw new teaTimerTimeInputToShortException("Invalid time input, it's to short.");
+		}
+		
+		var time=null;
+		var validFormat1=/^[0-9]+$/; //allow inputs in seconds (example: 60)
+		var validFormat2=/^[0-9]+:[0-5][0-9]$/; //allow input in minute:seconds (example: 1:20)
+		var validFormat3=/^[0-9]+:[0-9]$/; //allow input in minute:seconds with one digit second (example: 1:9)
+		
+		if(validFormat1.test(input))
+		{
+			time=parseInt(input,10);
+		}
+		else if(validFormat2.test(input) || validFormat3.test(input))
+		{
+			time=self.getTimeFromTimeString(input);
+		}
+		else
+		{
+			throw new teaTimerInvalidTimeInputException("Invalid time input.");
+		}
+		
+		if(time<=0)
+		{
+			throw new teaTimerInvalidTimeException("Entered Time is smaller or equal 0. That's of course an invalid time.");
+		}
+		
+		return time;
     }
 	
     /**
@@ -873,16 +883,16 @@ function teaTimerCommon()
      **/
     this.getTimeFromTimeString=function(str)
     {
-	var parts=str.split(":");
-	if(parts.length!==2)
-	{
-            throw new teaTimerInvalidTimeStringException("getTimeFromTimeString: '"+str+"' is not a valid time string.");
-	}
-	
-	var minutes=parseInt(parts[0],10);
-	var seconds=parseInt(parts[1],10);
-	
-	return minutes*60+seconds;
+		var parts=str.split(":");
+		if(parts.length!==2)
+		{
+				throw new teaTimerInvalidTimeStringException("getTimeFromTimeString: '"+str+"' is not a valid time string.");
+		}
+		
+		var minutes=parseInt(parts[0],10);
+		var seconds=parseInt(parts[1],10);
+		
+		return minutes*60+seconds;
     }
 	
     /**
@@ -894,10 +904,10 @@ function teaTimerCommon()
      **/
     this.getTimeStringFromTime=function(time)
     {
-	var timeStr="";
-	var seconds=(time%60);
-	timeStr=parseInt(time/60)+":"+((seconds<10)?"0":"")+seconds;
-	return timeStr;
+		var timeStr="";
+		var seconds=(time%60);
+		timeStr=parseInt(time/60)+":"+((seconds<10)?"0":"")+seconds;
+		return timeStr;
     }
 	
     /**
@@ -917,7 +927,7 @@ function teaTimerCommon()
      **/
     this.rtrim=function(text)
     {
-	return text.replace(/\s+$/,"");
+		return text.replace(/\s+$/,"");
     }
     
     /**
@@ -927,7 +937,7 @@ function teaTimerCommon()
      **/
     this.trim=function(text)
     {
-	return self.ltrim(self.rtrim(text));
+		return self.ltrim(self.rtrim(text));
     }
     
     /**

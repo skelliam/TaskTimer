@@ -119,6 +119,10 @@ function teaTimerOptionsWindow()
 		var twitterOnCountdownFinishCheckbox=document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox");
 		twitterOnCountdownFinishCheckbox.addEventListener("command",function() { teaTimerOptionsWindowInstance.twitterMessageBoxStateChanged("finish"); },false);
 		
+		var twitterTestCredentialsButton=document.getElementById("teaTimer-optionsTwitterTestCredentials");
+		twitterTestCredentialsButton.addEventListener("command",teaTimerOptionsWindowInstance.testTwitterCredentialsButtonCommand,false);
+		
+		
 		var twitterIsOn=common.isTwitterFeatureOn();
 		if(twitterIsOn)
 		{
@@ -792,7 +796,7 @@ function teaTimerOptionsWindow()
 	var changeTwitterInputFieldsState=function(mode)
 	{
 		mode=(mode==="activate")?"activate":"deactivate";
-		var fields=["teaTimer-optionsTwitterUsernameLabel","teaTimer-optionsTwitterUsername","teaTimer-optionsTwitterPasswordLabel","teaTimer-optionsTwitterPassword","teaTimer-optionsTwitterTestConnection","teaTimer-optionsTwitterStartMessageCheckbox","teaTimer-optionsTwitterStartMessageLabel","teaTimer-optionsTwitterStartMessage","teaTimer-optionsTwitterFinishMessageCheckbox","teaTimer-optionsTwitterFinishMessageLabel","teaTimer-optionsTwitterFinishMessage","teaTimer-optionsTwitterAlertCommunicationErrors"];
+		var fields=["teaTimer-optionsTwitterUsernameLabel","teaTimer-optionsTwitterUsername","teaTimer-optionsTwitterPasswordLabel","teaTimer-optionsTwitterPassword","teaTimer-optionsTwitterTestCredentials","teaTimer-optionsTwitterStartMessageCheckbox","teaTimer-optionsTwitterStartMessageLabel","teaTimer-optionsTwitterStartMessage","teaTimer-optionsTwitterFinishMessageCheckbox","teaTimer-optionsTwitterFinishMessageLabel","teaTimer-optionsTwitterFinishMessage","teaTimer-optionsTwitterAlertCommunicationErrors"];
 		
 		for(var i in fields)
 		{
@@ -840,7 +844,6 @@ function teaTimerOptionsWindow()
 	
 	var saveTwitterSettings=function()
 	{
-		//go on here, testing
 		common.setTwitterFeature(document.getElementById("teaTimer-optionsTwitterActive").checked);
 		common.setTwitterUsername(document.getElementById("teaTimer-optionsTwitterUsername").value);
 		common.setTwitterPassword(document.getElementById("teaTimer-optionsTwitterPassword").value);
@@ -849,6 +852,22 @@ function teaTimerOptionsWindow()
 		common.setTwitterEvent("finish",document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox").checked);
 		common.setTweetText("finish",document.getElementById("teaTimer-optionsTwitterFinishMessage").value);
 		common.setShowCommunicationErrors(document.getElementById("teaTimer-optionsTwitterAlertCommunicationErrors").checked);
+	}
+	
+	this.testTwitterCredentialsButtonCommand=function()
+	{
+		var username=document.getElementById("teaTimer-optionsTwitterUsername").value;
+		var password=document.getElementById("teaTimer-optionsTwitterPassword").value;
+		try
+		{
+			var twitter=new jsTwitter(username,password);
+			var statusTxt=common.getString("options.twitter.test.credentials"+((twitter.verifyCredentials())?"Ok":"Wrong"));
+			alert(statusTxt);
+		}
+		catch(ex)
+		{
+			//network error, alert user
+		}
 	}
 }
 
