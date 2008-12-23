@@ -4,7 +4,7 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                     em:id="teatimer@codepaintedby.philipp-soehnlein.de"
-                    em:version="1.0pre"
+                    em:version="1.1pre"
                     em:name="TeaTimer"
                     em:description="A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3. See my website for more informations."
                     em:creator="Philipp Söhnlein"
@@ -17,13 +17,15 @@
         <em:translator>English locale by Hannah Meyer and Philipp Söhnlein</em:translator>
         <em:translator>French locale by Hannah Meyer </em:translator>
         <em:translator>German locale by Philipp Söhnlein</em:translator>
-        <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
+        <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (konstantino.deviantart.com)</em:contributor>
         <em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
         <em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
         <em:contributor>Fanfare Sound released under Soundsnap license by shriek (shriek-music.com) on soundsnap.com</em:contributor>
         <em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
         <em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
         <em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
+        <em:contributor>Password crypto algorithm from movable-type.co.uk/scripts/aes.html</em:contributor>
+        <em:contributor>Base64 algorithm from webtoolkit.info/javascript-base64.html</em:contributor>
     
         <em:localized> <!-- for Firefox >3 -->
                 <Description>
@@ -36,13 +38,15 @@
                         <em:translator>English locale by Hannah Meyer and Philipp Söhnlein</em:translator>
                         <em:translator>French locale by Hannah Meyer</em:translator>
                         <em:translator>German locale by Philipp Söhnlein</em:translator>
-                        <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
+                        <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (konstantino.deviantart.com)</em:contributor>
                         <em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
                         <em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
                         <em:contributor>Fanfare Sound released under Soundsnap license by shriek (shriek-music.com) on soundsnap.com</em:contributor>
                         <em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
                         <em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
                         <em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
+                        <em:contributor>Password crypto algorithm from movable-type.co.uk/scripts/aes.html</em:contributor>
+                        <em:contributor>Base64 algorithm from webtoolkit.info/javascript-base64.html</em:contributor>
                 </Description>
         </em:localized>
         
@@ -57,13 +61,15 @@
                         <em:translator>Englische Lokalisierung von Hannah Meyer und Philipp Söhnlein (http://www.philipp-soehnlein.de/)</em:translator>
                         <em:translator>Französische Lokalisierung von Hannah Meyer</em:translator>
                         <em:translator>Deutsche Lokalisierung von Philipp Söhnlein (http://www.philipp-soehnlein.de/)</em:translator>
-                        <em:contributor>Icon basierend auf dem Coffe Cup Icon von Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
+                        <em:contributor>Icon basierend auf dem Coffe Cup Icon von Konstantino Kapetaneas (konstantino.deviantart.com/</em:contributor>
                         <em:contributor>Egg Timer Sound veröffentlicht unter CC Sampling Plus 1.0 license von xyzr_kx bei freesound.org</em:contributor>
                         <em:contributor>Cup Sound veröffentlicht unter CC Sampling Plus 1.0 license von Andre Rocha bei freesound.org</em:contributor>
                         <em:contributor>Fanfare Sound veröffentlicht unter Soundsnap license von shriek (shriek-music.com) bei soundsnap.com</em:contributor>
                         <em:contributor>Pouring Sound veröffentlicht unter CC Sampling Plus 1.0 license von stijn bei freesound.org</em:contributor>
                         <em:contributor>Slurp Sound veröffentlicht unter Soundsnap license von audiofruit (audiofruit.co.uk) bei soundsnap.com</em:contributor>
                         <em:contributor>Speech Sound veröffentlicht unter CC Sampling Plus 1.0 license von alphahog (mikevendetti.com) bei freesound.org</em:contributor>
+                        <em:contributor>Passwort-Crypto-Algorithmus von movable-type.co.uk/scripts/aes.html</em:contributor>
+                        <em:contributor>Base64-Alorithmus von webtoolkit.info/javascript-base64.html</em:contributor>
                 </Description>
         </em:localized>
         <em:localized> <!-- for Firefox >3 -->
@@ -77,7 +83,7 @@
                         <em:translator>Localisation anglaise de Philipp Söhnlein</em:translator>
                         <em:translator>Localisation française de Hannah Meyer </em:translator>
                         <em:translator>Localisation allemande de Philipp Söhnlein</em:translator>
-                        <em:contributor>Symbole basé au symbole Coffe Cup de Konstantino Kapetaneas (http://konstantino.deviantart.com/)</em:contributor>
+                        <em:contributor>Symbole basé au symbole Coffe Cup de Konstantino Kapetaneas (konstantino.deviantart.com/)</em:contributor>
                         <em:contributor>Son du minuteur mise à disposition sous la license CC Sampling Plus 1.0 de xyzr_kx dans freesound.org</em:contributor>
                         <em:contributor>Son de la tasse mise à disposition sous la license CC Sampling Plus 1.0 license de Andre Rocha dans freesound.org</em:contributor>
                         <em:contributor>Son de la fanfare mise à disposition sous la license Soundsnap de shriek (shriek-music.com) dans soundsnap.com</em:contributor>
