@@ -30,7 +30,7 @@
         <tabs>
             <tab label="&options.tabs.teavarities;" />
             <tab label="&options.tabs.alerts;" />
-            <tab label="Twitter" />
+            <tab label="Twitter" id="teaTimer-optionsTwitterTab" />
         </tabs>
         <tabpanels>
             <tabpanel id="teaTimer-optionsVaritiesTab">
@@ -55,24 +55,24 @@
                         
                         <tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
                             <treecols editable="true">
-                            <treecol label="&options.varities.manageExistingTeas.tree.id;" id="teaTimer-optionsTeas-idColumn" hidden="true" />
-                            <treecol label="&options.varities.manageExistingTeas.tree.name;" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
-                            <treecol label="&options.varities.manageExistingTeas.tree.time;" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
+                                <treecol label="&options.varities.manageExistingTeas.tree.id;" id="teaTimer-optionsTeas-idColumn" hidden="true" />
+                                <treecol label="&options.varities.manageExistingTeas.tree.name;" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
+                                <treecol label="&options.varities.manageExistingTeas.tree.time;" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
                             </treecols>
                             <treechildren id="teaTimer-optionsTeasTreeChildren">
                             <!--
                             <treeitem>
                                 <treerow>
-                                <treecell label="1" />
-                                <treecell editable="true" label="Earl Grey" />
-                                <treecell editable="true" label="3:00" />
+                                    <treecell label="1" />
+                                    <treecell editable="true" label="Earl Grey" />
+                                    <treecell editable="true" label="3:00" />
                                 </treerow>
                             </treeitem>
                             <treeitem>
                                 <treerow>
-                                <treecell label="2" />
-                                <treecell editable="true" label="Rooibos" />
-                                <treecell editable="true" label="7:00" />
+                                    <treecell label="2" />
+                                    <treecell editable="true" label="Rooibos" />
+                                    <treecell editable="true" label="7:00" />
                                 </treerow>
                             </treeitem>
                             -->
@@ -169,22 +169,40 @@
                                 </hbox>
                             </vbox>
                             <button id="teaTimer-optionsTwitterTestCredentials" label="&options.twitter.credentials.testbutton.caption;" disabled="true" />
+                            <box align="center" id="teaTimer-optionsTwitterTestCredentialLoadingBox" />
                         </hbox>
                     </groupbox>
                    
                     <groupbox>
                         <caption label="&options.twitter.startmsg.groupbox.caption;" />
                         
-                        <checkbox label="&options.twitter.startmsg.checkbox.label;:" id="teaTimer-optionsTwitterStartMessageCheckbox" disabled="true" />
-                        <label control="teaTimer-optionsTwitterStartMessage" value="&options.twitter.startmsg.textfield.label;" id="teaTimer-optionsTwitterStartMessageLabel" disabled="true" />
+                        <hbox>
+                            <vbox>
+                                <checkbox label="&options.twitter.startmsg.checkbox.label;:" id="teaTimer-optionsTwitterStartMessageCheckbox" disabled="true" />
+                                <label control="teaTimer-optionsTwitterStartMessage" value="&options.twitter.startmsg.textfield.label;" id="teaTimer-optionsTwitterStartMessageLabel" disabled="true" />
+                            </vbox>
+                            <box align="right" id="teaTimer-optionsTwitterStartMessageCharsLeftBox" flex="1">
+                                <description id="teaTimer-optionsTwitterStartMessageCharsLeftLabel">Zeichen übrig:</description>
+                                <description id="teaTimer-optionsTwitterStartMessageCharsLeft">140</description>
+                            </box>
+                        </hbox>
+                        
                         <textbox id="teaTimer-optionsTwitterStartMessage" multiline="true" disabled="true" />
                     </groupbox>
                    
                    <groupbox>
                         <caption label="&options.twitter.endmsg.groupbox.caption;" />
                         
-                        <checkbox label="&options.twitter.endmsg.checkbox.label;:" id="teaTimer-optionsTwitterFinishMessageCheckbox" disabled="true" />
-                        <label control="teaTimer-optionsTwitterFinishMessage" value="&options.twitter.endmsg.textfield.label;" id="teaTimer-optionsTwitterFinishMessageLabel" disabled="true" />
+                        <hbox>
+                            <vbox>
+                                <checkbox label="&options.twitter.endmsg.checkbox.label;:" id="teaTimer-optionsTwitterFinishMessageCheckbox" disabled="true" />
+                                <label control="teaTimer-optionsTwitterFinishMessage" value="&options.twitter.endmsg.textfield.label;" id="teaTimer-optionsTwitterFinishMessageLabel" disabled="true" />
+                            </vbox>
+                            <box align="right" id="teaTimer-optionsTwitterFinishMessageCharsLeftBox" flex="1">
+                                <description id="teaTimer-optionsTwitterFinishMessageCharsLeftLabel">Zeichen übrig:</description>
+                                <description id="teaTimer-optionsTwitterFinishMessageCharsLeft">140</description>
+                            </box>
+                        </hbox>
                         <textbox id="teaTimer-optionsTwitterFinishMessage" multiline="true" disabled="true" />
                     </groupbox>
                     

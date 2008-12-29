@@ -16,7 +16,7 @@
 */
 function jsTwitter(user,pw)
 {
-	var useHttps=false;
+	var useHttps=true;
 	var username=(typeof user==="string" && user.length>0)?user:null;
 	var password=(typeof pw==="string" && pw.length>0)?pw:null;
 	

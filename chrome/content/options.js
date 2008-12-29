@@ -30,6 +30,8 @@ function teaTimerOptionsWindow()
 	var btnPreviewStartSound=null; //container for start sound preview button
 	var btnPreviewEndSound=null; //container for end sound preview button
 	var widgetShowTimeTxtField=null;
+	
+	var lengthOfLongestTeaName=null;
         
     this.init=function()
     {
@@ -142,6 +144,9 @@ function teaTimerOptionsWindow()
 			document.getElementById("teaTimer-optionsTwitterPassword").value=twitterPassword;
 		}
 		
+		self.updateLengthOfLongestTeaName();
+		document.getElementById("teaTimer-optionsTwitterTab").addEventListener("command",function() { teaTimerOptionsWindowInstance.updateCharsLeftBox("start"), teaTimerOptionsWindowInstance.updateCharsLeftBox("finish"); },false);
+		
 		if(common.twitterOnStart())
 		{
 			twitterOnCountdownStartCheckbox.checked=true;
@@ -152,10 +157,14 @@ function teaTimerOptionsWindow()
 		}
 		
 		var tweetStartText=common.getTwitterTweetText("start");
+		var tweetStartTextTxtBox=document.getElementById("teaTimer-optionsTwitterStartMessage");
 		if(tweetStartText)
 		{
-			document.getElementById("teaTimer-optionsTwitterStartMessage").value=tweetStartText;
+			tweetStartTextTxtBox.value=tweetStartText;
 		}
+		setValueOfCharsLeftBox("start",recalculateCharsLeft("teaTimer-optionsTwitterStartMessage"));
+		tweetStartTextTxtBox.addEventListener("keyup",teaTimerOptionsWindowInstance.startTweetTextChanged,false);
+		tweetStartTextTxtBox.addEventListener("focus",teaTimerOptionsWindowInstance.updateLengthOfLongestTeaName,false);
 		
 		if(common.twitterOnFinish())
 		{
@@ -167,10 +176,14 @@ function teaTimerOptionsWindow()
 		}
 		
 		var tweetFinishText=common.getTwitterTweetText("finish");
+		var tweetFinishTextTxtBox=document.getElementById("teaTimer-optionsTwitterFinishMessage");
 		if(tweetFinishText)
 		{
-			document.getElementById("teaTimer-optionsTwitterFinishMessage").value=tweetFinishText;
+			tweetFinishTextTxtBox.value=tweetFinishText;
 		}
+		setValueOfCharsLeftBox("finish",recalculateCharsLeft("teaTimer-optionsTwitterFinishMessage"));
+		tweetFinishTextTxtBox.addEventListener("keyup",teaTimerOptionsWindowInstance.finishTweetTextChanged,false);
+		tweetFinishTextTxtBox.addEventListener("focus",teaTimerOptionsWindowInstance.updateLengthOfLongestTeaName,false);
 		
 		if(common.showCommunicationErrors())
 		{
@@ -575,6 +588,34 @@ function teaTimerOptionsWindow()
 	{
 		return treeBody.getElementsByTagName("treeitem").length;
     }
+	
+	this.updateLengthOfLongestTeaName=function()
+	{
+		lengthOfLongestTeaName=getLengthOfLongestTeaNameInTree();
+	}
+	
+	var getLengthOfLongestTeaNameInTree=function()
+	{
+		var teaNames=new Array();
+		var treeRows=treeBody.getElementsByTagName("treerow");
+		for(var i=0; i<treeRows.length; i++)
+		{
+			var cells=treeRows[i].getElementsByTagName("treecell");
+			teaNames.push(cells[1].getAttribute("label"));
+		}
+		//dump(teaNames);
+		
+		var lengthOfLongestTeaName=0;
+		for(var i in teaNames)
+		{
+			if(teaNames[i].length>lengthOfLongestTeaName)
+			{
+				lengthOfLongestTeaName=teaNames[i].length;
+			}
+		}
+		//dump("longest:"+lengthOfLongestTeaName+"\n");
+		return lengthOfLongestTeaName;
+	}
     
     /**
      * This public method is called, when the "delete selected teas" button is pressed and removes the items from the tree.
@@ -858,16 +899,83 @@ function teaTimerOptionsWindow()
 	{
 		var username=document.getElementById("teaTimer-optionsTwitterUsername").value;
 		var password=document.getElementById("teaTimer-optionsTwitterPassword").value;
+		var loadingBox=document.getElementById("teaTimer-optionsTwitterTestCredentialLoadingBox");
 		try
 		{
+			var img=document.createElement("image");
+			img.setAttribute("src","chrome://global/skin/icons/loading_16.png");
+			img.setAttribute("tooltiptext",common.getString("options.twitter.test.checkingCredentials"));
+			loadingBox.appendChild(img);
 			var twitter=new jsTwitter(username,password);
 			var statusTxt=common.getString("options.twitter.test.credentials"+((twitter.verifyCredentials())?"Ok":"Wrong"));
 			alert(statusTxt);
 		}
 		catch(ex)
 		{
-			//network error, alert user
+			alert(common.getString("options.twitter.test.networkError"));
 		}
+		
+		//clear loadingbox
+		while(loadingBox.childNodes.length>0)
+		{
+			loadingBox.removeChild(loadingBox.childNodes[0]);
+		}
+	}
+	
+	this.startTweetTextChanged=function()
+	{
+		tweetTextChanged("start");
+	}
+	
+	this.finishTweetTextChanged=function()
+	{
+		tweetTextChanged("finish");
+	}
+	
+	var tweetTextChanged=function(mode)
+	{
+		var box="teaTimer-optionsTwitter"+((mode==="start")?"Start":"Finish")+"Message";
+		setValueOfCharsLeftBox(mode,recalculateCharsLeft(box));
+	}
+	
+	var recalculateCharsLeft=function(box)
+	{
+		var text=document.getElementById(box).value;
+		var estimatedLength=text.length;
+		if(text.indexOf("%t")>=0)
+		{
+			estimatedLength-=2;
+			estimatedLength+=lengthOfLongestTeaName;
+		}
+		
+		return 140-estimatedLength;
+	}
+	
+	var setValueOfCharsLeftBox=function(mode,charsLeft)
+	{
+		var boxName="teaTimer-optionsTwitter"+((mode==="start")?"Start":"Finish")+"MessageCharsLeft";
+		var box=document.getElementById(boxName);
+		box.firstChild.data=charsLeft;
+		
+		if(charsLeft>=20)
+		{
+			box.removeAttribute("class");
+		}
+		else if(charsLeft<20 && charsLeft>=10)
+		{
+			box.setAttribute("class","fewCharsLeft");
+		}
+		else
+		{
+			box.setAttribute("class","veryFewCharsLeft");
+		}
+	}
+	
+	this.updateCharsLeftBox=function(mode)
+	{
+		self.updateLengthOfLongestTeaName();
+		var boxName="teaTimer-optionsTwitter"+((mode==="start")?"Start":"Finish")+"Message";
+		setValueOfCharsLeftBox(mode,recalculateCharsLeft(boxName));
 	}
 }
 
