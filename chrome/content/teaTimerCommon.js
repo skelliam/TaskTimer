@@ -270,6 +270,11 @@ function teaTimerCommon()
 		return value;
 	}
 	
+	/**
+	 * Use this private method to submit an option name and get back the datatype of it.
+	 * @param string optionname
+	 * @returns string type ("char" or "bool" or null)
+	 **/
 	var getTypeOfOption=function(name)
 	{
 		validateOptionName(name);
@@ -306,7 +311,6 @@ function teaTimerCommon()
 		validateOptionName(name);
 		validateOptionValue(name,value);
 		var type=getTypeOfOption(name);
-		
 		if(type==="char")
 		{
 			if(name==="twitter.password")
@@ -726,65 +730,118 @@ function teaTimerCommon()
 		===================
 	
     */
+	
+	/**
+	 * This public method returns a boolean, which indicates, if the Twitter feature of TeaTimer is acitvated or not.
+	 * @returns bool
+	 **/
 	this.isTwitterFeatureOn=function()
 	{
 		return getOption("twitter.on");
 	}
 	
+	/**
+	 *  Use this public method to get the saved twitter username.
+	 *  @returns string username
+	 **/
 	this.getTwitterUsername=function()
 	{
 		return getOption("twitter.username");
 	}
 	
+	/**
+	 *  Use this public method to get the saved and unencrypted twitter password.
+	 **/
 	this.getTwitterPassword=function()
 	{
 		return getOption("twitter.password");
 	}
 	
+	/**
+	 *  Use this public method to find out, if teaTimer should send a Tweet, when a countdown was triggered.
+	 *  @returns bool
+	 **/
 	this.twitterOnStart=function()
 	{
 		return getOption("twitter.twitterOnStart");
 	}
 	
+	/**
+	 *  Use this public method to find out, if teaTimer should send a Tweet, when a countdown has finished.
+	 *  @returns bool
+	 **/
 	this.twitterOnFinish=function()
 	{
 		return getOption("twitter.twitterOnFinish");
 	}
 	
+	/**
+	 *  Use this public method to get the text, that should be tweeted either on start or on finish.
+	 *  NOTE: % is not yet resolved in the return value!
+	 *  
+	 *  @param mode ("start" or "finish")
+	 *  @returns string text
+	 **/
 	this.getTwitterTweetText=function(text)
 	{
 		text=(text==="start")?text:"finish";
 		return getOption("twitter."+text+"TweetText");
 	}
 	
+	/**
+	 *  Use this public method to find out, if teaTimer should show communication errors to the user ("verbose mode").
+	 *  @returns bool
+	 **/
 	this.showCommunicationErrors=function()
 	{
 		return getOption("twitter.showCommunicationErrors");
 	}
 	
+	/**
+	 * With this public method, the twitter feature can be activated or deactivated.
+	 **/
 	this.setTwitterFeature=function(value)
 	{
-		return setOption("twitter.on",value);
+		setOption("twitter.on",value);
 	}
 	
+	/**
+	 * Use this public method to save the twitter username in the options.
+	 *
+	 * @param string username
+	 * @throws teaTimerInvalidTwitterUsernameException
+	 **/
 	this.setTwitterUsername=function(username)
 	{
-		if(!(typeof username==="string" && username.length>0))
+		if(!(typeof username==="string"))
 		{
-			throw new teaTimerInvalidTwitterUsernameException("setTwitterUsername: Username must be a string with more than 0 chars.");
+			throw new teaTimerInvalidTwitterUsernameException("setTwitterUsername: Username must be a string.");
 		}
-		return setOption("twitter.username",username);
+		setOption("twitter.username",username);
 	}
 	
+	/**
+	 * Use this public method to save the twitter password in the options.
+	 *
+	 * @param string password (will be encrypted)
+	 * @throws teaTimerInvalidTwitterPasswordException
+	 **/
 	this.setTwitterPassword=function(password)
 	{
-		if(!(typeof password==="string" && password.length>0))
+		if(!(typeof password==="string"))
 		{
-			throw new teaTimerInvalidTwitterPasswortException("setTwitterPassword: Password must be a string with more than 0 chars.");
+			throw new teaTimerInvalidTwitterPasswortException("setTwitterPassword: Password must be a string.");
 		}
-		return setOption("twitter.password",password);
+		setOption("twitter.password",password);
 	}
 	
+	/**
+	 * Use this public method to activate or deactivate a certain twitter event
+	 *
+	 * @param string event ("start" or "finish")
+	 * @param bool activate (bool) or deactivate (false)?
+	 * @throws teaTimerInvalidTwitterEventException
+	 **/
 	this.setTwitterEvent=function(event,value)
 	{
 		var optionName=null;
@@ -798,9 +855,17 @@ function teaTimerCommon()
 				throw new teaTimerInvalidTwitterEventException("activateTwitterEvent: '"+event+"' is not a valid twitter event.");
 		}
 		
-		return setOption(optionName,value);
+		setOption(optionName,value);
 	}
 	
+	/**
+	 * Use this method to set a text, that should be tweeted on a certain event.
+	 *
+	 * @param string tweetId ("start" or "finish"; for which event you want to set the tweet text?)
+	 * @param string text
+	 * @throws teaTimerInvalidTwitterEventException
+	 * @throws teaTimerInvalidTwitterTweetTextException
+	 **/
 	this.setTweetText=function(tweetId,text)
 	{
 		var optionName=null;
@@ -814,17 +879,20 @@ function teaTimerCommon()
 				throw new teaTimerInvalidTwitterEventException("setTweetText: '"+tweetId+"' is not a valid tweet id.");
 		}
 		
-		if(!(typeof text==="string" && text.length>0))
+		if(!(typeof text==="string"))
 		{
-			throw new teaTimerInvalidTwitterTweetTextException("setTweetText: text must be a string with more than 0 chars.");
+			throw new teaTimerInvalidTwitterTweetTextException("setTweetText: text must be a string.");
 		}
 		
-		return setOption(optionName,text);
+		setOption(optionName,text);
 	}
 	
+	/**
+	 * With this public method, the verbose mode (for the Twitter feature) can be activated or deactivated.
+	 **/
 	this.setShowCommunicationErrors=function(value)
 	{
-		return setOption("twitter.showCommunicationErrors",value);
+		setOption("twitter.showCommunicationErrors",value);
 	}
     
     /*

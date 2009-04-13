@@ -22,6 +22,11 @@ function jsTwitter(user,pw)
 	
 	var socket=new XMLHttpRequest();
 
+	/**
+	 * Use this public method to ask the Twitter server if credentials are ok.
+	 * @throws twitterNetworkErrorException
+	 * return bool
+	 **/
 	this.verifyCredentials=function()
 	{
 		checkCredentials();
@@ -62,6 +67,13 @@ function jsTwitter(user,pw)
 		return credentialResult;
 	}
 	
+	/**
+	 * Use this method to send a tweet with the given text.
+	 * @param string text2tweet
+	 * @throws twitterInvalidTextException
+	 * @throws twitterNetworkErrorException
+	 * @throws twitterBadResponseException
+	 **/
 	this.sendTweet=function(text2tweet)
 	{
 		if(!(typeof text2tweet==="string" && text2tweet.length>0))
@@ -96,6 +108,14 @@ function jsTwitter(user,pw)
 		}
 	}
 	
+	/**
+	 * This private method checks, if the class knows the credentials.
+	 * No server communication happens here
+	 *
+	 * @throws twitterInvalidUsernameException
+	 * @throws twitterInvalidPasswordException
+	 * @returns true, if everything is okay.
+	 **/
 	var checkCredentials=function()
 	{
 		if(!(typeof username==="string" && username.length>0))
@@ -111,6 +131,19 @@ function jsTwitter(user,pw)
 		return true;
 	}
 	
+	/**
+	 * This internal method checks, if the server response was okay (ready state and HTTP status code).
+	 *
+	 * @throws twitterHttpBadRequestException
+	 * @throws twitterHttpNotAuthorizedException
+	 * @throws twitterHttpForbiddenException
+	 * @throws twitterHttpNotFoundException
+	 * @throws twitterHttpInternalServerErrorException
+	 * @throws twitterHttpBadGatewayException
+	 * @throws twitterHttpServiceUnavailableException
+	 * @throws twitterHttpException
+	 * returns bool
+	 **/
 	var checkResponse=function()
 	{
 		var ok=false;
@@ -152,12 +185,13 @@ function jsTwitter(user,pw)
 			}
 		}
 		
-		if(ok)
-		{
-			return true;
-		}
+		return ok;
 	}
 	
+	/**
+	 * This internal function returns the first part of the Twitter API URL, including protocol (http OR https), hostname, TLD and trailing slash.
+	 * @returns string (example: https://twitter.com/)
+	 **/
 	var getHostAndProtocol=function()
 	{
 		return "http"+((useHttps)?"s":"")+"://twitter.com/";
