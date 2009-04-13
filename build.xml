@@ -2,6 +2,7 @@
 <project name="teaTimer" default="createxpi">
 	<target name="createjar">
 		<zip destfile="chrome/teaTimer.jar" basedir="chrome" includes="
+                    content/aes.js
 					content/options.js
 					content/options.xul
 					content/quicktimer.js 
@@ -12,6 +13,8 @@
 					content/teatimer.xul
 					content/teaTimerCommon.js
 					content/teaTimerTeaDB.js
+                    content/twitter.js
+                    content/webtoolkit.base64.js
 					content/sound/end-egg-timer.wav
 					content/sound/end-fanfare.wav
 					content/sound/end-slurp.wav
@@ -38,6 +41,8 @@
 					locale/pl-PL/teatimer.properties
 					locale/fr-FR/teatimer.dtd
 					locale/fr-FR/teatimer.properties
+                    locale/tr-TR/teatimer.dtd
+					locale/tr-TR/teatimer.properties
 					" /> 
 	</target>
 

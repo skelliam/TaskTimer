@@ -4,7 +4,7 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                     em:id="teatimer@codepaintedby.philipp-soehnlein.de"
-                    em:version="1.1pre"
+                    em:version="1.1-rc1"
                     em:name="TeaTimer"
                     em:description="A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3. See my website for more informations."
                     em:creator="Philipp Söhnlein"
@@ -13,10 +13,10 @@
                     em:optionsURL="chrome://teatimer/content/options.xul"
                     em:type="2">
         <!-- for Firefox<3 --> 
-        <em:translator>Polish locale by Paweł Sobczak (http://blog.pawelsobczak.pl/)</em:translator>
         <em:translator>English locale by Hannah Meyer and Philipp Söhnlein</em:translator>
-        <em:translator>French locale by Hannah Meyer </em:translator>
+        <em:translator>French locale by Hannah Meyer and Goofy (babelzilla.org)</em:translator>
         <em:translator>German locale by Philipp Söhnlein</em:translator>
+        <em:translator>Turkish locale by Ersen Yoldac (babelzilla.org)</em:translator>
         <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (konstantino.deviantart.com)</em:contributor>
         <em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
         <em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
@@ -36,8 +36,9 @@
                         <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
                         <em:translator>Polish locale by Paweł Sobczak (http://blog.pawelsobczak.pl/)</em:translator>
                         <em:translator>English locale by Hannah Meyer and Philipp Söhnlein</em:translator>
-                        <em:translator>French locale by Hannah Meyer</em:translator>
+                        <em:translator>French locale by Hannah Meyer and Goofy (babelzilla.org)</em:translator>
                         <em:translator>German locale by Philipp Söhnlein</em:translator>
+                        <em:translator>Turkish locale by Ersen Yoldac (babelzilla.org)</em:translator>
                         <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (konstantino.deviantart.com)</em:contributor>
                         <em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
                         <em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
@@ -59,8 +60,9 @@
                         <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
                         <em:translator>Polnische Lokalisierung von Paweł Sobczak (http://blog.pawelsobczak.pl/)</em:translator>
                         <em:translator>Englische Lokalisierung von Hannah Meyer und Philipp Söhnlein (http://www.philipp-soehnlein.de/)</em:translator>
-                        <em:translator>Französische Lokalisierung von Hannah Meyer</em:translator>
+                        <em:translator>Französische Lokalisierung von Hannah Meyer und Goofy (babelzilla.org)</em:translator>
                         <em:translator>Deutsche Lokalisierung von Philipp Söhnlein (http://www.philipp-soehnlein.de/)</em:translator>
+                        <em:translator>Türkische Lokalisierung von Ersen Yoldac (babelzilla.org)</em:translator>
                         <em:contributor>Icon basierend auf dem Coffe Cup Icon von Konstantino Kapetaneas (konstantino.deviantart.com/</em:contributor>
                         <em:contributor>Egg Timer Sound veröffentlicht unter CC Sampling Plus 1.0 license von xyzr_kx bei freesound.org</em:contributor>
                         <em:contributor>Cup Sound veröffentlicht unter CC Sampling Plus 1.0 license von Andre Rocha bei freesound.org</em:contributor>
@@ -81,36 +83,19 @@
                         <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
                         <em:translator>Localisation de logiciel polonaise de Paweł Sobczak (http://blog.pawelsobczak.pl/)</em:translator>
                         <em:translator>Localisation anglaise de Philipp Söhnlein</em:translator>
-                        <em:translator>Localisation française de Hannah Meyer </em:translator>
+                        <em:translator>Localisation française de Hannah Meyer et Goofy (babelzilla.org)</em:translator>
                         <em:translator>Localisation allemande de Philipp Söhnlein</em:translator>
+                        <em:translator>Localisation turce de Ersen Yoldac (babelzilla.org)</em:translator>
                         <em:contributor>Symbole basé au symbole Coffe Cup de Konstantino Kapetaneas (konstantino.deviantart.com/)</em:contributor>
                         <em:contributor>Son du minuteur mise à disposition sous la license CC Sampling Plus 1.0 de xyzr_kx dans freesound.org</em:contributor>
                         <em:contributor>Son de la tasse mise à disposition sous la license CC Sampling Plus 1.0 license de Andre Rocha dans freesound.org</em:contributor>
                         <em:contributor>Son de la fanfare mise à disposition sous la license Soundsnap de shriek (shriek-music.com) dans soundsnap.com</em:contributor>
                         <em:contributor>Verser mise à disposition sous la license CC Sampling Plus 1.0 de stijn dans freesound.org</em:contributor>
                         <em:contributor>Siroter mise à disposition sous la license Soundsnap de audiofruit (audiofruit.co.uk) dans soundsnap.com</em:contributor>
-                        <em:contributor>Voix mise à disposition sous la license CC Sampling Plus 1.0 de alphahog (mikevendetti.com) dans freesound.org</em:contributor>
+                        <em:contributor>Voix m
+                        
+                        ise à disposition sous la license CC Sampling Plus 1.0 de alphahog (mikevendetti.com) dans freesound.org</em:contributor>
                  </Description>
-        </em:localized>
-        <em:localized> <!-- for Firefox >3 -->
-                <Description>
-                        <em:locale>pl-PL</em:locale>
-                        <em:name>TeaTimer</em:name>
-                        <em:description>Rozszerzenie, które pilnuje, żeby herbata była taka, jaką lubisz. Dostępne na licencji GPL v3. Odwiedź moją stronę internetową po więcej informacji.</em:description>
-                        <em:creator>Philipp Söhnlein</em:creator>
-                        <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
-                        <em:translator>Polskie tłumaczenie: Paweł Sobczak (http://blog.pawelsobczak.pl/)</em:translator>
-                        <em:translator>Tłumaczenie angielskie: Hannah Meyer i Philipp Söhnlein</em:translator>
-                        <em:translator>Tłumacznie francuskie: Hannah Meyer</em:translator>
-                        <em:translator>Tłumaczenie niemieckie: Philipp Söhnlein</em:translator> 
-                        <em:contributor>Ikonka na podstawie ikony Coffe Cup Icon autorstwa Konstantino Kapetaneasa (http://konstantino.deviantart.com/)</em:contributor>
-                        <em:contributor>Dźwięk licznika do jajek (Egg Timer Sound) autorstwa xyzr_kx jest dostępny na licencji CC Sampling Plus 1.0 na stronie freesound.org</em:contributor>
-                        <em:contributor>Dźwięk filiżanki (Cup Sound) autorstwa Andre Rocha jest dostępny na licencji CC Sampling Plus 1.0 na stronie freesound.org</em:contributor>
-                        <em:contributor>Dźwięk fanfar (Fanfare Sound) autorstwa shrieki ((shriek-music.com) jest dostępny na licencji Soundsnap na stronie soundsnap.com</em:contributor>
-                        <em:contributor>Dźwięk napełniania (Pouring Sound) autorstwa stijna jest dostępny na licencji CC Sampling Plus 1.0 na stronie freesound.org</em:contributor>
-                        <em:contributor>Dźwięk siorbania (Slurp Sound) autorstwa audiofruit (audiofruit.co.uk)jest dostępny na licencji Soundsnap na stronie soundsnap.com</em:contributor>
-                        <em:contributor>Dźwięk mowy (Speech Sound) autorstwa alphahoga (mikevendetti.com) jest dostępny na licencji CC Sampling Plus 1.0 na stronie freesound.org</em:contributor>
-                </Description>
         </em:localized>
         
     <em:targetApplication RDF:resource="rdf:#$rdYLa2"/>

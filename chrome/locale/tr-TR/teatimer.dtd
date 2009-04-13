@@ -1,0 +1,75 @@
+<!ENTITY main.contextMenu.showIconAndTime "Simge ve zamanı göster">
+<!ENTITY main.contextMenu.showIconOnly "Sadece simgeyi göster">
+<!ENTITY main.contextMenu.options "Seçenekler...">
+<!ENTITY main.contextMenu.cancel "İptal">
+<!ENTITY main.contextMenu.quicktimer "Hızlı Zamanlayıcı…">
+<!ENTITY options.windowTitle "TeaTimer - Seçenekler">
+<!ENTITY options.tabs.teavarities "Çay çeşitleri">
+<!ENTITY options.tabs.alerts "Uyarılar">
+<!ENTITY options.tabs.twitter "Twitter">
+<!ENTITY options.varities.addANewTea "Yeni bir çay ekle">
+<!ENTITY options.varities.newTea.name.label "Çay">
+<!ENTITY options.varities.newTea.time.label "Zaman">
+<!ENTITY options.varities.newTea.button "Ekle">
+<!ENTITY options.varities.manageExistingTeas "Mevcut çayları yönet">
+<!ENTITY options.varities.manageExistingTeas.tree.id "Kimlik">
+<!ENTITY options.varities.manageExistingTeas.tree.name "İsim">
+<!ENTITY options.varities.manageExistingTeas.tree.time "Zaman">
+<!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "Seçilen çayı sil">
+<!ENTITY options.varities.sorting "Sıralama">
+<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "TeaTimer bağlam menüsündeki çayları sınıflandır">
+<!ENTITY options.varities.sorting.nameASC "alfabetik sırayla artma">
+<!ENTITY options.varities.sorting.nameDESC "alfabetik sırayla azalma">
+<!ENTITY options.varities.sorting.timeASC "zamana göre artma">
+<!ENTITY options.varities.sorting.timeDESC "zamana göre azalma">
+<!ENTITY options.varities.sorting.id "yukarıdaki listeyle aynı.">
+<!ENTITY options.alerts.general.groupboxcaption "Genel Uyarılar">
+<!ENTITY options.alerts.general.showDialogAlert "Zamanlayıcı bittiğinde diyalog penceresini göster">
+<!ENTITY options.alerts.general.showStatusbarAlert "Zamanlayıcı bittiğinde durum çubuğu yanıp sönsün">
+<!ENTITY options.alerts.widgetAlert.groupboxcaption "Web Sitesi-Widget Uyarısı">
+<!ENTITY options.alerts.widgetAlert.description "Zamanlayıcı bittiğinde Web Sitesi- Widget  doğrudan web sitesinde görünür.">
+<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Zamanlayıcı bittiğinde web sitesi widget göster">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "Widget'ın otomatik olarak kaybolacağı saniya sayısı (0=asla):">
+<!ENTITY options.alerts.soundAlerts.groupboxcaption "Sesli Uyarılar">
+<!ENTITY options.alerts.soundAlerts.startSound.label "Zamanlayıcı başlatıldığında bu sesi çal:">
+<!ENTITY options.alerts.soundAlerts.endSound.label "Zamanlayıcı bittiğinde bu sesi çal:">
+<!ENTITY options.alerts.soundAlerts.startSound.preview "Önizleme">
+<!ENTITY options.alerts.soundAlerts.endSound.preview "Önizleme">
+<!ENTITY options.alerts.soundAlerts.sounds.none "Hiçbiri">
+<!ENTITY options.alerts.soundAlerts.sounds.cup "Fincan">
+<!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Yumurta Zamanlayıcı">
+<!ENTITY options.alerts.soundAlerts.sounds.pour "Dök">
+<!ENTITY options.alerts.soundAlerts.sounds.fanfare "Tantana">
+<!ENTITY options.alerts.soundAlerts.sounds.slurp "Höpürdetme">
+<!ENTITY options.alerts.soundAlerts.sounds.speech "Konuşma">
+<!ENTITY options.twitter.twitterActive "Twitter TeaTimer olayları">
+<!ENTITY options.twitter.credentials.groupboxcaption "Twitter Kimlik kartları">
+<!ENTITY options.twitter.credentials.username "Kullanıcı adı">
+<!ENTITY options.twitter.credentials.password "Şifre">
+<!ENTITY options.twitter.credentials.testbutton.caption "Kimlik kartlarını sına">
+<!ENTITY options.twitter.startmsg.groupbox.caption "Çay, cıvıltıyı başlatır">
+<!ENTITY options.twitter.startmsg.checkbox.label "Geri sayım başladığında bunu hareketli göster">
+<!ENTITY options.twitter.startmsg.textfield.label "İleti (bir çay adı yerleştirmek için &#37;t kullanın)">
+<!ENTITY options.twitter.endmsg.groupbox.caption "Çay, cıvıltıyı durdurdu">
+<!ENTITY options.twitter.endmsg.checkbox.label "Geri sayım bittiğinde bunu hareketli göster">
+<!ENTITY options.twitter.endmsg.textfield.label "İleti (bir çay adı yerleştirmek için &#37;t kullanın)">
+<!ENTITY options.twitter.misc.groupbox.caption "Çeşitli">
+<!ENTITY options.twitter.misc.alertcommunicationerrors "TeaTimer ve Twitter arasında bir iletişim hatası olduğunda uyarı ver">
+<!ENTITY options.buttons.ok.label "TAMAM">
+<!ENTITY options.buttons.ok.accesskey "o">
+<!ENTITY options.buttons.cancel.label "İptal">
+<!ENTITY options.buttons.cancel.accesskey "c">
+<!ENTITY quicktimer.windowTitle "TeaTimer - Hızlı Zamanlayıcı">
+<!ENTITY quicktimer.countdownTime.label "Lütfen varsayılan gersayım süresini girin:">
+<!ENTITY quicktimer.countdownTime.accesskey "t">
+<!ENTITY quicktimer.startCountdownRightNow.label "TAMAM'ı tıklar tıklamaz gerisayımı başlat.">
+<!ENTITY quicktimer.startCountdownRightNow.accesskey "s">
+<!ENTITY quicktimer.buttons.ok.label "TAMAM">
+<!ENTITY quicktimer.buttons.ok.accesskey "o">
+<!ENTITY quicktimer.buttons.cancel.label "İptal">
+<!ENTITY quicktimer.buttons.cancel.accesskey "c">
+<!ENTITY teaready.windowTitle "TeaTimer - Çayınız hazır">
+<!ENTITY teaready.buttons.ok.label "TAMAM">
+<!ENTITY teaready.header "TeaTimer diyor ki:">
+<!ENTITY teaready.message "Demleme tamamlandı.">
+<!ENTITY teaready.teaname "{$TEANAME} girin. :-)">
