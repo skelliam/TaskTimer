@@ -40,6 +40,10 @@ function teaTimer()
 	var idOfCurrentSteepingTea=null;
 	var uninstallFlag=false; //this flag is set to true, if the extension is going to be uninstalled when browser is closed
 	const uninstObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+    
+    var appInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
+    var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"].getService(Components.interfaces.nsIVersionComparator);
+    
 	
 	/**
 	 * The public init method of teaTimer. 
@@ -132,7 +136,7 @@ function teaTimer()
 		
 		for(i=0; i<teas.length; i++)
 		{
-			tea=teas[i];
+			var tea=teas[i];
 			var teaNode=document.createElement("menuitem");
 			teaNode.setAttribute("name","teatimer-tea");
 			teaNode.setAttribute("value",tea["ID"]);
@@ -273,7 +277,15 @@ function teaTimer()
 			idOfCurrentSteepingTea=teaDB.getIdOfCurrentTea();
 			steepingTimeOfCurrentTea=teaDB.getSteepingTimeOfCurrentTea();
 		}
-		teatimerBox.setAttribute("tooltiptext",common.getStringf("teatimer.currentlySteeping",new Array(common.getTimeStringFromTime(steepingTimeOfCurrentTea))));
+        var tooltipText=common.getStringf("teatimer.currentlySteeping",new Array(common.getTimeStringFromTime(steepingTimeOfCurrentTea)));
+        if(versionChecker.compare(appInfo.version, "3.0") >= 0)
+        {
+            teatimerBox.setAttribute("tooltiptext",tooltipText);
+        }
+        else
+        {
+            document.getElementById("teatimer-countdown").setAttribute("tooltiptext",tooltipText); //we have to set this for the label, because FF2 doesn't handle tooltiptext on <box>-tags correctly
+        }
 		common.addCSSClass(teatimerBox,"steeping");
 		
 		startingTSofCurrentCountdown=new Date().getTime();
@@ -356,7 +368,15 @@ function teaTimer()
 		common.log("Main class","steeping time of current tea: "+currentTime+"\n");
 		currentTime=steepingTimeOfCurrentTea-parseInt(difference/1000);
 		common.log("Main class","new statusbartime: "+currentTime+"\n\n");
-		teatimerBox.setAttribute("tooltiptext",common.getStringf("teatimer.currentlySteeping",new Array(common.getTimeStringFromTime(currentTime))));
+        var tooltipText=common.getStringf("teatimer.currentlySteeping",new Array(common.getTimeStringFromTime(currentTime)));
+        if(versionChecker.compare(appInfo.version, "3.0") >= 0)
+        {
+            teatimerBox.setAttribute("tooltiptext",tooltipText);
+        }
+        else
+        {
+            document.getElementById("teatimer-countdown").setAttribute("tooltiptext",tooltipText); //we have to set this for the label, because FF2 doesn't handle tooltiptext on <box>-tags correctly
+        }
 		self.setCountdown(currentTime);	
 		if(currentTime<=0)
 		{
@@ -387,8 +407,16 @@ function teaTimer()
 		self.stopCountdown();
 		teatimerCountdown.setAttribute("value",common.getString("teatimer.teaReady"));
 		common.addCSSClass(teatimerBox,"finished");
-		teatimerBox.setAttribute("tooltiptext",common.getString("teatimer.teaReadyAndReload"));
-		shootAlerts();
+        var tooltipText=common.getString("teatimer.teaReadyAndReload");
+        if(versionChecker.compare(appInfo.version, "3.0") >= 0)
+        {
+            teatimerBox.setAttribute("tooltiptext",tooltipText);
+        }
+        else
+        {
+            document.getElementById("teatimer-countdown").setAttribute("tooltiptext",tooltipText); //we have to set this for the label, because FF2 doesn't handle tooltiptext on <box>-tags correctly
+        }
+        shootAlerts();
 		idOfCurrentSteepingTea=startingTSofCurrentCountdown=steepingTimeOfCurrentTea=null;
 		if(common.isAlertDesired("statusbar")===false && common.getViewMode()==="iconOnly")
 		{
@@ -417,7 +445,15 @@ function teaTimer()
 	 **/
 	var resetCountdown=function()
 	{
-		teatimerBox.setAttribute("tooltiptext",common.getString("teatimer.startAndRightClickForMore"));
+        var tooltipText=common.getString("teatimer.startAndRightClickForMore");
+        if(versionChecker.compare(appInfo.version, "3.0") >= 0)
+        {
+            teatimerBox.setAttribute("tooltiptext",tooltipText);
+        }
+        else
+        {
+            document.getElementById("teatimer-countdown").setAttribute("tooltiptext",tooltipText); //we have to set this for the label, because FF2 doesn't handle tooltiptext on <box>-tags correctly
+        }
 		self.setCountdown(teaDB.getSteepingTimeOfCurrentTea());
 	}
 	
@@ -469,7 +505,7 @@ function teaTimer()
 		{
 			var twitterHandler=new jsTwitter(common.getTwitterUsername(),common.getTwitterPassword());
 			var tweetText=common.getTwitterTweetText("finish");
-			var teaName=(idOfCurrentSteepingTea==="quicktimer")?common.getString("teatimer.twitterTeaNameQuickTimer"):teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
+			var teaName=(idOfCurrentSteepingTea==="quicktimer")?common.getString("teatimer.twitter.teaNameQuickTimer"):teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
 			tweetText=tweetText.replace("%t",teaName);
 			common.log("",("tweeting (finish): "+tweetText+"\n"));
 			tweet(twitterHandler,tweetText);
@@ -499,7 +535,16 @@ function teaTimer()
 	 **/
 	var doStatusbarAlert=function()
 	{
-		teatimerBox.setAttribute("tooltiptext",common.getString("teatimer.teaReadyAndCancelAlert"));
+        var tooltipText=common.getString("teatimer.teaReadyAndCancelAlert");
+        if(versionChecker.compare(appInfo.version, "3.0") >= 0)
+        {
+            document.getElementById("teatimer-countdown").setAttribute("tooltiptext",tooltipText); //we have to set this for the label, because FF2 doesn't handle tooltiptext on <box>-tags correctly
+        }
+        else
+        {
+            teatimerBox.setAttribute("tooltiptext",tooltipText);
+        }
+        
 		common.addCSSClass(teatimerBox,"readyAlert");
 		statusbarAlertInterval=window.setInterval(teaTimerInstance.toggleStatusbarAlertStyle,400);
 	}
@@ -746,6 +791,7 @@ function teaTimer()
 		window.clearInterval(statusbarAlertInterval);
 		common.removeCSSClass(teatimerBox,"readyAlert");
 		common.removeCSSClass(teatimerBox,"invisible");
+        common.removeCSSClass(teatimerBox,"finished");
 		teatimerPanel.removeEventListener("click",teaTimerInstance.reloadCountdown,false);
 	}
 	

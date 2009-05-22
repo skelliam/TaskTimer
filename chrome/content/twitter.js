@@ -32,7 +32,7 @@ function jsTwitter(user,pw)
 		checkCredentials();
 		try
 		{
-			socket.mozBackgroundRequest=true;
+			socket.mozBackgroundRequest=true; //if credentials are wrong, FF show a HTTP Auth dialog. We don't want that, so we set mozBackgroundRequest to true; works only if FF>=3
 			socket.open("GET",getHostAndProtocol()+"account/verify_credentials.xml",false);
 			socket.setRequestHeader("Authorization","Basic "+Base64.encode(username+":"+password));
 			socket.send(null);
@@ -84,7 +84,7 @@ function jsTwitter(user,pw)
 		checkCredentials();
 		try
 		{
-			socket.mozBackgroundRequest=false;
+			socket.mozBackgroundRequest=false; //if credentials are wrong, FF shows a HTTP Auth dialog. We already checked credentials, so we don't have to hide the HTTP auth dialog (would be "true").
 			socket.open("POST",getHostAndProtocol()+"statuses/update.xml",false);
 			socket.setRequestHeader("Authorization","Basic "+Base64.encode(username+":"+password));
 			socket.setRequestHeader("Content-Type","application/x-www-form-urlencoded");

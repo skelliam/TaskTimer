@@ -4,7 +4,7 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                     em:id="teatimer@codepaintedby.philipp-soehnlein.de"
-                    em:version="1.1-rc1"
+                    em:version="1.1-rc2"
                     em:name="TeaTimer"
                     em:description="A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3. See my website for more informations."
                     em:creator="Philipp Söhnlein"
@@ -92,9 +92,7 @@
                         <em:contributor>Son de la fanfare mise à disposition sous la license Soundsnap de shriek (shriek-music.com) dans soundsnap.com</em:contributor>
                         <em:contributor>Verser mise à disposition sous la license CC Sampling Plus 1.0 de stijn dans freesound.org</em:contributor>
                         <em:contributor>Siroter mise à disposition sous la license Soundsnap de audiofruit (audiofruit.co.uk) dans soundsnap.com</em:contributor>
-                        <em:contributor>Voix m
-                        
-                        ise à disposition sous la license CC Sampling Plus 1.0 de alphahog (mikevendetti.com) dans freesound.org</em:contributor>
+                        <em:contributor>Voix mise à disposition sous la license CC Sampling Plus 1.0 de alphahog (mikevendetti.com) dans freesound.org</em:contributor>
                  </Description>
         </em:localized>
         
@@ -103,5 +101,5 @@
   <RDF:Description RDF:about="rdf:#$rdYLa2"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="1.5"
-                   em:maxVersion="3.0.*" />
+                   em:maxVersion="3.5.*" />
 </RDF:RDF>

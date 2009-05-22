@@ -680,7 +680,7 @@ function teaTimerOptionsWindow()
 	 **/
 	var initSortingSelectBox=function()
 	{
-		sortingOrder=common.getSortingOrder();
+		var sortingOrder=common.getSortingOrder();
 		var sortingOrderParentNode=selSortingOrder.getElementsByTagName("menupopup")[0];
 		for(var i=0; i<sortingOrderParentNode.childNodes.length; i++)
 		{
