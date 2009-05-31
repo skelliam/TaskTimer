@@ -55,7 +55,7 @@
 <!ENTITY options.twitter.endmsg.checkbox.label "Twitter this when Countdown ends">
 <!ENTITY options.twitter.endmsg.textfield.label "Message (use &#37;t to insert tea name)">
 <!ENTITY options.twitter.misc.groupbox.caption "Miscellaneous">
-<!ENTITY options.twitter.options.twitter.misc.alertcommunicationerrors "Alert when there was a communication error between TeaTimer and Twitter">
+<!ENTITY options.twitter.misc.alertcommunicationerrors "Alert when there was a communication error between TeaTimer and Twitter">
 <!ENTITY options.buttons.ok.label "OK">
 <!ENTITY options.buttons.ok.accesskey "o">
 <!ENTITY options.buttons.cancel.label "Cancel">
