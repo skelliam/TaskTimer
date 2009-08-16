@@ -4,8 +4,14 @@
 *  http://www.webtoolkit.info/
 *
 **/
+if(!de) var de={};
+if(!de.philippsoehnein) de.philippsoehnein={};
+if(!de.philippsoehnein.teaTimer) de.philippsoehnein.teaTimer={};
+if(!de.philippsoehnein.teaTimer.vendor) de.philippsoehnein.teaTimer.vendor={};
+if(!de.philippsoehnein.teaTimer.vendor.webtoolkit) de.philippsoehnein.teaTimer.vendor.webtoolkit={};
 
-var Base64 = {
+de.philippsoehnein.teaTimer.vendor.webtoolkit.Base64 = {
+//var Base64 = {
 
 	// private property
 	_keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
@@ -16,7 +22,7 @@ var Base64 = {
 		var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
 		var i = 0;
 
-		input = Base64._utf8_encode(input);
+		input = de.philippsoehnein.teaTimer.vendor.webtoolkit.Base64._utf8_encode(input);
 
 		while (i < input.length) {
 
@@ -75,7 +81,7 @@ var Base64 = {
 
 		}
 
-		output = Base64._utf8_decode(output);
+		output = de.philippsoehnein.teaTimer.vendor.webtoolkit.Base64._utf8_decode(output);
 
 		return output;
 
@@ -138,5 +144,4 @@ var Base64 = {
 
 		return string;
 	}
-
 }

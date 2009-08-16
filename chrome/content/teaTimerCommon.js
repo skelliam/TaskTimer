@@ -259,7 +259,8 @@ function teaTimerCommon()
 			validateOptionValue(name,value);
 			if(name==="twitter.password")
 			{
-				value=AESDecryptCtr(value,twitterPasswordKey,256);
+				var aes=de.philippsoehnein.teaTimer.vendor.aes;
+				value=aes.AESDecryptCtr(value,twitterPasswordKey,256);
 			}
 		}
 		catch(e)
@@ -315,7 +316,8 @@ function teaTimerCommon()
 		{
 			if(name==="twitter.password")
 			{
-				value=AESEncryptCtr(value,twitterPasswordKey,256);
+				var aes=de.philippsoehnein.teaTimer.vendor.aes;
+				value=aes.AESEncryptCtr(value,twitterPasswordKey,256);
 			}
 			teaTimerPrefs.setCharPref(name,value);
 		}

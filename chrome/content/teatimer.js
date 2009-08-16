@@ -300,7 +300,7 @@ function teaTimer()
 		
 		if(common.isTwitterFeatureOn() && common.twitterOnStart())
 		{
-			var twitterHandler=new jsTwitter(common.getTwitterUsername(),common.getTwitterPassword());
+			var twitterHandler=new de.philippsoehnein.teaTimer.jsTwitter(common.getTwitterUsername(),common.getTwitterPassword());
 			var tweetText=common.getTwitterTweetText("start");
 			var teaName=(idOfCurrentSteepingTea==="quicktimer")?common.getString("teatimer.twitter.teaNameQuickTimer"):teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
 			tweetText=tweetText.replace("%t",teaName);
@@ -503,7 +503,7 @@ function teaTimer()
 		
 		if(common.isTwitterFeatureOn() && common.twitterOnFinish())
 		{
-			var twitterHandler=new jsTwitter(common.getTwitterUsername(),common.getTwitterPassword());
+			var twitterHandler=new de.philippsoehnein.teaTimer.jsTwitter(common.getTwitterUsername(),common.getTwitterPassword());
 			var tweetText=common.getTwitterTweetText("finish");
 			var teaName=(idOfCurrentSteepingTea==="quicktimer")?common.getString("teatimer.twitter.teaNameQuickTimer"):teaDB.getTeaData(idOfCurrentSteepingTea)["name"];
 			tweetText=tweetText.replace("%t",teaName);

@@ -14,7 +14,11 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-function jsTwitter(user,pw)
+if(!de) var de={};
+if(!de.philippsoehnein) de.philippsoehnein={};
+if(!de.philippsoehnein.teaTimer) de.philippsoehnein.teaTimer={};
+
+de.philippsoehnein.teaTimer.jsTwitter=function (user,pw)
 {
 	var useHttps=true;
 	var username=(typeof user==="string" && user.length>0)?user:null;
@@ -32,9 +36,10 @@ function jsTwitter(user,pw)
 		checkCredentials();
 		try
 		{
-			socket.mozBackgroundRequest=true; //if credentials are wrong, FF show a HTTP Auth dialog. We don't want that, so we set mozBackgroundRequest to true; works only if FF>=3
+			socket.mozBackgroundRequest=true; //if credentials are wrong, FF shows a HTTP Auth dialog. We don't want that, so we set mozBackgroundRequest to true; works only if FF>=3
 			socket.open("GET",getHostAndProtocol()+"account/verify_credentials.xml",false);
-			socket.setRequestHeader("Authorization","Basic "+Base64.encode(username+":"+password));
+			var base64=de.philippsoehnein.teaTimer.vendor.webtoolkit.Base64;
+			socket.setRequestHeader("Authorization","Basic "+base64.encode(username+":"+password));
 			socket.send(null);
 		}
 		catch(e)
@@ -42,7 +47,7 @@ function jsTwitter(user,pw)
 			throw new twitterNetworkErrorException("Network error while verifying credentials.");
 		}
 		
-		var credentialResult=false;
+		var credentialResult=false;	
 		//alert(socket.responseText);
 		try
 		{
@@ -86,7 +91,8 @@ function jsTwitter(user,pw)
 		{
 			socket.mozBackgroundRequest=false; //if credentials are wrong, FF shows a HTTP Auth dialog. We already checked credentials, so we don't have to hide the HTTP auth dialog (would be "true").
 			socket.open("POST",getHostAndProtocol()+"statuses/update.xml",false);
-			socket.setRequestHeader("Authorization","Basic "+Base64.encode(username+":"+password));
+			var base64=de.philippsoehnein.teaTimer.vendor.webtoolkit.Base64;
+			socket.setRequestHeader("Authorization","Basic "+base64.encode(username+":"+password));
 			socket.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 			socket.send("status="+text2tweet.replace("&",escape("&")));
 		}
@@ -196,82 +202,86 @@ function jsTwitter(user,pw)
 	{
 		return "http"+((useHttps)?"s":"")+"://twitter.com/";
 	}
-}
-
-function twitterInvalidUsernameException(msg)
-{
-	this.name="twitterInvalidUsernameException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterInvalidPasswordException(msg)
-{
-	this.name="twitterInvalidPasswordException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterInvalidTextException(msg)
-{
-	this.name="twitterInvalidTextException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterBadResponseException(msg)
-{
-	this.name="twitterBadResponseException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterNetworkErrorException(msg)
-{
-	this.name="twitterNetworkErrorException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterHttpException(msg)
-{
-	this.name="twitterHttpException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterHttpBadRequestException(msg) //status code 400; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
-{
-	this.name="twitterHttpBadRequestException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterHttpNotAuthorizedException(msg) //status code 401; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
-{
-	this.name="twitterHttpNotAuthorizedException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterHttpForbiddenException(msg) //status code 403; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
-{
-	this.name="twitterHttpForbiddenException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterHttpNotFoundException(msg) //status code 404; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
-{
-	this.name="twitterHttpNotFoundException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterHttpInternalServerErrorException(msg) //status code 500; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
-{
-	this.name="twitterHttpInternalServerErrorException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterHttpBadGatewayException(msg) //status code 502; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
-{
-	this.name="twitterHttpBadGatewayException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function twitterHttpServiceUnavailableException(msg) //status code 503; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
-{
-	this.name="twitterHttpServiceUnavailableException";
-	this.message=((msg===undefined)?null:msg);
+	
+	
+	/*
+		Exceptions
+	*/	
+	function twitterInvalidUsernameException(msg)
+	{
+		this.name="twitterInvalidUsernameException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterInvalidPasswordException(msg)
+	{
+		this.name="twitterInvalidPasswordException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterInvalidTextException(msg)
+	{
+		this.name="twitterInvalidTextException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterBadResponseException(msg)
+	{
+		this.name="twitterBadResponseException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterNetworkErrorException(msg)
+	{
+		this.name="twitterNetworkErrorException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterHttpException(msg)
+	{
+		this.name="twitterHttpException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterHttpBadRequestException(msg) //status code 400; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
+	{
+		this.name="twitterHttpBadRequestException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterHttpNotAuthorizedException(msg) //status code 401; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
+	{
+		this.name="twitterHttpNotAuthorizedException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterHttpForbiddenException(msg) //status code 403; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
+	{
+		this.name="twitterHttpForbiddenException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterHttpNotFoundException(msg) //status code 404; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
+	{
+		this.name="twitterHttpNotFoundException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterHttpInternalServerErrorException(msg) //status code 500; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
+	{
+		this.name="twitterHttpInternalServerErrorException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterHttpBadGatewayException(msg) //status code 502; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
+	{
+		this.name="twitterHttpBadGatewayException";
+		this.message=((msg===undefined)?null:msg);
+	}
+	
+	function twitterHttpServiceUnavailableException(msg) //status code 503; see http://apiwiki.twitter.com/REST+API+Documentation#HTTPStatusCodes
+	{
+		this.name="twitterHttpServiceUnavailableException";
+		this.message=((msg===undefined)?null:msg);
+	}
 }

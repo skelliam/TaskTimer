@@ -189,7 +189,6 @@ function teaTimerOptionsWindow()
 		{
 			document.getElementById("teaTimer-optionsTwitterAlertCommunicationErrors").checked=true;
 		}
-		
     }
     
     /**
@@ -949,7 +948,7 @@ function teaTimerOptionsWindow()
 			img.setAttribute("tooltiptext",common.getString("options.twitter.test.checkingCredentials"));
 			loadingBox.appendChild(img);
 			button.setAttribute("disabled","true");
-			var twitter=new jsTwitter(username,password);
+			var twitter=new de.philippsoehnein.teaTimer.jsTwitter(username,password);
 			var statusTxt=common.getString("options.twitter.test.credentials"+((twitter.verifyCredentials())?"Ok":"Wrong"));
 			alert(statusTxt);
 		}
