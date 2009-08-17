@@ -43,6 +43,7 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfare">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Slurp">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Speech">
+<!ENTITY options.alerts.soundAlerts.sounds.custom "Custom...">
 <!ENTITY options.twitter.twitterActive "Twitter TeaTimer events">
 <!ENTITY options.twitter.credentials.groupboxcaption "Twitter credentials">
 <!ENTITY options.twitter.credentials.username "Username">

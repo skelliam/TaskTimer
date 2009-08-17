@@ -42,6 +42,7 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfary">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Siorbanie">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Mowa">
+<!ENTITY options.alerts.soundAlerts.sounds.custom "">
 <!ENTITY options.twitter.twitterActive "">
 <!ENTITY options.twitter.credentials.groupboxcaption "">
 <!ENTITY options.twitter.credentials.username "">

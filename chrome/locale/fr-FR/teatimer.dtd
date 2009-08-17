@@ -42,6 +42,7 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfare">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Siroter">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Voix">
+<!ENTITY options.alerts.soundAlerts.sounds.custom "">
 <!ENTITY options.twitter.twitterActive "Évènements Twitter du TeaTimer">
 <!ENTITY options.twitter.credentials.groupboxcaption "Identifiants Twitter">
 <!ENTITY options.twitter.credentials.username "Nom d'utilisateur">

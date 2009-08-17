@@ -530,7 +530,7 @@ function teaTimerCommon()
             //do nothing;
         }
         
-        if(id===null || self.in_array(id,getValidSoundIDs(type))===false)
+        if(id===null || (id.match(/^custom\:/)===null && false===self.in_array(id,getValidSoundIDs(type)))  )
         {
             id="none";
             alertPrefs.setCharPref(type+"Sound",id);
@@ -588,7 +588,7 @@ function teaTimerCommon()
 				throw new teaTimerInvalidSoundTypeException("getURLtoSound: First argument must be 'start' or 'end'.");
 		}
 		
-		if(self.in_array(id,getValidSoundIDs(type))===false)
+		if(id.match(/^custom\: /)===null && self.in_array(id,getValidSoundIDs(type))===false)
 		{
 			throw new teaTimerInvalidSoundIDException("getURLtoSound: Invalid sound ID given.");
 		}
@@ -603,43 +603,57 @@ function teaTimerCommon()
 		var url="chrome://teatimer/content/sound/";
 		if(type==="start")
 		{
-			switch(id)
-			{
-				case "cup":
-					url+="start-cup.wav";
-					break;
-				case "eggtimer":
-					url+="start-egg-timer.wav";
-					break;
-				case "pour":
-					url+="start-pouring.wav";
-					break;
+			if(id.match(/^custom\: /)) {
+				url='file://'+id.substr(8);
+			}
+			else {
+				switch(id)
+				{
+					case "cup":
+						url+="start-cup.wav";
+						break;
+					case "eggtimer":
+						url+="start-egg-timer.wav";
+						break;
+					case "pour":
+						url+="start-pouring.wav";
+						break;
+				}
 			}
 		}
 		else
 		{
-			switch(id)
-			{
-				case "eggtimer":
-					url+="end-egg-timer.wav";
-					break;
-				case "fanfare":
-					url+="end-fanfare.wav";
-					break;
-				case "slurp":
-					url+="end-slurp.wav";
-					break;
-				case "speech":
-					url+="end-speech.wav";
-					break;
+			if(id.match(/^custom\: /)) {
+				url='file://'+id.substr(8);
+			}
+			else {
+				switch(id)
+				{
+					case "eggtimer":
+						url+="end-egg-timer.wav";
+						break;
+					case "fanfare":
+						url+="end-fanfare.wav";
+						break;
+					case "slurp":
+						url+="end-slurp.wav";
+						break;
+					case "speech":
+						url+="end-speech.wav";
+						break;
+				}
 			}
 		}
 		
 		if(returnObject)
 		{
-			const SND_URL=new Components.Constructor("@mozilla.org/network/standard-url;1","nsIURL");
-			var ret=new SND_URL();
-			ret.spec=url;
+			var ret= Components.classes["@mozilla.org/network/io-service;1"]
+                      .getService(Components.interfaces.nsIIOService)
+                      .newURI(url, null, null);
+					  
+			//const SND_URL=new Components.Constructor("@mozilla.org/network/standard-url;1","nsIURL");
+			//var ret=new SND_URL();
+			//ret.spec=url;
 		}
 		else
 		{
@@ -667,7 +681,7 @@ function teaTimerCommon()
 				throw new teaTimerInvalidSoundTypeException("checkSoundId: First argument must be 'start' or 'end'.");
 		}
 		
-		return self.in_array(id,getValidSoundIDs(type));
+		return typeof id.match(/^custom\: /)==="object" || self.in_array(id,getValidSoundIDs(type));
 	}
 	
 	/**
@@ -688,7 +702,7 @@ function teaTimerCommon()
 				throw new teaTimerInvalidSoundTypeException("setSound: First argument must be 'start' or 'end'.");
 		}
 		
-		if(self.in_array(id,getValidSoundIDs(type))===false)
+		if(id.match(/^custom\: /)===null && self.in_array(id,getValidSoundIDs(type))===false)
 		{
 			throw new teaTimerInvalidSoundIDException("setSound: Invalid sound ID given.");
 		}
@@ -1044,6 +1058,11 @@ function teaTimerCommon()
 		| Miscellaneous methods |
 		=========================
     */
+	
+	this.basename=function(path) {
+		var parts=path.split("/"); //@2do Check if this works on Windows, too!
+		return parts[ parts.length-1 ];
+	}
 	
 	/**
 	 * This public method can be used to add a CSS class to a specific DOM element.

@@ -42,6 +42,7 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfare">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Schlürfen">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Spruch">
+<!ENTITY options.alerts.soundAlerts.sounds.custom "Eigener...">
 <!ENTITY options.twitter.twitterActive "Aktiviere Twitter Feature">
 <!ENTITY options.twitter.credentials.groupboxcaption "Authentifizierung">
 <!ENTITY options.twitter.credentials.username "Benutzername">

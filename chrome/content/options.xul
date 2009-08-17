@@ -127,6 +127,7 @@
                                     <menuitem label="&options.alerts.soundAlerts.sounds.cup;" value="cup" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.eggtimer;" value="eggtimer" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.pour;" value="pour" />
+                                    <menuitem id="teaTimer-optionsStartSoundCustom" label="&options.alerts.soundAlerts.sounds.custom;" value="custom: unset" />
                                 </menupopup>
                             </menulist>
                             <button id="teaTimer-optionsBtnPreviewStartSound" label="&options.alerts.soundAlerts.startSound.preview;" />
@@ -142,6 +143,7 @@
                                     <menuitem label="&options.alerts.soundAlerts.sounds.fanfare;" value="fanfare" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.slurp;" value="slurp" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.speech;" value="speech" />
+                                    <menuitem id="teaTimer-optionsEndSoundCustom" label="&options.alerts.soundAlerts.sounds.custom;" value="custom: unset" />
                                 </menupopup>
                             </menulist>
                             <button id="teaTimer-optionsBtnPreviewEndSound" label="&options.alerts.soundAlerts.endSound.preview;" />

@@ -32,6 +32,8 @@ function teaTimerOptionsWindow()
 	var widgetShowTimeTxtField=null;
 	
 	var lengthOfLongestTeaName=null;
+	var currentStartSoundValue=null;
+	var currentEndSoundValue=null;
         
     this.init=function()
     {
@@ -652,8 +654,8 @@ function teaTimerOptionsWindow()
 		{
 			if(i===selectedItems[deletedItems])
 			{
-			treeBody.removeChild(treeitems[selectedItems[deletedItems]-deletedItems]);
-			deletedItems++;
+				treeBody.removeChild(treeitems[selectedItems[deletedItems]-deletedItems]);
+				deletedItems++;
 			}
 			
 			i++;
@@ -701,11 +703,13 @@ function teaTimerOptionsWindow()
     {
         type=(type==="start")?"start":"end";
         
+		var customSoundMenuItem=null;
         if(type==="start")
         {
             var currentSound=common.getIdOfStartSound();
             var box=document.getElementById("teaTimer-optionsStartSound");
             box.addEventListener("command",teaTimerOptionsWindowInstance.startSoundChanged,false);
+			customSoundMenuItem=document.getElementById("teaTimer-optionsStartSoundCustom");
         }
         
         if(type==="end")
@@ -713,18 +717,82 @@ function teaTimerOptionsWindow()
             var currentSound=common.getIdOfEndSound();
             var box=document.getElementById("teaTimer-optionsEndSound");
             document.getElementById("teaTimer-optionsEndSound").addEventListener("command",teaTimerOptionsWindowInstance.endSoundChanged,false);
+			customSoundMenuItem=document.getElementById("teaTimer-optionsEndSoundCustom");
         }
+		
+		customSoundMenuItem.addEventListener("command", function (event) { teaTimerOptionsWindowInstance.customSoundMenuItemCommand(type); } , false);
         
         var sounds=box.getElementsByTagName("menuitem");
         for(var i=0; i<sounds.length; i++)
         {
-            if(sounds[i].getAttribute("value")===currentSound)
+			var value=sounds[i].getAttribute("value");
+			var found=false;
+            if(value===currentSound)
             {
-                box.selectedIndex=i;
+				if(type==='start') {
+					currentStartSoundValue=value;
+				}
+				else {
+					currentEndSoundValue=value;
+				}
+				
+				found=1;
             }
+			else if(value==="custom: unset" && currentSound.match(/^custom\:.*\.wav/)) {
+				if(type==='start') {
+					currentStartSoundValue='custom';
+				}
+				else {
+					currentEndSoundValue='custom';
+				}
+				
+				sounds[i].label+=" ("+common.basename(currentSound)+")";
+				sounds[i].value=currentSound;
+				
+				found=1;
+			}
+			
+			if(found) {
+				box.selectedIndex=i;
+				break;
+			}
         }
     }
+	
+	this.customSoundMenuItemCommand=function(type) {
+		var fallbackValue=(type==='start') ? currentStartSoundValue : currentEndSoundValue;
+		showCustomSoundFilePicker(type,fallbackValue);
+	}
     
+	var showCustomSoundFilePicker=function(type,fallbackValue) {
+		type=(type==="start")?"start":"end";
+		
+		var nsIFilePicker = Components.interfaces.nsIFilePicker;
+		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+		fp.appendFilter(common.getString("options.sound.customSoundFilePicker.filter"),"*.wav");
+		fp.init(window, "TeaTimer - "+common.getString("options.sound.customSoundFilePicker.windowTitle"), nsIFilePicker.modeOpen);
+		
+		var result=fp.show();
+		if(result==0 && fp.file) {
+			//@2do check if it's possible, to check the file (really a WAV file)
+			var fullpath=fp.file.path;
+			var filename=common.basename(fullpath);
+			
+			var menuitem=document.getElementById('teaTimer-options'+((type==='start') ? 'Start' : 'End')+'SoundCustom');
+			if(menuitem.label.match(/\(.*\)$/)) {
+				menuitem.label=menuitem.label.replace(/\(.*\)$/, "("+filename+")");
+			}
+			else {
+				menuitem.label+=" ("+filename+")";
+			}
+			menuitem.value="custom: "+fullpath;
+		}
+		else {
+			var idOfSelectBox='teaTimer-options'+((type==='start') ? 'Start' : 'End')+'Sound';
+			document.getElementById(idOfSelectBox).value=fallbackValue;
+		}
+	}
+	
 	/**
 	 * This public method is called when the start sound changes.
 	 **/
@@ -763,7 +831,8 @@ function teaTimerOptionsWindow()
             previewButton=btnPreviewEndSound;
         }
         
-        if(document.getElementById(idOfSelectBox).value==="none")
+		var selectBoxValue=document.getElementById(idOfSelectBox).value;
+        if(selectBoxValue==="none")
         {
             previewButton.setAttribute("disabled",true);
         }
@@ -771,6 +840,13 @@ function teaTimerOptionsWindow()
         {
             previewButton.removeAttribute("disabled");
         }
+		
+		if(type==='start') {
+			currentStartSoundValue=selectBoxValue;
+		}
+		else {
+			currentEndSoundValue=selectBoxValue;
+		}
     }
     
 	/**
