@@ -22,15 +22,11 @@
     <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/options.js" />
-    <script type="application/x-javascript" src="chrome://teatimer/content/webtoolkit.base64.js" />
-	<script type="application/x-javascript" src="chrome://teatimer/content/twitter.js" />
-	<script type="application/x-javascript" src="chrome://teatimer/content/aes.js" />
     
     <tabbox>
         <tabs>
             <tab label="&options.tabs.teavarities;" />
             <tab label="&options.tabs.alerts;" />
-            <tab label="Twitter" id="teaTimer-optionsTwitterTab" />
         </tabs>
         <tabpanels>
             <tabpanel id="teaTimer-optionsVaritiesTab">
@@ -150,69 +146,6 @@
                         </hbox>
                     </vbox>  
                 </groupbox>
-                </vbox>
-            </tabpanel>
-            <tabpanel id="teaTimer-optionsTwitterTab">
-                <vbox flex="1">
-                    <checkbox  label="&options.twitter.twitterActive;" id="teaTimer-optionsTwitterActive" />
-                    
-                    <groupbox>
-                        <caption label="&options.twitter.credentials.groupboxcaption;" />
-                        <hbox>
-                            <vbox>
-                                <hbox align="center">
-                                    <label control="teaTimer-optionsTwitterUsername" value="&options.twitter.credentials.username;:" id="teaTimer-optionsTwitterUsernameLabel" disabled="true" />
-                                    <textbox id="teaTimer-optionsTwitterUsername" disabled="true" />   
-                                </hbox>
-                                
-                                <hbox align="center">
-                                    <label control="teaTimer-optionsTwitterPassword" value="&options.twitter.credentials.password;:" id="teaTimer-optionsTwitterPasswordLabel" disabled="true" />
-                                    <textbox id="teaTimer-optionsTwitterPassword" type="password" disabled="true" />
-                                </hbox>
-                            </vbox>
-                            <button id="teaTimer-optionsTwitterTestCredentials" label="&options.twitter.credentials.testbutton.caption;" disabled="true" />
-                            <box align="center" id="teaTimer-optionsTwitterTestCredentialLoadingBox" />
-                        </hbox>
-                    </groupbox>
-                   
-                    <groupbox>
-                        <caption label="&options.twitter.startmsg.groupbox.caption;" />
-                        
-                        <hbox>
-                            <vbox>
-                                <checkbox label="&options.twitter.startmsg.checkbox.label;:" id="teaTimer-optionsTwitterStartMessageCheckbox" disabled="true" />
-                                <label control="teaTimer-optionsTwitterStartMessage" value="&options.twitter.startmsg.textfield.label;" id="teaTimer-optionsTwitterStartMessageLabel" disabled="true" />
-                            </vbox>
-                            <box align="right" id="teaTimer-optionsTwitterStartMessageCharsLeftBox" flex="1">
-                                <description id="teaTimer-optionsTwitterStartMessageCharsLeftLabel">Zeichen übrig:</description>
-                                <description id="teaTimer-optionsTwitterStartMessageCharsLeft">140</description>
-                            </box>
-                        </hbox>
-                        
-                        <textbox id="teaTimer-optionsTwitterStartMessage" multiline="true" disabled="true" />
-                    </groupbox>
-                   
-                   <groupbox>
-                        <caption label="&options.twitter.endmsg.groupbox.caption;" />
-                        
-                        <hbox>
-                            <vbox>
-                                <checkbox label="&options.twitter.endmsg.checkbox.label;:" id="teaTimer-optionsTwitterFinishMessageCheckbox" disabled="true" />
-                                <label control="teaTimer-optionsTwitterFinishMessage" value="&options.twitter.endmsg.textfield.label;" id="teaTimer-optionsTwitterFinishMessageLabel" disabled="true" />
-                            </vbox>
-                            <box align="right" id="teaTimer-optionsTwitterFinishMessageCharsLeftBox" flex="1">
-                                <description id="teaTimer-optionsTwitterFinishMessageCharsLeftLabel">Zeichen übrig:</description>
-                                <description id="teaTimer-optionsTwitterFinishMessageCharsLeft">140</description>
-                            </box>
-                        </hbox>
-                        <textbox id="teaTimer-optionsTwitterFinishMessage" multiline="true" disabled="true" />
-                    </groupbox>
-                    
-                    <groupbox>
-                        <caption label="&options.twitter.misc.groupbox.caption;" />
-                        
-                        <checkbox label="&options.twitter.misc.alertcommunicationerrors;" id="teaTimer-optionsTwitterAlertCommunicationErrors" disabled="true" />
-                    </groupbox>
                 </vbox>
             </tabpanel>
         </tabpanels>

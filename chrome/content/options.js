@@ -31,7 +31,6 @@ function teaTimerOptionsWindow()
 	var btnPreviewEndSound=null; //container for end sound preview button
 	var widgetShowTimeTxtField=null;
 	
-	var lengthOfLongestTeaName=null;
 	var currentStartSoundValue=null;
 	var currentEndSoundValue=null;
         
@@ -112,85 +111,6 @@ function teaTimerOptionsWindow()
         {
             btnPreviewEndSound.setAttribute("disabled",true);
         }
-		
-		//twitter tab
-		var twitterActiveCheckbox=document.getElementById("teaTimer-optionsTwitterActive");
-		twitterActiveCheckbox.addEventListener("command",teaTimerOptionsWindowInstance.twitterActiveCommand,false);
-		
-		var twitterOnCountdownStartCheckbox=document.getElementById("teaTimer-optionsTwitterStartMessageCheckbox");
-		twitterOnCountdownStartCheckbox.addEventListener("command",function() { teaTimerOptionsWindowInstance.twitterMessageBoxStateChanged("start"); },false);
-		
-		var twitterOnCountdownFinishCheckbox=document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox");
-		twitterOnCountdownFinishCheckbox.addEventListener("command",function() { teaTimerOptionsWindowInstance.twitterMessageBoxStateChanged("finish"); },false);
-		
-		var twitterTestCredentialsButton=document.getElementById("teaTimer-optionsTwitterTestCredentials");
-		twitterTestCredentialsButton.addEventListener("command",teaTimerOptionsWindowInstance.testTwitterCredentialsButtonCommand,false);
-		
-		
-		var twitterIsOn=common.isTwitterFeatureOn();
-		if(twitterIsOn)
-		{
-			twitterActiveCheckbox.checked=true;
-			changeTwitterInputFieldsState("activate");
-		}
-		
-		var twitterUsername=common.getTwitterUsername();
-		if(twitterUsername)
-		{
-			document.getElementById("teaTimer-optionsTwitterUsername").value=twitterUsername;
-		}
-		
-		var twitterPassword=common.getTwitterPassword();
-		if(twitterPassword)
-		{
-			document.getElementById("teaTimer-optionsTwitterPassword").value=twitterPassword;
-		}
-		
-		self.updateLengthOfLongestTeaName();
-		document.getElementById("teaTimer-optionsTwitterTab").addEventListener("command",function() { teaTimerOptionsWindowInstance.updateCharsLeftBox("start"), teaTimerOptionsWindowInstance.updateCharsLeftBox("finish"); },false);
-		
-		if(common.twitterOnStart())
-		{
-			twitterOnCountdownStartCheckbox.checked=true;
-			if(twitterIsOn)
-			{
-				self.twitterMessageBoxStateChanged("start");
-			}
-		}
-		
-		var tweetStartText=common.getTwitterTweetText("start");
-		var tweetStartTextTxtBox=document.getElementById("teaTimer-optionsTwitterStartMessage");
-		if(tweetStartText)
-		{
-			tweetStartTextTxtBox.value=tweetStartText;
-		}
-		setValueOfCharsLeftBox("start",recalculateCharsLeft("teaTimer-optionsTwitterStartMessage"));
-		tweetStartTextTxtBox.addEventListener("keyup",teaTimerOptionsWindowInstance.startTweetTextChanged,false);
-		tweetStartTextTxtBox.addEventListener("focus",teaTimerOptionsWindowInstance.updateLengthOfLongestTeaName,false);
-		
-		if(common.twitterOnFinish())
-		{
-			twitterOnCountdownFinishCheckbox.checked=true;
-			if(twitterIsOn)
-			{
-				self.twitterMessageBoxStateChanged("finish");
-			}
-		}
-		
-		var tweetFinishText=common.getTwitterTweetText("finish");
-		var tweetFinishTextTxtBox=document.getElementById("teaTimer-optionsTwitterFinishMessage");
-		if(tweetFinishText)
-		{
-			tweetFinishTextTxtBox.value=tweetFinishText;
-		}
-		setValueOfCharsLeftBox("finish",recalculateCharsLeft("teaTimer-optionsTwitterFinishMessage"));
-		tweetFinishTextTxtBox.addEventListener("keyup",teaTimerOptionsWindowInstance.finishTweetTextChanged,false);
-		tweetFinishTextTxtBox.addEventListener("focus",teaTimerOptionsWindowInstance.updateLengthOfLongestTeaName,false);
-		
-		if(common.showCommunicationErrors())
-		{
-			document.getElementById("teaTimer-optionsTwitterAlertCommunicationErrors").checked=true;
-		}
     }
     
     /**
@@ -345,7 +265,6 @@ function teaTimerOptionsWindow()
             {
                 validateTeasInTree();
 				validateAlertSettings();
-				validateTwitterSettings();
 				valid=true;
             }
             catch(e)
@@ -362,7 +281,6 @@ function teaTimerOptionsWindow()
 				saveSortingOrder();
 				saveAlerts();
 				saveSounds();
-				saveTwitterSettings();
                 window.close();
             }
         }
@@ -404,60 +322,6 @@ function teaTimerOptionsWindow()
 			var ex=new teaTimerInvalidWidgetAlertShowTimeException();
 			ex.humanReadableOutput=common.getString("options.validate.widgetAlertShowTimeError");
 			throw ex;
-		}
-		
-		return true;
-	}
-	
-	/**
-	 * This private method validates the Twitter settings (username, password, "twitter is on", tweetstart- and tweetendtext)
-	 *
-	 * @throws teaTimerInvalidTwitterUsernameException
-	 * @throws teaTimerInvalidTwitterPasswordException
-	 * @throws teaTimerInvalidTwitterOnException
-	 * @throws teaTimerInvalidTwitterTweetTextException
-	 **/
-	var validateTwitterSettings=function()
-	{
-		var twitterActiveCheckbox=document.getElementById("teaTimer-optionsTwitterActive");
-		if(twitterActiveCheckbox.checked)
-		{
-			if(document.getElementById("teaTimer-optionsTwitterUsername").value.length<=0)
-			{
-				var ex=new teaTimerInvalidTwitterUsernameException();
-				ex.humanReadableOutput=common.getString("options.validate.noTwitterUsername");
-				throw ex;
-			}
-			
-			if(document.getElementById("teaTimer-optionsTwitterPassword").value.length<=0)
-			{
-				var ex=new teaTimerInvalidTwitterPasswordException();
-				ex.humanReadableOutput=common.getString("options.validate.noTwitterPassword");
-				throw ex;
-			}
-			
-			var twitterOnCountdownStartCheckbox=document.getElementById("teaTimer-optionsTwitterStartMessageCheckbox");
-			var twitterOnCountdownFinishCheckbox=document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox")
-			if(!twitterOnCountdownStartCheckbox.checked && !twitterOnCountdownFinishCheckbox.checked)
-			{
-				var ex=new teaTimerInvalidTwitterOnException();
-				ex.humanReadableOutput=common.getString("options.validate.twitterActiveButNoTweetSpecified");
-				throw ex;
-			}
-			
-			if(twitterOnCountdownStartCheckbox.checked && document.getElementById("teaTimer-optionsTwitterStartMessage").value.length<=0)
-			{
-				var ex=new teaTimerInvalidTwitterTweetTextException();
-				ex.humanReadableOutput=common.getString("options.validate.noTwitterStartMessage");
-				throw ex;
-			}
-			
-			if(twitterOnCountdownFinishCheckbox.checked && document.getElementById("teaTimer-optionsTwitterFinishMessage").value.length<=0)
-			{
-				var ex=new teaTimerInvalidTwitterTweetTextException();
-				ex.humanReadableOutput=common.getString("options.validate.noTwitterFinishMessage");
-				throw ex;
-			}
 		}
 		
 		return true;
@@ -604,41 +468,6 @@ function teaTimerOptionsWindow()
 	{
 		return treeBody.getElementsByTagName("treeitem").length;
     }
-	
-	/**
-	 * This public function updates the length of the longest tea name.
-	 **/
-	this.updateLengthOfLongestTeaName=function()
-	{
-		lengthOfLongestTeaName=getLengthOfLongestTeaNameInTree();
-	}
-	
-	/**
-	 * This private method reads the tree of all teanames and returns the length of the longest tea name.
-	 * @return integer length of longest tea name
-	 **/
-	var getLengthOfLongestTeaNameInTree=function()
-	{
-		var teaNames=new Array();
-		var treeRows=treeBody.getElementsByTagName("treerow");
-		for(var i=0; i<treeRows.length; i++)
-		{
-			var cells=treeRows[i].getElementsByTagName("treecell");
-			teaNames.push(cells[1].getAttribute("label"));
-		}
-		//dump(teaNames);
-		
-		var lengthOfLongestTeaName=0;
-		for(var i in teaNames)
-		{
-			if(teaNames[i].length>lengthOfLongestTeaName)
-			{
-				lengthOfLongestTeaName=teaNames[i].length;
-			}
-		}
-		//dump("longest:"+lengthOfLongestTeaName+"\n");
-		return lengthOfLongestTeaName;
-	}
     
     /**
      * This public method is called, when the "delete selected teas" button is pressed and removes the items from the tree.
@@ -922,208 +751,6 @@ function teaTimerOptionsWindow()
 	{
 		common.setSound("start",getValueOfSoundSelectBox("start"));
 		common.setSound("end",getValueOfSoundSelectBox("end"));
-	}
-	
-	/**
-	 * This public method is called, when you change the value of the twitter active checkbox.
-	 **/
-	this.twitterActiveCommand=function()
-	{
-		var twitterActiveCheckbox=document.getElementById("teaTimer-optionsTwitterActive");
-		changeTwitterInputFieldsState((twitterActiveCheckbox.checked)?"activate":"deactivate");
-	}
-	
-	/**
-	 * This private method activates or deactives the twitter input fields according to the first param.
-	 * 
-	 * @param string mode ("activate" or "deactivate")
-	 **/
-	var changeTwitterInputFieldsState=function(mode)
-	{
-		mode=(mode==="activate")?"activate":"deactivate";
-		var fields=["teaTimer-optionsTwitterUsernameLabel","teaTimer-optionsTwitterUsername","teaTimer-optionsTwitterPasswordLabel","teaTimer-optionsTwitterPassword","teaTimer-optionsTwitterTestCredentials","teaTimer-optionsTwitterStartMessageCheckbox","teaTimer-optionsTwitterStartMessageLabel","teaTimer-optionsTwitterStartMessage","teaTimer-optionsTwitterFinishMessageCheckbox","teaTimer-optionsTwitterFinishMessageLabel","teaTimer-optionsTwitterFinishMessage","teaTimer-optionsTwitterAlertCommunicationErrors"];
-		
-		for(var i in fields)
-		{
-			var field=document.getElementById(fields[i]);
-			
-			if(
-				((fields[i]==="teaTimer-optionsTwitterStartMessageLabel" || fields[i]==="teaTimer-optionsTwitterStartMessage") && !document.getElementById("teaTimer-optionsTwitterStartMessageCheckbox").checked) ||
-				((fields[i]==="teaTimer-optionsTwitterFinishMessageLabel" || fields[i]==="teaTimer-optionsTwitterFinishMessage") && !document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox").checked)
-			)
-			{
-				///field.removeAttribute("disabled");
-				continue;
-			}
-			
-			if(mode==="activate")
-			{
-				field.removeAttribute("disabled");
-			}
-			else
-			{
-				field.setAttribute("disabled","true");
-			}
-		}
-	}
-	
-	/**
-	 * This public function is called, when the checkbox according to one of the two twitter message text boxes is used.
-	 *
-	 * @param string which ("start" or "finish")
-	 * 
-	 **/
-	this.twitterMessageBoxStateChanged=function(which)
-	{
-		which=(which==="start")?"start":"finish";
-		var chkbox=document.getElementById("teaTimer-optionsTwitter"+((which==="start")?"Start":"Finish")+"MessageCheckbox");
-		var txtbox=document.getElementById("teaTimer-optionsTwitter"+((which==="start")?"Start":"Finish")+"Message");
-		var label=document.getElementById("teaTimer-optionsTwitter"+((which==="start")?"Start":"Finish")+"MessageLabel");
-		
-		if(chkbox.checked)
-		{
-			txtbox.removeAttribute("disabled");
-			label.removeAttribute("disabled");
-		}
-		else
-		{
-			txtbox.setAttribute("disabled","true");
-			label.setAttribute("disabled","true");
-		}
-		
-	}
-	
-	/**
-	 * This private function saves the settings made in the twitter settings dialog.
-	 **/ 
-	var saveTwitterSettings=function()
-	{
-		common.setTwitterFeature(document.getElementById("teaTimer-optionsTwitterActive").checked);
-		common.setTwitterUsername(document.getElementById("teaTimer-optionsTwitterUsername").value);
-		common.setTwitterPassword(document.getElementById("teaTimer-optionsTwitterPassword").value);
-		common.setTwitterEvent("start",document.getElementById("teaTimer-optionsTwitterStartMessageCheckbox").checked);
-		common.setTweetText("start",document.getElementById("teaTimer-optionsTwitterStartMessage").value);
-		common.setTwitterEvent("finish",document.getElementById("teaTimer-optionsTwitterFinishMessageCheckbox").checked);
-		common.setTweetText("finish",document.getElementById("teaTimer-optionsTwitterFinishMessage").value);
-		common.setShowCommunicationErrors(document.getElementById("teaTimer-optionsTwitterAlertCommunicationErrors").checked);
-	}
-	
-	/**
-	 * This public method is called, when the 2test twitter credential buttons" was clicked.
-	 **/
-	this.testTwitterCredentialsButtonCommand=function()
-	{
-		var username=document.getElementById("teaTimer-optionsTwitterUsername").value;
-		var password=document.getElementById("teaTimer-optionsTwitterPassword").value;
-		var loadingBox=document.getElementById("teaTimer-optionsTwitterTestCredentialLoadingBox");
-		var button=document.getElementById("teaTimer-optionsTwitterTestCredentials");
-		try
-		{
-			var img=document.createElement("image");
-			img.setAttribute("src","chrome://global/skin/icons/loading_16.png");
-			img.setAttribute("tooltiptext",common.getString("options.twitter.test.checkingCredentials"));
-			loadingBox.appendChild(img);
-			button.setAttribute("disabled","true");
-			var twitter=new de.philippsoehnein.teaTimer.jsTwitter(username,password);
-			var statusTxt=common.getString("options.twitter.test.credentials"+((twitter.verifyCredentials())?"Ok":"Wrong"));
-			alert(statusTxt);
-		}
-		catch(ex)
-		{
-			alert(common.getString("options.twitter.test.networkError"));
-		}
-		
-		//clear loadingbox
-		while(loadingBox.childNodes.length>0)
-		{
-			loadingBox.removeChild(loadingBox.childNodes[0]);
-		}
-		
-		button.setAttribute("disabled","false");
-	}
-	
-	/**
-	 * This public method is called, when the text of the start tweet was changed.
-	 **/
-	this.startTweetTextChanged=function()
-	{
-		tweetTextChanged("start");
-	}
-	
-	/**
-	 * This public method is called, when the text of the finish tweet was changed.
-	 **/
-	this.finishTweetTextChanged=function()
-	{
-		tweetTextChanged("finish");
-	}
-	
-	/**
-	 * This private method is called, when the text of one of the tweet textareas was changed.
-	 * @param string mode ("start" or "finish")
-	 **/
-	var tweetTextChanged=function(mode)
-	{
-		var box="teaTimer-optionsTwitter"+((mode==="start")?"Start":"Finish")+"Message";
-		setValueOfCharsLeftBox(mode,recalculateCharsLeft(box));
-	}
-	
-	/**
-	 * This method takes the content of the given textfield, counts the length, and returns the length of still available chars (including mechanism, if %t is used).
-	 * @param string domId
-	 * @returns integer chars that are left
-	 **/ 
-	var recalculateCharsLeft=function(box)
-	{
-		var text=document.getElementById(box).value;
-		var estimatedLength=text.length;
-		if(text.indexOf("%t")>=0)
-		{
-			estimatedLength-=2;
-			estimatedLength+=lengthOfLongestTeaName;
-		}
-		
-		return 140-estimatedLength;
-	}
-	
-	/**
-	 * This method writes the "chars left"-value to the correct destination in the XUL document.
-	 * It also applies specific CSS classes, to signalize shortness.
-	 * 
-	 * @param string mode ("start" or "finish")
-	 * @param integer charsLeft
-	 **/
-	var setValueOfCharsLeftBox=function(mode,charsLeft)
-	{
-		var boxName="teaTimer-optionsTwitter"+((mode==="start")?"Start":"Finish")+"MessageCharsLeft";
-		var box=document.getElementById(boxName);
-		box.firstChild.data=charsLeft;
-		
-		if(charsLeft>=20)
-		{
-			box.removeAttribute("class");
-		}
-		else if(charsLeft<20 && charsLeft>=10)
-		{
-			box.setAttribute("class","fewCharsLeft");
-		}
-		else
-		{
-			box.setAttribute("class","veryFewCharsLeft");
-		}
-	}
-	
-	/**
-	 * This public function should be called, if the "chars left" display should be updated.
-	 *
-	 * @param mode ("start" or "finish");
-	 * 
-	 **/
-	this.updateCharsLeftBox=function(mode)
-	{
-		self.updateLengthOfLongestTeaName();
-		var boxName="teaTimer-optionsTwitter"+((mode==="start")?"Start":"Finish")+"Message";
-		setValueOfCharsLeftBox(mode,recalculateCharsLeft(boxName));
 	}
 }
 

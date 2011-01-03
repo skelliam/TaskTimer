@@ -44,35 +44,3 @@ window
 {
     width: 3em;
 }
-
-#teaTimer-optionsTwitterUsernameLabel,
-#teaTimer-optionsTwitterPasswordLabel
-{
-    width: 8em;
-    text-align: right;
-}
-
-#teaTimer-optionsTwitterStartMessageCharsLeftLabel,
-#teaTimer-optionsTwitterFinishMessageCharsLeftLabel
-{
-    visibility: hidden;
-}
-
-#teaTimer-optionsTwitterStartMessageCharsLeft,
-#teaTimer-optionsTwitterFinishMessageCharsLeft
-{
-    font-size: 22pt;
-    font-family: 'Georgia','Serif', serif;
-}
-
-#teaTimer-optionsTwitterStartMessageCharsLeft.fewCharsLeft,
-#teaTimer-optionsTwitterFinishMessageCharsLeft.fewCharsLeft
-{
-    color: #5C0002;
-}
-
-#teaTimer-optionsTwitterStartMessageCharsLeft.veryFewCharsLeft,
-#teaTimer-optionsTwitterFinishMessageCharsLeft.veryFewCharsLeft
-{
-    color: #D40D12;
-}

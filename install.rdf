@@ -24,8 +24,6 @@
         <em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
         <em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
         <em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
-        <em:contributor>Password crypto algorithm from movable-type.co.uk/scripts/aes.html</em:contributor>
-        <em:contributor>Base64 algorithm from webtoolkit.info/javascript-base64.html</em:contributor>
     
         <em:localized> <!-- for Firefox >3 -->
                 <Description>
@@ -46,8 +44,6 @@
                         <em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
                         <em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
                         <em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
-                        <em:contributor>Password crypto algorithm from movable-type.co.uk/scripts/aes.html</em:contributor>
-                        <em:contributor>Base64 algorithm from webtoolkit.info/javascript-base64.html</em:contributor>
                 </Description>
         </em:localized>
         
@@ -70,8 +66,6 @@
                         <em:contributor>Pouring Sound veröffentlicht unter CC Sampling Plus 1.0 license von stijn bei freesound.org</em:contributor>
                         <em:contributor>Slurp Sound veröffentlicht unter Soundsnap license von audiofruit (audiofruit.co.uk) bei soundsnap.com</em:contributor>
                         <em:contributor>Speech Sound veröffentlicht unter CC Sampling Plus 1.0 license von alphahog (mikevendetti.com) bei freesound.org</em:contributor>
-                        <em:contributor>Passwort-Crypto-Algorithmus von movable-type.co.uk/scripts/aes.html</em:contributor>
-                        <em:contributor>Base64-Alorithmus von webtoolkit.info/javascript-base64.html</em:contributor>
                 </Description>
         </em:localized>
         <em:localized> <!-- for Firefox >3 -->

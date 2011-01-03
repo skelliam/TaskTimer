@@ -20,9 +20,6 @@
 	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
 	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
 	<script type="application/x-javascript" src="chrome://teatimer/content/teatimer.js" />
-	<script type="application/x-javascript" src="chrome://teatimer/content/webtoolkit.base64.js" />
-	<script type="application/x-javascript" src="chrome://teatimer/content/twitter.js" />
-	<script type="application/x-javascript" src="chrome://teatimer/content/aes.js" />
 	
 	<statusbar id="status-bar">
 		<statusbarpanel id="teatimer-panel" context="teatimer-contextMenu">

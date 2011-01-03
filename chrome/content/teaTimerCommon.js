@@ -26,8 +26,6 @@ function teaTimerCommon()
     const strings=Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle("chrome://teatimer/locale/teatimer.properties");
     const quitObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
     quitObserver.addObserver(this,"quit-application-granted",false);
-	
-	const twitterPasswordKey="#}Z0fn_7)4!*>JHbP}+\rg#aAiiKr:]p3(@Go\"p,qbaF~m,HISoEU!eHwC!gypo";
     
     /**
      * This observer method is called, when the Firefox quits.
@@ -223,7 +221,7 @@ function teaTimerCommon()
 	/**
 	 * This private method is used, to read options.
 	 *
-	 * @param name of option (valid values are "sortingOrder", "twitter.on", "viewMode")
+	 * @param name of option (valid values are "sortingOrder" or "viewMode")
 	 **/
 	var getOption=function(name)
 	{
@@ -233,18 +231,6 @@ function teaTimerCommon()
 		{
 			case "sortingOrder":
 				value="id";
-				break;
-			case "twitter.on":
-			case "twitter.twitterOnStart":
-			case "twitter.twitterOnFinish":
-			case "twitter.showCommunicationErrors":
-				value=false;
-				break;
-			case "twitter.username":
-			case "twitter.password":
-			case "twitter.startTweetText":
-			case "twitter.finishTweetText":
-				value="";
 				break;
 			case "viewMode":
 				value="timeAndIcon";
@@ -257,11 +243,6 @@ function teaTimerCommon()
 		{
 			value=(type==="char")?teaTimerPrefs.getCharPref(name):teaTimerPrefs.getBoolPref(name);
 			validateOptionValue(name,value);
-			if(name==="twitter.password")
-			{
-				var aes=de.philippsoehnein.teaTimer.vendor.aes;
-				value=aes.AESDecryptCtr(value,twitterPasswordKey,256);
-			}
 		}
 		catch(e)
 		{
@@ -284,17 +265,7 @@ function teaTimerCommon()
 		{
 			case "sortingOrder":
 			case "viewMode":
-			case "twitter.username":
-			case "twitter.password":
-			case "twitter.startTweetText":
-			case "twitter.finishTweetText":
 				type="char";
-				break;
-			case "twitter.on":
-			case "twitter.twitterOnStart":
-			case "twitter.twitterOnFinish":
-			case "twitter.showCommunicationErrors":
-				type="bool";
 				break;
 		}
 		
@@ -314,11 +285,6 @@ function teaTimerCommon()
 		var type=getTypeOfOption(name);
 		if(type==="char")
 		{
-			if(name==="twitter.password")
-			{
-				var aes=de.philippsoehnein.teaTimer.vendor.aes;
-				value=aes.AESEncryptCtr(value,twitterPasswordKey,256);
-			}
 			teaTimerPrefs.setCharPref(name,value);
 		}
 		else
@@ -331,7 +297,7 @@ function teaTimerCommon()
 	 * Internal private method for validating given option names.
 	 *
 	 * @param string suspected option name
-	 * @returns boolean true (if first parameter was either "sortingOrder", "twitter.on" or "viewMode")
+	 * @returns boolean true (if first parameter was either "sortingOrder" or "viewMode")
 	 * @throws teaTimerInvalidOptionNameException
 	 **/
 	var validateOptionName=function(name)
@@ -339,14 +305,6 @@ function teaTimerCommon()
 		switch(name)
 		{
 			case "sortingOrder":
-			case "twitter.on":
-			case "twitter.username":
-			case "twitter.password":
-			case "twitter.startTweetText":
-			case "twitter.finishTweetText":
-			case "twitter.twitterOnStart":
-			case "twitter.twitterOnFinish":
-			case "twitter.showCommunicationErrors":
 			case "viewMode":
 				break;
 			default:
@@ -381,48 +339,6 @@ function teaTimerCommon()
 						break;
 					default:
 						throw new teaTimerInvalidSortOrderException("validateOptionValue(sortingOrder): '"+value+"' is no valid sort order.");
-				}
-				break;
-			case "twitter.on":
-				if(typeof value!=="boolean")
-				{
-					throw new teaTimerInvalidTwitterOnException("validateOptionValue(twitter.on): value is no bool.");
-				}
-				break;
-			case "twitter.username":
-				if(typeof value!=="string")
-				{
-					throw new teaTimerInvalidTwitterUsernameException("validateOptionValue(twitter.username): value is no string.");
-				}
-				break;
-			case "twitter.password":
-				if(typeof value!=="string")
-				{
-					throw new teaTimerInvalidTwitterPasswordException("validateOptionValue(twitter.password): value is no string.");
-				}
-				break;
-			case "twitter.startTweetText":
-				if(typeof value!=="string")
-				{
-					throw new teaTimerInvalidTwitterTweetTextException("validateOptionValue("+group+"): value is no string.");
-				}
-				break;
-			case "twitter.twitterOnStart":
-				if(typeof value!=="boolean")
-				{
-					throw new teaTimerInvalidTwitterOnStartValueException("validateOptionValue(twitter.twitterOnStart): value is no bool.");
-				}
-				break;
-			case "twitter.twitterOnFinish":
-				if(typeof value!=="boolean")
-				{
-					throw new teaTimerInvalidTwitterOnFinishValueException("validateOptionValue(twitter.twitterOnFinish): value is no bool.");
-				}
-				break;
-			case "twitter.showCommunicationErrors":
-				if(typeof value!=="boolean")
-				{
-					throw new teaTimerInvalidTwitterShowCommunicationErrorsException("validateOptionValue(twitter.showCommunicationErrors): value is no bool.");
 				}
 				break;
 			case "viewMode":
@@ -738,177 +654,6 @@ function teaTimerCommon()
 		}
 		
 		return ((id!==null && self.checkSoundId(type,id))?true:false);
-	}
-	
-	/*
-		===================
-		| Twitter methods |
-		===================
-	
-    */
-	
-	/**
-	 * This public method returns a boolean, which indicates, if the Twitter feature of TeaTimer is acitvated or not.
-	 * @returns bool
-	 **/
-	this.isTwitterFeatureOn=function()
-	{
-		return getOption("twitter.on");
-	}
-	
-	/**
-	 *  Use this public method to get the saved twitter username.
-	 *  @returns string username
-	 **/
-	this.getTwitterUsername=function()
-	{
-		return getOption("twitter.username");
-	}
-	
-	/**
-	 *  Use this public method to get the saved and unencrypted twitter password.
-	 **/
-	this.getTwitterPassword=function()
-	{
-		return getOption("twitter.password");
-	}
-	
-	/**
-	 *  Use this public method to find out, if teaTimer should send a Tweet, when a countdown was triggered.
-	 *  @returns bool
-	 **/
-	this.twitterOnStart=function()
-	{
-		return getOption("twitter.twitterOnStart");
-	}
-	
-	/**
-	 *  Use this public method to find out, if teaTimer should send a Tweet, when a countdown has finished.
-	 *  @returns bool
-	 **/
-	this.twitterOnFinish=function()
-	{
-		return getOption("twitter.twitterOnFinish");
-	}
-	
-	/**
-	 *  Use this public method to get the text, that should be tweeted either on start or on finish.
-	 *  NOTE: % is not yet resolved in the return value!
-	 *  
-	 *  @param mode ("start" or "finish")
-	 *  @returns string text
-	 **/
-	this.getTwitterTweetText=function(text)
-	{
-		text=(text==="start")?text:"finish";
-		return getOption("twitter."+text+"TweetText");
-	}
-	
-	/**
-	 *  Use this public method to find out, if teaTimer should show communication errors to the user ("verbose mode").
-	 *  @returns bool
-	 **/
-	this.showCommunicationErrors=function()
-	{
-		return getOption("twitter.showCommunicationErrors");
-	}
-	
-	/**
-	 * With this public method, the twitter feature can be activated or deactivated.
-	 **/
-	this.setTwitterFeature=function(value)
-	{
-		setOption("twitter.on",value);
-	}
-	
-	/**
-	 * Use this public method to save the twitter username in the options.
-	 *
-	 * @param string username
-	 * @throws teaTimerInvalidTwitterUsernameException
-	 **/
-	this.setTwitterUsername=function(username)
-	{
-		if(!(typeof username==="string"))
-		{
-			throw new teaTimerInvalidTwitterUsernameException("setTwitterUsername: Username must be a string.");
-		}
-		setOption("twitter.username",username);
-	}
-	
-	/**
-	 * Use this public method to save the twitter password in the options.
-	 *
-	 * @param string password (will be encrypted)
-	 * @throws teaTimerInvalidTwitterPasswordException
-	 **/
-	this.setTwitterPassword=function(password)
-	{
-		if(!(typeof password==="string"))
-		{
-			throw new teaTimerInvalidTwitterPasswortException("setTwitterPassword: Password must be a string.");
-		}
-		setOption("twitter.password",password);
-	}
-	
-	/**
-	 * Use this public method to activate or deactivate a certain twitter event
-	 *
-	 * @param string event ("start" or "finish")
-	 * @param bool activate (bool) or deactivate (false)?
-	 * @throws teaTimerInvalidTwitterEventException
-	 **/
-	this.setTwitterEvent=function(event,value)
-	{
-		var optionName=null;
-		switch(event)
-		{
-			case "start":
-			case "finish":
-				optionName="twitter.twitterOn"+event.charAt(0).toUpperCase()+event.substr(1);
-				break;
-			default:
-				throw new teaTimerInvalidTwitterEventException("activateTwitterEvent: '"+event+"' is not a valid twitter event.");
-		}
-		
-		setOption(optionName,value);
-	}
-	
-	/**
-	 * Use this method to set a text, that should be tweeted on a certain event.
-	 *
-	 * @param string tweetId ("start" or "finish"; for which event you want to set the tweet text?)
-	 * @param string text
-	 * @throws teaTimerInvalidTwitterEventException
-	 * @throws teaTimerInvalidTwitterTweetTextException
-	 **/
-	this.setTweetText=function(tweetId,text)
-	{
-		var optionName=null;
-		switch(tweetId)
-		{
-			case "start":
-			case "finish":
-				optionName="twitter."+tweetId+"TweetText";
-				break;
-			default:
-				throw new teaTimerInvalidTwitterEventException("setTweetText: '"+tweetId+"' is not a valid tweet id.");
-		}
-		
-		if(!(typeof text==="string"))
-		{
-			throw new teaTimerInvalidTwitterTweetTextException("setTweetText: text must be a string.");
-		}
-		
-		setOption(optionName,text);
-	}
-	
-	/**
-	 * With this public method, the verbose mode (for the Twitter feature) can be activated or deactivated.
-	 **/
-	this.setShowCommunicationErrors=function(value)
-	{
-		setOption("twitter.showCommunicationErrors",value);
 	}
     
     /*
@@ -1267,35 +1012,6 @@ function teaTimerInvalidSortOrderException(msg)
 	this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidTwitterOnException(msg)
-{
-	this.name="teaTimerInvalidTwitterOnException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function teaTimerInvalidTwitterUsernameException(msg)
-{
-	this.name="teaTimerInvalidTwitterUsernameException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function teaTimerInvalidTwitterPasswordException(msg)
-{
-	this.name="teaTimerInvalidTwitterPasswordException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function teaTimerInvalidTwitterTweetTextException(msg)
-{
-	this.name="teaTimerInvalidTwitterTweetTextException";
-	this.message=((msg===undefined)?null:msg);
-}
-
-function teaTimerInvalidTwitterEventException(msg)
-{
-	this.name="teaTimerInvalidTwitterEventException";
-	this.message=((msg===undefined)?null:msg);
-}
 
 function teaTimerInvalidViewModeException(msg)
 {

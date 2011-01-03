@@ -3,10 +3,10 @@
 <!ENTITY main.contextMenu.options "Seçenekler...">
 <!ENTITY main.contextMenu.cancel "İptal">
 <!ENTITY main.contextMenu.quicktimer "Hızlı Zamanlayıcı…">
+
 <!ENTITY options.windowTitle "TeaTimer - Seçenekler">
 <!ENTITY options.tabs.teavarities "Çay çeşitleri">
 <!ENTITY options.tabs.alerts "Uyarılar">
-<!ENTITY options.tabs.twitter "Twitter">
 <!ENTITY options.varities.addANewTea "Yeni bir çay ekle">
 <!ENTITY options.varities.newTea.name.label "Çay">
 <!ENTITY options.varities.newTea.time.label "Zaman">
@@ -43,23 +43,11 @@
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Höpürdetme">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Konuşma">
 <!ENTITY options.alerts.soundAlerts.sounds.custom "">
-<!ENTITY options.twitter.twitterActive "Twitter TeaTimer olayları">
-<!ENTITY options.twitter.credentials.groupboxcaption "Twitter Kimlik kartları">
-<!ENTITY options.twitter.credentials.username "Kullanıcı adı">
-<!ENTITY options.twitter.credentials.password "Şifre">
-<!ENTITY options.twitter.credentials.testbutton.caption "Kimlik kartlarını sına">
-<!ENTITY options.twitter.startmsg.groupbox.caption "Çay, cıvıltıyı başlatır">
-<!ENTITY options.twitter.startmsg.checkbox.label "Geri sayım başladığında bunu hareketli göster">
-<!ENTITY options.twitter.startmsg.textfield.label "İleti (bir çay adı yerleştirmek için &#37;t kullanın)">
-<!ENTITY options.twitter.endmsg.groupbox.caption "Çay, cıvıltıyı durdurdu">
-<!ENTITY options.twitter.endmsg.checkbox.label "Geri sayım bittiğinde bunu hareketli göster">
-<!ENTITY options.twitter.endmsg.textfield.label "İleti (bir çay adı yerleştirmek için &#37;t kullanın)">
-<!ENTITY options.twitter.misc.groupbox.caption "Çeşitli">
-<!ENTITY options.twitter.misc.alertcommunicationerrors "TeaTimer ve Twitter arasında bir iletişim hatası olduğunda uyarı ver">
 <!ENTITY options.buttons.ok.label "TAMAM">
 <!ENTITY options.buttons.ok.accesskey "o">
 <!ENTITY options.buttons.cancel.label "İptal">
 <!ENTITY options.buttons.cancel.accesskey "c">
+
 <!ENTITY quicktimer.windowTitle "TeaTimer - Hızlı Zamanlayıcı">
 <!ENTITY quicktimer.countdownTime.label "Lütfen varsayılan gersayım süresini girin:">
 <!ENTITY quicktimer.countdownTime.accesskey "t">
@@ -69,6 +57,7 @@
 <!ENTITY quicktimer.buttons.ok.accesskey "o">
 <!ENTITY quicktimer.buttons.cancel.label "İptal">
 <!ENTITY quicktimer.buttons.cancel.accesskey "c">
+
 <!ENTITY teaready.windowTitle "TeaTimer - Çayınız hazır">
 <!ENTITY teaready.buttons.ok.label "TAMAM">
 <!ENTITY teaready.header "TeaTimer diyor ki:">

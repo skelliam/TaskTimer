@@ -3,10 +3,10 @@
 <!ENTITY main.contextMenu.options "Options…">
 <!ENTITY main.contextMenu.cancel "Annuler">
 <!ENTITY main.contextMenu.quicktimer "Minuteur rapide…">
+
 <!ENTITY options.windowTitle "Options de l'extension TeaTimer">
 <!ENTITY options.tabs.teavarities "Variétés de thé">
 <!ENTITY options.tabs.alerts "Avertissements">
-<!ENTITY options.tabs.twitter "Twitter">
 <!ENTITY options.varities.addANewTea "Ajouter un nouveau thé">
 <!ENTITY options.varities.newTea.name.label "Thé">
 <!ENTITY options.varities.newTea.time.label "Temps">
@@ -43,23 +43,11 @@
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Siroter">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Voix">
 <!ENTITY options.alerts.soundAlerts.sounds.custom "">
-<!ENTITY options.twitter.twitterActive "Évènements Twitter du TeaTimer">
-<!ENTITY options.twitter.credentials.groupboxcaption "Identifiants Twitter">
-<!ENTITY options.twitter.credentials.username "Nom d'utilisateur">
-<!ENTITY options.twitter.credentials.password "Mot de passe">
-<!ENTITY options.twitter.credentials.testbutton.caption "Test des identifiants">
-<!ENTITY options.twitter.startmsg.groupbox.caption "Tweet au début du thé">
-<!ENTITY options.twitter.startmsg.checkbox.label "Twitter quand le décompte commence">
-<!ENTITY options.twitter.startmsg.textfield.label "Message (utiliser &#37;t pour insérer le nom du thé)">
-<!ENTITY options.twitter.endmsg.groupbox.caption "Tweet lorsque le thé est prêt">
-<!ENTITY options.twitter.endmsg.checkbox.label "Twitter à la fin du décompte">
-<!ENTITY options.twitter.endmsg.textfield.label "Message (utiliser &#37;t pour insérer le nom du thé)">
-<!ENTITY options.twitter.misc.groupbox.caption "Divers">
-<!ENTITY options.twitter.misc.alertcommunicationerrors "Avertir lorsqu'une erreur de communication s'est produite entre TeaTimer et Twitter">
 <!ENTITY options.buttons.ok.label "OK">
 <!ENTITY options.buttons.ok.accesskey "o">
 <!ENTITY options.buttons.cancel.label "Annuler">
 <!ENTITY options.buttons.cancel.accesskey "a">
+
 <!ENTITY quicktimer.windowTitle "TeaTimer - minuteur rapide">
 <!ENTITY quicktimer.countdownTime.label "Veuillez saisir la durée usuelle du décompte :">
 <!ENTITY quicktimer.countdownTime.accesskey "V">
@@ -69,6 +57,7 @@
 <!ENTITY quicktimer.buttons.ok.accesskey "o">
 <!ENTITY quicktimer.buttons.cancel.label "Annuler">
 <!ENTITY quicktimer.buttons.cancel.accesskey "a">
+
 <!ENTITY teaready.windowTitle "TeaTimer - Votre thé est prêt">
 <!ENTITY teaready.buttons.ok.label "OK">
 <!ENTITY teaready.header "TeaTimer dit :">
