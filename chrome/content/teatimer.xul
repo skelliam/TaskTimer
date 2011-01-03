@@ -21,22 +21,43 @@
 	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
 	<script type="application/x-javascript" src="chrome://teatimer/content/teatimer.js" />
 	
-	<statusbar id="status-bar">
-		<statusbarpanel id="teatimer-panel" context="teatimer-contextMenu">
-			<box id="teatimer-box"> <!-- This extra box is needed, because FF<3 can not handle CSS background images for statusbarpanel elements -->
-				<box id="teatimer-countdownbox">
-					<label id="teatimer-countdown" value="TeaTimer" />
-				</box>
-				<popup id="teatimer-contextMenu" position="before_end" tooltiptext="">
-					<menuitem id="teatimer-showModeIconAndTime" label="&main.contextMenu.showIconAndTime;" name="teatimer-viewMode" value="iconAndText" type="radio" />
-					<menuitem id="teatimer-showModeIconOnly" label="&main.contextMenu.showIconOnly;" name="teatimer-viewMode" value="iconOnly" type="radio" />
-					<menuseparator id="teatimer-endViewModeSeparator" />
-					<menuseparator id="teatimer-endTealistSeparator" />
-					<menuitem id="teatimer-options" label="&main.contextMenu.options;" />
-					<menuitem id="teatimer-cancel" label="&main.contextMenu.cancel;" />
-					<menuitem id="teatimer-quicktimer" label="&main.contextMenu.quicktimer;" />
-				</popup>
-			</box>
-		</statusbarpanel>
-	</statusbar>
+    <toolbar id="addon-bar">
+        <toolbaritem id="teatimer-box">
+            <box id="teatimer-countdownbox"> <!-- this box is necessary, because #teatimer-countdown can blink using "visibility: hidden". Hidden elements don't recieve click events --> 
+                <label id="teatimer-countdown" value="TeaTimer" />
+            </box>
+                
+            <toolbarbutton id="teatimer-toolbarbutton" label="TeaTimer" type="menu" image="chrome://teatimer/skin/icon-inactive.png" class="toolbarbutton-1 chromeclass-toolbar-additional" orient="horizontal">
+                <menupopup id="teatimer-contextMenu" position="before_end">
+                    <menuitem id="teatimer-showModeIconAndTime" label="&main.contextMenu.showIconAndTime;" name="teatimer-viewMode" value="iconAndText" type="radio" />
+                    <menuitem id="teatimer-showModeIconOnly"    label="&main.contextMenu.showIconOnly;"    name="teatimer-viewMode" value="iconOnly"    type="radio" />
+                    <menuseparator id="teatimer-endViewModeSeparator" />
+                    <!-- list of teas is filled in by script here -->
+                    <menuseparator id="teatimer-endTealistSeparator" />
+                    <menuitem id="teatimer-options" label="&main.contextMenu.options;" />
+                    <menuitem id="teatimer-cancel" label="&main.contextMenu.cancel;" />
+                    <menuitem id="teatimer-quicktimer" label="&main.contextMenu.quicktimer;" />
+                </menupopup>
+            </toolbarbutton>
+        </toolbaritem>
+	</toolbar>
+    
+	<!--<statusbar id="status-bar">-->
+	<!--	<statusbarpanel id="teatimer-panel" context="teatimer-contextMenu">-->
+	<!--		<box id="teatimer-box"> --> <!-- This extra box is needed, because FF<3 can not handle CSS background images for statusbarpanel elements -->
+	<!--			<box id="teatimer-countdownbox">-->
+	<!--				<label id="teatimer-countdown" value="TeaTimer" />-->
+	<!--			</box>-->
+	<!--			<popup id="teatimer-contextMenu" position="before_end" tooltiptext="">-->
+	<!--				<menuitem id="teatimer-showModeIconAndTime" label="&main.contextMenu.showIconAndTime;" name="teatimer-viewMode" value="iconAndText" type="radio" />-->
+	<!--				<menuitem id="teatimer-showModeIconOnly" label="&main.contextMenu.showIconOnly;" name="teatimer-viewMode" value="iconOnly" type="radio" />-->
+	<!--				<menuseparator id="teatimer-endViewModeSeparator" />-->
+	<!--				<menuseparator id="teatimer-endTealistSeparator" />-->
+	<!--				<menuitem id="teatimer-options" label="&main.contextMenu.options;" />-->
+	<!--				<menuitem id="teatimer-cancel" label="&main.contextMenu.cancel;" />-->
+	<!--				<menuitem id="teatimer-quicktimer" label="&main.contextMenu.quicktimer;" />-->
+	<!--			</popup>-->
+	<!--		</box>-->
+	<!--	</statusbarpanel>-->
+	<!--</statusbar>-->
 </overlay>

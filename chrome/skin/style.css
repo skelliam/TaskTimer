@@ -16,10 +16,10 @@
 */
 #teatimer-box
 {
-    height: 16px;
+    /* height: 16px; */ /* needed? Was probably necessary, because icon was applied as background image before */
 }
 
-#teatimer-box.iconOnlyView.readyAlert.invisible #teatimer-countdownbox, /* When in icon only view and statusbar alert is set then blink icon, too */
+/*#teatimer-box.iconOnlyView.readyAlert.invisible #teatimer-countdownbox, */ /* When in icon only view and statusbar alert is set then blink icon, too */
 #teatimer-box.invisible #teatimer-countdown
 {
     visibility: hidden;
@@ -30,20 +30,13 @@
     color: #090;
 }
 
-#teatimer-box.iconOnlyView #teatimer-countdown
+#teatimer-box.iconOnlyView #teatimer-countdownbox
 {
 	display: none;
 }
 
-#teatimer-box #teatimer-countdownbox
-{
-	padding-left: 21px;
-    background-image: url(chrome://teatimer/skin/icon-inactive.png);
-    background-repeat: no-repeat;	
-}
-
-#teatimer-box.steeping #teatimer-countdownbox,
-#teatimer-box.readyAlert.iconOnlyView #teatimer-countdownbox /* in icon only view show the colored version of the icon, when doing statusbar alert ('blink-blink') */
-{
-	background-image: url(chrome://teatimer/skin/icon-steeping.png);
-}
+/*#teatimer-box.steeping #teatimer-countdownbox,*/
+/*#teatimer-box.readyAlert.iconOnlyView #teatimer-countdownbox *//* in icon only view show the colored version of the icon, when doing statusbar alert ('blink-blink') */
+/*{*/
+	/*background-image: url(chrome://teatimer/skin/icon-steeping.png);*/
+/*}*/

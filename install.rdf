@@ -4,7 +4,7 @@
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                     em:id="teatimer@codepaintedby.philipp-soehnlein.de"
-                    em:version="1.2pre"
+                    em:version="1.2pre-ff4"
                     em:name="TeaTimer"
                     em:description="A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3. See my website for more informations."
                     em:creator="Philipp Söhnlein"
@@ -94,6 +94,6 @@
   </RDF:Description>
   <RDF:Description RDF:about="rdf:#$rdYLa2"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
-                   em:minVersion="1.5"
-                   em:maxVersion="3.5.*" />
+                   em:minVersion="4.0b8"
+                   em:maxVersion="4.0.*" />
 </RDF:RDF>
