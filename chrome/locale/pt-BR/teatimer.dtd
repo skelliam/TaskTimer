@@ -1,0 +1,65 @@
+<!ENTITY main.contextMenu.showIconAndTime "Mostrar ícone e tempo">
+<!ENTITY main.contextMenu.showIconOnly "Mostrar apenas ícone">
+<!ENTITY main.contextMenu.options "Opções...">
+<!ENTITY main.contextMenu.cancel "Cancelar">
+<!ENTITY main.contextMenu.quicktimer "Contador rápido...">
+
+<!ENTITY options.windowTitle "TeaTimer - Opções">
+<!ENTITY options.tabs.teavarities "Variedades de chás">
+<!ENTITY options.tabs.alerts "Avisos">
+<!ENTITY options.varities.addANewTea "Adicionar um novo chá">
+<!ENTITY options.varities.newTea.name.label "Chá">
+<!ENTITY options.varities.newTea.time.label "Tempo">
+<!ENTITY options.varities.newTea.button "Adicionar">
+<!ENTITY options.varities.manageExistingTeas "Lista de chás">
+<!ENTITY options.varities.manageExistingTeas.tree.id "ID">
+<!ENTITY options.varities.manageExistingTeas.tree.name "Variedade">
+<!ENTITY options.varities.manageExistingTeas.tree.time "Tempo">
+<!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "Remover chás selecionados">
+<!ENTITY options.varities.sorting "Ordem de listagem">
+<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "Mostrar os chás">
+<!ENTITY options.varities.sorting.nameASC "de A a Z.">
+<!ENTITY options.varities.sorting.nameDESC "de Z a A.">
+<!ENTITY options.varities.sorting.timeASC "mais rápidos primeiro.">
+<!ENTITY options.varities.sorting.timeDESC "mais demorados primeiro.">
+<!ENTITY options.varities.sorting.id "exatamente como na lista acima.">
+<!ENTITY options.alerts.general.groupboxcaption "Avisos comuns">
+<!ENTITY options.alerts.general.showDialogAlert "Mostrar janela de aviso quando o chá estiver pronto">
+<!ENTITY options.alerts.general.showStatusbarAlert "Piscar &quot;Pronto!&quot; na barra de status quando o chá estiver pronto">
+<!ENTITY options.alerts.widgetAlert.groupboxcaption "Aviso na página">
+<!ENTITY options.alerts.widgetAlert.description "Seja avisado sobre seu chá na própria página que estiver visitando.">
+<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Mostrar aviso na página quando o chá estiver pronto">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "Remover aviso após (em segundos; 0 = só ao clicar):">
+<!ENTITY options.alerts.soundAlerts.groupboxcaption "Avisos sonoros">
+<!ENTITY options.alerts.soundAlerts.startSound.label "Ao começar a contagem:">
+<!ENTITY options.alerts.soundAlerts.endSound.label "Quando o chá estiver pronto:">
+<!ENTITY options.alerts.soundAlerts.startSound.preview "Tocar">
+<!ENTITY options.alerts.soundAlerts.endSound.preview "Tocar">
+<!ENTITY options.alerts.soundAlerts.sounds.none "(Nenhum)">
+<!ENTITY options.alerts.soundAlerts.sounds.cup "Xícara">
+<!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Relógio ovo">
+<!ENTITY options.alerts.soundAlerts.sounds.pour "Servir">
+<!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfarra">
+<!ENTITY options.alerts.soundAlerts.sounds.slurp "Tomando chá">
+<!ENTITY options.alerts.soundAlerts.sounds.speech "Convite">
+<!ENTITY options.alerts.soundAlerts.sounds.custom "">
+<!ENTITY options.buttons.ok.label "OK">
+<!ENTITY options.buttons.ok.accesskey "O">
+<!ENTITY options.buttons.cancel.label "Cancelar">
+<!ENTITY options.buttons.cancel.accesskey "C">
+
+<!ENTITY quicktimer.windowTitle "TeaTimer - Contador rápido">
+<!ENTITY quicktimer.countdownTime.label "Tempo desejado:">
+<!ENTITY quicktimer.countdownTime.accesskey "T">
+<!ENTITY quicktimer.startCountdownRightNow.label "Começar contagem logo após clicar em OK.">
+<!ENTITY quicktimer.startCountdownRightNow.accesskey "C">
+<!ENTITY quicktimer.buttons.ok.label "OK">
+<!ENTITY quicktimer.buttons.ok.accesskey "O">
+<!ENTITY quicktimer.buttons.cancel.label "Cancelar">
+<!ENTITY quicktimer.buttons.cancel.accesskey "C">
+
+<!ENTITY teaready.windowTitle "TeaTimer - Seu chá está pronto!">
+<!ENTITY teaready.buttons.ok.label "OK">
+<!ENTITY teaready.header "TeaTimer informa:">
+<!ENTITY teaready.message "Infusão completa.">
+<!ENTITY teaready.teaname "Aprecie o {$TEANAME}. :-)">

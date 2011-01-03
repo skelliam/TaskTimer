@@ -49,7 +49,7 @@
 <!ENTITY options.buttons.cancel.accesskey "a">
 
 <!ENTITY quicktimer.windowTitle "TeaTimer - minuteur rapide">
-<!ENTITY quicktimer.countdownTime.label "Veuillez saisir la durée usuelle du décompte :">
+<!ENTITY quicktimer.countdownTime.label "Veuillez saisir la durée usuelle du décompte:">
 <!ENTITY quicktimer.countdownTime.accesskey "V">
 <!ENTITY quicktimer.startCountdownRightNow.label "Commencer le décompte tout de suite après avoir cliqué sur OK.">
 <!ENTITY quicktimer.startCountdownRightNow.accesskey "c">

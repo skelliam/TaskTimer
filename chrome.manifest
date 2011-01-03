@@ -30,12 +30,14 @@ overlay			chrome://browser/content/browser.xul	        chrome://teatimer/content
 #locale			teatimer	fr-FR 								jar:chrome/teaTimer.jar!/locale/fr-FR/
 ##locale			teatimer	pl-PL 								jar:chrome/teaTimer.jar!/locale/pl-PL/
 #locale			teatimer	tr-TR 								jar:chrome/teaTimer.jar!/locale/tr-TR/
+#locale			teatimer	pt-BR 								jar:chrome/teaTimer.jar!/locale/pt-BR/
 
 locale			teatimer	de									chrome/locale/de/
 locale			teatimer	en-US 								chrome/locale/en-US/
 locale			teatimer	fr-FR 								chrome/locale/fr-FR/
 #locale			teatimer	pl-PL								chrome/locale/pl-PL/
 locale			teatimer	tr-TR								chrome/locale/tr-TR/
+locale			teatimer	pt-BR								chrome/locale/pt-BR/
 
 skin	        teatimer	classic/1.0	chrome/skin/
 #skin	        teatimer	classic/1.0	jar:chrome/teaTimer.jar!/skin/
