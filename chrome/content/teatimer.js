@@ -1,4 +1,4 @@
-///*
+/*
     TeaTimer: A Firefox extension that protects you from oversteeped tea.
     Copyright (C) 2011 Philipp Söhnlein
 

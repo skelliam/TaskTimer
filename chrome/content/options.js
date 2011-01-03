@@ -264,7 +264,7 @@ function teaTimerOptionsWindow()
             try
             {
                 validateTeasInTree();
-				validateAlertSettings();
+                validateAlertSettings();
 				valid=true;
             }
             catch(e)
@@ -590,6 +590,9 @@ function teaTimerOptionsWindow()
 	
 	this.customSoundMenuItemCommand=function(type) {
 		var fallbackValue=(type==='start') ? currentStartSoundValue : currentEndSoundValue;
+        if (fallbackValue==="custom") {
+            fallbackValue=common.getIdOfStartSound(); //retrieve full URL of custom sound
+        }
 		showCustomSoundFilePicker(type,fallbackValue);
 	}
     
