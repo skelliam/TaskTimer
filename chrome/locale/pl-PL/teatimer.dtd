@@ -7,6 +7,7 @@
 <!ENTITY options.windowTitle "TeaTimer - Opcje">
 <!ENTITY options.tabs.teavarities "Rodzaje herbat">
 <!ENTITY options.tabs.alerts "Powiadomienia">
+
 <!ENTITY options.varities.addANewTea "Dodaj nową herbatę">
 <!ENTITY options.varities.newTea.name.label "Herbata">
 <!ENTITY options.varities.newTea.time.label "Czas">

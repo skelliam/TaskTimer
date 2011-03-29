@@ -1,6 +1,6 @@
 <!ENTITY main.contextMenu.showIconAndTime "Ukázat ikonku a čas">
 <!ENTITY main.contextMenu.showIconOnly "Ukázat pouze ikonku">
-<!ENTITY main.contextMenu.options "Možnosti">
+<!ENTITY main.contextMenu.options "Možnosti...">
 <!ENTITY main.contextMenu.cancel "Storno">
 <!ENTITY main.contextMenu.quicktimer "Rychlý časovač">
 
@@ -42,7 +42,7 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfára">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Srkání">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Hlasové upozornění">
-<!ENTITY options.alerts.soundAlerts.sounds.custom "Eigener...">
+<!ENTITY options.alerts.soundAlerts.sounds.custom "">
 <!ENTITY options.buttons.ok.label "OK">
 <!ENTITY options.buttons.ok.accesskey "o">
 <!ENTITY options.buttons.cancel.label "Storno">

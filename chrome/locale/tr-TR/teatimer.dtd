@@ -7,6 +7,7 @@
 <!ENTITY options.windowTitle "TeaTimer - Seçenekler">
 <!ENTITY options.tabs.teavarities "Çay çeşitleri">
 <!ENTITY options.tabs.alerts "Uyarılar">
+
 <!ENTITY options.varities.addANewTea "Yeni bir çay ekle">
 <!ENTITY options.varities.newTea.name.label "Çay">
 <!ENTITY options.varities.newTea.time.label "Zaman">
