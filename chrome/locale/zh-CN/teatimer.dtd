@@ -1,0 +1,67 @@
+<!ENTITY main.contextMenu.showIconAndTime "显示图标和时间">
+<!ENTITY main.contextMenu.showIconOnly "只显示图标">
+<!ENTITY main.contextMenu.options "选项...">
+<!ENTITY main.contextMenu.cancel "取消">
+<!ENTITY main.contextMenu.quicktimer "快速定时器...">
+
+<!ENTITY options.windowTitle "TeaTimer - 选项">
+<!ENTITY options.tabs.teavarities "茶叶品种">
+<!ENTITY options.tabs.alerts "警报">
+
+<!ENTITY options.varities.addANewTea "添加新茶">
+<!ENTITY options.varities.newTea.name.label "茶">
+<!ENTITY options.varities.newTea.time.label "时间">
+<!ENTITY options.varities.newTea.button "添加">
+<!ENTITY options.varities.manageExistingTeas "管理现有茶">
+<!ENTITY options.varities.manageExistingTeas.tree.id "编号">
+<!ENTITY options.varities.manageExistingTeas.tree.name "名称">
+<!ENTITY options.varities.manageExistingTeas.tree.time "时间">
+<!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "删除选定的茶">
+<!ENTITY options.varities.sorting "排序">
+<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "TeaTimer 右键菜单中的排序方式">
+<!ENTITY options.varities.sorting.nameASC "按字母顺序升序排列。">
+<!ENTITY options.varities.sorting.nameDESC "按字母顺序降序排列。">
+<!ENTITY options.varities.sorting.timeASC "按时间升序排列。">
+<!ENTITY options.varities.sorting.timeDESC "按时间降序排列。">
+<!ENTITY options.varities.sorting.id "与上述列表一样。">
+<!ENTITY options.alerts.general.groupboxcaption "常规警报">
+<!ENTITY options.alerts.general.showDialogAlert "定时器到达时显示对话框窗口">
+<!ENTITY options.alerts.general.showStatusbarAlert "当定时器到达时闪烁状态栏图标">
+<!ENTITY options.alerts.widgetAlert.groupboxcaption "网站-小工具 警报">
+<!ENTITY options.alerts.widgetAlert.description "定时器到达时直接在网站小工具中显示。">
+<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "定时器到达时显示网站小工具">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "小工具自动消失的秒数（0=永不）：">
+<!ENTITY options.alerts.soundAlerts.groupboxcaption "声音报警">
+<!ENTITY options.alerts.soundAlerts.startSound.label "当定时器开始播放这个声音：">
+<!ENTITY options.alerts.soundAlerts.endSound.label "当定时器到达时播放这个声音：">
+<!ENTITY options.alerts.soundAlerts.startSound.preview "预览">
+<!ENTITY options.alerts.soundAlerts.endSound.preview "预览">
+<!ENTITY options.alerts.soundAlerts.sounds.none "无">
+<!ENTITY options.alerts.soundAlerts.sounds.cup "杯子">
+<!ENTITY options.alerts.soundAlerts.sounds.eggtimer "煮蛋计时器">
+<!ENTITY options.alerts.soundAlerts.sounds.pour "倒">
+<!ENTITY options.alerts.soundAlerts.sounds.fanfare "紧锣密鼓">
+<!ENTITY options.alerts.soundAlerts.sounds.slurp "饮用">
+<!ENTITY options.alerts.soundAlerts.sounds.speech "讲话">
+<!ENTITY options.alerts.soundAlerts.sounds.custom "">
+
+<!ENTITY options.buttons.ok.label "确定">
+<!ENTITY options.buttons.ok.accesskey "O">
+<!ENTITY options.buttons.cancel.label "取消">
+<!ENTITY options.buttons.cancel.accesskey "C">
+
+<!ENTITY quicktimer.windowTitle "TeaTimer - 快速定时器">
+<!ENTITY quicktimer.countdownTime.label "请输入自定义倒计时时间：">
+<!ENTITY quicktimer.countdownTime.accesskey "T">
+<!ENTITY quicktimer.startCountdownRightNow.label "点击确定后立即开始倒计时。">
+<!ENTITY quicktimer.startCountdownRightNow.accesskey "S">
+<!ENTITY quicktimer.buttons.ok.label "确定">
+<!ENTITY quicktimer.buttons.ok.accesskey "O">
+<!ENTITY quicktimer.buttons.cancel.label "取消">
+<!ENTITY quicktimer.buttons.cancel.accesskey "C">
+
+<!ENTITY teaready.windowTitle "TeaTimer - 准备好你的茶">
+<!ENTITY teaready.buttons.ok.label "确定">
+<!ENTITY teaready.header "TeaTimer 说：">
+<!ENTITY teaready.message "浸泡完成。">
+<!ENTITY teaready.teaname "享受你的 {$TEANAME} 吧。^_^">
