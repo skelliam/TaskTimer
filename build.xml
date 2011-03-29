@@ -38,6 +38,8 @@
 					locale/cs-CZ/teatimer.properties
 					locale/de/teatimer.dtd
 					locale/de/teatimer.properties
+                    locale/sv-SE/teatimer.dtd
+					locale/sv-SE/teatimer.properties
 					" />
 	</target>
 
