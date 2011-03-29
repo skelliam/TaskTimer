@@ -7,6 +7,7 @@
 <!ENTITY options.windowTitle "TeaTimer - Einstellungen">
 <!ENTITY options.tabs.teavarities "Teesorten">
 <!ENTITY options.tabs.alerts "Benachrichtigungen">
+
 <!ENTITY options.varities.addANewTea "Eine neue Sorte hizufügen">
 <!ENTITY options.varities.newTea.name.label "Tee">
 <!ENTITY options.varities.newTea.time.label "Zeit">
@@ -43,6 +44,7 @@
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Schlürfen">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Spruch">
 <!ENTITY options.alerts.soundAlerts.sounds.custom "Eigener...">
+
 <!ENTITY options.buttons.ok.label "OK">
 <!ENTITY options.buttons.ok.accesskey "o">
 <!ENTITY options.buttons.cancel.label "Abbrechen">
