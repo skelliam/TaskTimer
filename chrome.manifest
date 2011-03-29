@@ -3,7 +3,7 @@
 #	Copyright (C) 2011 Philipp Söhnlein
 #
 #	This program is free software: you can redistribute it and/or modify
-#	it under the terms of the GNU General Public License version 3 as 
+#	it under the terms of the GNU General Public License version 3 as
 #	published by the Free Software Foundation.
 #
 #	This program is distributed in the hope that it will be useful,
@@ -15,7 +15,7 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-content			teatimer	chrome/content/ contentaccessible=yes 
+content			teatimer	chrome/content/ contentaccessible=yes
 #content		teatimer	jar:chrome/teaTimer.jar!/content/ contentaccessible=yes
 
 overlay			chrome://browser/content/browser.xul	        chrome://teatimer/content/teatimer.xul
@@ -26,6 +26,7 @@ overlay			chrome://browser/content/browser.xul	        chrome://teatimer/content
 ##locale			teatimer	pl-PL 								jar:chrome/teaTimer.jar!/locale/pl-PL/
 ##locale			teatimer	tr-TR 								jar:chrome/teaTimer.jar!/locale/tr-TR/
 ##locale			teatimer	pt-BR 								jar:chrome/teaTimer.jar!/locale/pt-BR/
+#locale			teatimer	sv-SE 								jar:chrome/teaTimer.jar!/locale/sv-SE/
 
 locale			teatimer	de									chrome/locale/de/
 locale			teatimer	en-US 								chrome/locale/en-US/
@@ -33,6 +34,7 @@ locale			teatimer	en-US 								chrome/locale/en-US/
 #locale			teatimer	pl-PL								chrome/locale/pl-PL/
 #locale			teatimer	tr-TR								chrome/locale/tr-TR/
 #locale			teatimer	pt-BR								chrome/locale/pt-BR/
+locale			teatimer	sv-SE								chrome/locale/sv-SE/
 
 skin	        teatimer	classic/1.0	chrome/skin/
 #skin	        teatimer	classic/1.0	jar:chrome/teaTimer.jar!/skin/

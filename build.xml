@@ -4,11 +4,11 @@
 		<zip destfile="chrome/teaTimer.jar" basedir="chrome" includes="
 					content/options.js
 					content/options.xul
-					content/quicktimer.js 
+					content/quicktimer.js
 					content/quicktimer.xul
 					content/teaReadyDialog.xul
 					content/teaReadyDialog.js
-					content/teatimer.js 
+					content/teatimer.js
 					content/teatimer.xul
 					content/teaTimerCommon.js
 					content/teaTimerTeaDB.js
@@ -20,7 +20,7 @@
 					content/sound/start-egg-timer.wav
 					content/sound/start-pouring.wav
 					skin/options.css
-					skin/style.css 
+					skin/style.css
 					skin/quicktimer.css
 					skin/icon-inactive.png
 					skin/icon-steeping.png
@@ -34,7 +34,9 @@
 					locale/en-US/teatimer.properties
 					locale/de/teatimer.dtd
 					locale/de/teatimer.properties
-					" /> 
+                    locale/sv-SE/teatimer.dtd
+					locale/sv-SE/teatimer.properties
+					" />
 	</target>
 
 	<target name="createxpi" depends="createjar">
