@@ -12,12 +12,13 @@
                     em:iconURL="chrome://teatimer/skin/icon32.png"
                     em:optionsURL="chrome://teatimer/content/options.xul"
                     em:type="2">
-        <!-- for Firefox<3 --> 
+        <!-- for Firefox<3 -->
         <em:translator>English locale by Hannah Meyer and Philipp Söhnlein</em:translator>
         <em:translator>French locale by Hannah Meyer and Goofy (babelzilla.org)</em:translator>
         <em:translator>German locale by Philipp Söhnlein</em:translator>
         <em:translator>Turkish locale by Ersen Yoldac (babelzilla.org)</em:translator>
         <em:translator>Portuguese / Brasilian locale by petruc (babelzilla.org)</em:translator>
+        <em:translator>Belarusian locale by Drive DRKA (babelzilla.org)</em:translator>
         <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (konstantino.deviantart.com)</em:contributor>
         <em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
         <em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
@@ -25,7 +26,7 @@
         <em:contributor>Pouring Sound released under CC Sampling Plus 1.0 license by stijn on freesound.org</em:contributor>
         <em:contributor>Slurp Sound released under Soundsnap license by audiofruit (audiofruit.co.uk) on soundsnap.com</em:contributor>
         <em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
-    
+
         <em:localized> <!-- for Firefox >3 -->
                 <Description>
                 <em:locale>en-US</em:locale>
@@ -39,6 +40,7 @@
                         <em:translator>German locale by Philipp Söhnlein</em:translator>
                         <em:translator>Turkish locale by Ersen Yoldac (babelzilla.org)</em:translator>
                         <em:translator>Portuguese / Brasilian locale by petruc (babelzilla.org)</em:translator>
+                        <em:translator>Belarusian locale by Drive DRKA (babelzilla.org)</em:translator>
                         <em:contributor>Icon based on the Coffe Cup Icon by Konstantino Kapetaneas (konstantino.deviantart.com)</em:contributor>
                         <em:contributor>Egg Timer Sound released under CC Sampling Plus 1.0 license by xyzr_kx on freesound.org</em:contributor>
                         <em:contributor>Cup Sound released under CC Sampling Plus 1.0 license by Andre Rocha on freesound.org</em:contributor>
@@ -48,7 +50,7 @@
                         <em:contributor>Speech Sound released under CC Sampling Plus 1.0 license by alphahog (mikevendetti.com) on freesound.org</em:contributor>
                 </Description>
         </em:localized>
-        
+
         <em:localized> <!-- for Firefox >3 -->
                 <Description>
                         <em:locale>de</em:locale>
@@ -62,6 +64,7 @@
                         <em:translator>Deutsche Lokalisierung von Philipp Söhnlein (http://www.philipp-soehnlein.de/)</em:translator>
                         <em:translator>Türkische Lokalisierung von Ersen Yoldac (babelzilla.org)</em:translator>
                         <em:translator>Portugiesische / brasilianische Lokalisierung von petruc (babelzilla.org)</em:translator>
+                        <em:translator>Weißrussische Lokalisierung von Drive DRKA (babelzilla.org)</em:translator>
                         <em:contributor>Icon basierend auf dem Coffe Cup Icon von Konstantino Kapetaneas (konstantino.deviantart.com/</em:contributor>
                         <em:contributor>Egg Timer Sound veröffentlicht unter CC Sampling Plus 1.0 license von xyzr_kx bei freesound.org</em:contributor>
                         <em:contributor>Cup Sound veröffentlicht unter CC Sampling Plus 1.0 license von Andre Rocha bei freesound.org</em:contributor>
@@ -84,6 +87,7 @@
                         <em:translator>Localisation allemande de Philipp Söhnlein</em:translator>
                         <em:translator>Localisation turce de Ersen Yoldac (babelzilla.org)</em:translator>
                         <em:translator>Localisation portugais / brésilien de petruc (babelzilla.org)</em:translator>
+                        <em:translator>Localisation biélorusse de Drive DRKA (babelzilla.org)</em:translator>
                         <em:contributor>Symbole basé au symbole Coffe Cup de Konstantino Kapetaneas (konstantino.deviantart.com/)</em:contributor>
                         <em:contributor>Son du minuteur mise à disposition sous la license CC Sampling Plus 1.0 de xyzr_kx dans freesound.org</em:contributor>
                         <em:contributor>Son de la tasse mise à disposition sous la license CC Sampling Plus 1.0 license de Andre Rocha dans freesound.org</em:contributor>
@@ -93,7 +97,7 @@
                         <em:contributor>Voix mise à disposition sous la license CC Sampling Plus 1.0 de alphahog (mikevendetti.com) dans freesound.org</em:contributor>
                  </Description>
         </em:localized>
-        
+
     <em:targetApplication RDF:resource="rdf:#$rdYLa2"/>
   </RDF:Description>
   <RDF:Description RDF:about="rdf:#$rdYLa2"
