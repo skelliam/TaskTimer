@@ -43,7 +43,6 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Tantana">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Höpürdetme">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Konuşma">
-<!ENTITY options.alerts.soundAlerts.sounds.custom "">
 <!ENTITY options.buttons.ok.label "TAMAM">
 <!ENTITY options.buttons.ok.accesskey "o">
 <!ENTITY options.buttons.cancel.label "İptal">

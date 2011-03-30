@@ -1,65 +1,18 @@
-<!ENTITY main.contextMenu.showIconAndTime "">
 <!ENTITY main.contextMenu.showIconOnly "Паказаць толькі іконку">
 <!ENTITY main.contextMenu.options "Опцыі..">
 <!ENTITY main.contextMenu.cancel "Адмена">
-<!ENTITY main.contextMenu.quicktimer "">
 
-<!ENTITY options.windowTitle "">
-<!ENTITY options.tabs.teavarities "">
-<!ENTITY options.tabs.alerts "">
-<!ENTITY options.varities.addANewTea "">
-<!ENTITY options.varities.newTea.name.label "">
-<!ENTITY options.varities.newTea.time.label "">
 <!ENTITY options.varities.newTea.button "Дадаць">
-<!ENTITY options.varities.manageExistingTeas "">
-<!ENTITY options.varities.manageExistingTeas.tree.id "">
 <!ENTITY options.varities.manageExistingTeas.tree.name "Імя">
-<!ENTITY options.varities.manageExistingTeas.tree.time "">
-<!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "">
+
 <!ENTITY options.varities.sorting "Сартаваць">
-<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "">
-<!ENTITY options.varities.sorting.nameASC "">
-<!ENTITY options.varities.sorting.nameDESC "">
-<!ENTITY options.varities.sorting.timeASC "">
-<!ENTITY options.varities.sorting.timeDESC "">
-<!ENTITY options.varities.sorting.id "">
+
 <!ENTITY options.alerts.general.groupboxcaption "Галоуныя пагрозы">
-<!ENTITY options.alerts.general.showDialogAlert "">
-<!ENTITY options.alerts.general.showStatusbarAlert "">
-<!ENTITY options.alerts.widgetAlert.groupboxcaption "">
-<!ENTITY options.alerts.widgetAlert.description "">
-<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "">
-<!ENTITY options.alerts.widgetAlert.showTimeLabel "">
-<!ENTITY options.alerts.soundAlerts.groupboxcaption "">
-<!ENTITY options.alerts.soundAlerts.startSound.label "">
-<!ENTITY options.alerts.soundAlerts.endSound.label "">
-<!ENTITY options.alerts.soundAlerts.startSound.preview "">
 <!ENTITY options.alerts.soundAlerts.endSound.preview "Прагляд">
-<!ENTITY options.alerts.soundAlerts.sounds.none "">
-<!ENTITY options.alerts.soundAlerts.sounds.cup "">
-<!ENTITY options.alerts.soundAlerts.sounds.eggtimer "">
-<!ENTITY options.alerts.soundAlerts.sounds.pour "">
-<!ENTITY options.alerts.soundAlerts.sounds.fanfare "">
-<!ENTITY options.alerts.soundAlerts.sounds.slurp "">
-<!ENTITY options.alerts.soundAlerts.sounds.speech "">
-<!ENTITY options.alerts.soundAlerts.sounds.custom "">
+
 <!ENTITY options.buttons.ok.label "ок">
 <!ENTITY options.buttons.ok.accesskey "о">
 <!ENTITY options.buttons.cancel.label "Адмена">
 <!ENTITY options.buttons.cancel.accesskey "с">
 
-<!ENTITY quicktimer.windowTitle "">
-<!ENTITY quicktimer.countdownTime.label "">
-<!ENTITY quicktimer.countdownTime.accesskey "">
-<!ENTITY quicktimer.startCountdownRightNow.label "">
-<!ENTITY quicktimer.startCountdownRightNow.accesskey "">
-<!ENTITY quicktimer.buttons.ok.label "">
-<!ENTITY quicktimer.buttons.ok.accesskey "">
-<!ENTITY quicktimer.buttons.cancel.label "">
-<!ENTITY quicktimer.buttons.cancel.accesskey "">
-
-<!ENTITY teaready.windowTitle "">
-<!ENTITY teaready.buttons.ok.label "">
-<!ENTITY teaready.header "">
-<!ENTITY teaready.message "">
 <!ENTITY teaready.teaname "Выкарыстоўвай нас {$TEANAME}. :-)">

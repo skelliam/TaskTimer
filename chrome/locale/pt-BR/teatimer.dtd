@@ -42,7 +42,6 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfarra">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Tomando chá">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Convite">
-<!ENTITY options.alerts.soundAlerts.sounds.custom "">
 <!ENTITY options.buttons.ok.label "OK">
 <!ENTITY options.buttons.ok.accesskey "O">
 <!ENTITY options.buttons.cancel.label "Cancelar">

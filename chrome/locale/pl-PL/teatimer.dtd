@@ -43,7 +43,6 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Fanfary">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Siorbanie">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Mowa">
-<!ENTITY options.alerts.soundAlerts.sounds.custom "">
 
 <!ENTITY options.buttons.ok.label "OK">
 <!ENTITY options.buttons.ok.accesskey "o">

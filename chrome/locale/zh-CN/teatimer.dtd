@@ -43,7 +43,6 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "紧锣密鼓">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "饮用">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "讲话">
-<!ENTITY options.alerts.soundAlerts.sounds.custom "">
 
 <!ENTITY options.buttons.ok.label "确定">
 <!ENTITY options.buttons.ok.accesskey "O">
