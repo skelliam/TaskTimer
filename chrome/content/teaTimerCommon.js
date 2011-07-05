@@ -3,7 +3,7 @@
 	Copyright (C) 2011 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License version 3 as 
+	it under the terms of the GNU General Public License version 3 as
 	published by the Free Software Foundation.
 
 	This program is distributed in the hope that it will be useful,
@@ -18,7 +18,7 @@
 
 function teaTimerCommon()
 {
-    var debug=true;
+    var debug=false;
     var self=this;
     const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
     const teaTimerPrefs=storedPrefs.getBranch("extensions.teatimer.");
@@ -26,7 +26,7 @@ function teaTimerCommon()
     const strings=Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle("chrome://teatimer/locale/teatimer.properties");
     const quitObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
     quitObserver.addObserver(this,"quit-application-granted",false);
-    
+
     /**
      * This observer method is called, when the Firefox quits.
      * It checks which teas are marked for deletion and finally deletes them
@@ -58,16 +58,16 @@ function teaTimerCommon()
             }
 		    quitObserver.removeObserver(this,"quit-application-granted");
 		}
-        
+
         return true;
     }
-	
+
 	/*
 		=================
 		| Alert methods |
 		=================
 	*/
-	
+
 	/**
 	 * This public method checks, if the given alarm is active (should be fired) or not.
 	 * @param string alertType ("popup", "statusbar" or "widget")
@@ -90,7 +90,7 @@ function teaTimerCommon()
 			default:
 				throw new teaTimerInvalidAlertTypeException("isAlertDesired: First parameter must be a vaild alert type.");
 		}
-		
+
 		var desired=false;
         try
         {
@@ -101,10 +101,10 @@ function teaTimerCommon()
 			alertPrefs.setBoolPref("do"+type+"Alert",true);
 			desired=true;
         }
-		
+
         return desired;
 	}
-	
+
 	/**
 	 * This public method activates or deactivates a certain alert.
 	 * @param string alertType ("popup", "statusbar" or "widget")
@@ -128,21 +128,21 @@ function teaTimerCommon()
 			default:
 				throw new teaTimerInvalidAlertTypeException("setAlert: First parameter must be a vaild alert type.");
 		}
-		
+
 		if(typeof status!=="boolean")
 		{
 			throw new teaTimerInvalidAlertStatusException("setAlert: Second parameter must be boolean.");
 		}
-		
+
 		alertPrefs.setBoolPref("do"+type+"Alert",status);
 	}
-	
+
 	/*
 		=====================
 		| View mode methods |
 		=====================
 	*/
-	
+
 	/**
 	 * This public method returns the current view mode identifier ("iconOnly" or "timeAndIcon")
 	 *
@@ -152,7 +152,7 @@ function teaTimerCommon()
 	{
 		return getOption("viewMode");
 	}
-	
+
 	/**
 	 * This public method can be used to set the view mode.
 	 *
@@ -162,24 +162,24 @@ function teaTimerCommon()
 	{
 		setOption("viewMode",mode);
 	}
-	
+
 	/**
 	 * This public method can be used to check, if the given string is a valid view mode identifier.
-	 * 
+	 *
 	 * @param string suspected view mode identifier
 	 * @returns boolean true or false
 	 **/
 	this.validateViewMode=function(mode)
 	{
-		return validateOption("viewMode",mode); 
+		return validateOption("viewMode",mode);
 	}
-	
+
 	/*
 		=======================
 		| Tea Sorting methods |
 		=======================
 	*/
-	
+
 	/**
 	 * This public method returns the current tea sorting identifier ("id", "name ASC", "name DESC", "time ASC" or "time DESC")
 	 *
@@ -189,7 +189,7 @@ function teaTimerCommon()
 	{
 		return getOption("sortingOrder");
 	}
-	
+
 	/**
 	 * This public method can be used to set the new tea sorting mode.
 	 *
@@ -198,12 +198,12 @@ function teaTimerCommon()
 	this.setSortingOrder=function(sorting)
 	{
 		setOption("sortingOrder",sorting);
-		
+
 	}
-	
+
 	/**
 	 * This public method can be used to check, if the given string is a valid tea sorting identifier.
-	 * 
+	 *
 	 * @param string suspected tea sorting identifier
 	 * @returns boolean true or false
 	 **/
@@ -211,13 +211,13 @@ function teaTimerCommon()
 	{
 		validateOptionValue("sortingOrder",sorting);
 	}
-	
+
 	/*
 		==================
 		| Option methods |
 		==================
 	*/
-	
+
 	/**
 	 * This private method is used, to read options.
 	 *
@@ -236,9 +236,9 @@ function teaTimerCommon()
 				value="timeAndIcon";
 				break;
 		}
-		
+
 		var type=getTypeOfOption(name);
-		
+
 		try
 		{
 			value=(type==="char")?teaTimerPrefs.getCharPref(name):teaTimerPrefs.getBoolPref(name);
@@ -248,10 +248,10 @@ function teaTimerCommon()
 		{
 			setOption(name,value);
 		}
-		
+
 		return value;
 	}
-	
+
 	/**
 	 * Use this private method to submit an option name and get back the datatype of it.
 	 * @param string optionname
@@ -268,10 +268,10 @@ function teaTimerCommon()
 				type="char";
 				break;
 		}
-		
+
 		return type;
 	}
-	
+
 	/**
 	 * This private method can be used, to set general tea timer options (Noote that alerts and teas are manipulated with dedicated methods, not with this one.).
 	 *
@@ -292,7 +292,7 @@ function teaTimerCommon()
 			teaTimerPrefs.setBoolPref(name,value);
 		}
 	}
-	
+
 	/**
 	 * Internal private method for validating given option names.
 	 *
@@ -310,16 +310,16 @@ function teaTimerCommon()
 			default:
 				throw new teaTimerInvalidOptionNameException("validateOptionName: '"+name+"' is no valid option.");
 		}
-		
+
 		return true;
 	}
-	
+
 	/**
 	 * Internal private method for validating given option values.
 	 *
 	 * @param string name of option that should have the given value
 	 * @param string value2check
-	 * @returns boolean true 
+	 * @returns boolean true
 	 * @throws teaTimerInvalidSortOrderException
 	 * @throws teaTimerInvalidViewModeException
 	 **/
@@ -352,16 +352,16 @@ function teaTimerCommon()
 				}
 				break;
 		}
-		
+
 		return true;
 	}
-	
+
 	/*
 		========================
 		| Widget Alert methods |
 		========================
 	*/
-	
+
 	/**
 	 * This public method can be used to write the widget alert show time (=time until fade out is started) into the stored preferences.
 	 * @param integer time
@@ -373,11 +373,11 @@ function teaTimerCommon()
 		{
 			throw new teaTimerInvalidWidgetAlertShowTimeException("setWidgetAlertShowTime: First parameter must be an integer greater or equal 0.");
 		}
-		
+
 		time=parseInt(time,10);
 		alertPrefs.setIntPref("widgetAlertShowTime",time);
 	}
-	
+
 	/**
 	 * This public method can be used to query the time when the website widget should fade out.
 	 * @returns integer time in seconds (standard=5)
@@ -398,18 +398,18 @@ function teaTimerCommon()
 		{
 			self.setWidgetAlertShowTime(time);
 		}
-		
+
 		return time;
 	}
-	
+
 	/*
 		=========================
 		| Sound Alert  methods |
 		=========================
-	
+
 		Note: Sound IDs are not numeric, and there's a special ID called "none" for no sound.
     */
-	
+
 	/**
 	 * This public methods returns the ID of the sound, that is played, when a timer is started.
 	 * @return string soundID
@@ -418,7 +418,7 @@ function teaTimerCommon()
     {
         return getIdOfSound("start");
     }
-    
+
 	/**
 	 * This public methods returns the ID of the sound, that is played, when a timer is finished.
 	 * @return string soundID
@@ -427,7 +427,7 @@ function teaTimerCommon()
     {
         return getIdOfSound("end");
     }
-    
+
 	/**
 	 * This private mthod return the ID of either the start or the end sound.
 	 * @param string type (possible values are: 'start' and 'end')
@@ -436,7 +436,7 @@ function teaTimerCommon()
     var getIdOfSound=function(type)
     {
         var id=null;
-        
+
         try
         {
             id=alertPrefs.getCharPref(type+"Sound");
@@ -445,16 +445,16 @@ function teaTimerCommon()
         {
             //do nothing;
         }
-        
+
         if(id===null || (id.match(/^custom\:/)===null && false===self.in_array(id,getValidSoundIDs(type)))  )
         {
             id="none";
             alertPrefs.setCharPref(type+"Sound",id);
         }
-        
+
         return id;
     }
-    
+
 	/**
 	 * This private method returns all valid sound IDs for a certain sound type.
 	 * @param string type (possible values are: 'start' and 'end')
@@ -463,7 +463,7 @@ function teaTimerCommon()
     var getValidSoundIDs=function(type)
     {
         var validSounds=new Array();
-        
+
         if(type==="start")
         {
             validSounds.push("none");
@@ -479,10 +479,10 @@ function teaTimerCommon()
             validSounds.push("slurp");
             validSounds.push("speech");
         }
-        
+
         return validSounds;
     }
-    
+
 	/**
 	 * This public methods returns the URL to a specific sound file. It can also return an URL object, that implements the nsIURL interface.
 	 *
@@ -503,19 +503,19 @@ function teaTimerCommon()
 			default:
 				throw new teaTimerInvalidSoundTypeException("getURLtoSound: First argument must be 'start' or 'end'.");
 		}
-		
+
 		if(id.match(/^custom\: /)===null && self.in_array(id,getValidSoundIDs(type))===false)
 		{
 			throw new teaTimerInvalidSoundIDException("getURLtoSound: Invalid sound ID given.");
 		}
-		
+
 		if(id==="none")
 		{
 			throw new teaTimerInvalidSoundIDException("getURLtoSound: Can't provide URL to sound with ID 'none', because it has none. :-)");
 		}
-		
+
 		returnObject=((returnObject===true)?true:false);
-		
+
 		var url="chrome://teatimer/content/sound/";
 		if(type==="start")
 		{
@@ -560,13 +560,13 @@ function teaTimerCommon()
 				}
 			}
 		}
-		
+
 		if(returnObject)
 		{
 			var ret= Components.classes["@mozilla.org/network/io-service;1"]
                       .getService(Components.interfaces.nsIIOService)
                       .newURI(url, null, null);
-					  
+
 			//const SND_URL=new Components.Constructor("@mozilla.org/network/standard-url;1","nsIURL");
 			//var ret=new SND_URL();
 			//ret.spec=url;
@@ -575,10 +575,10 @@ function teaTimerCommon()
 		{
 			var ret=url;
 		}
-		
+
 		return ret;
 	}
-	
+
 	/**
 	 * This public method checks if the given sound ID is valid.
 	 * @param string sound type (possible values are "start" or "end")
@@ -596,10 +596,10 @@ function teaTimerCommon()
 			default:
 				throw new teaTimerInvalidSoundTypeException("checkSoundId: First argument must be 'start' or 'end'.");
 		}
-		
+
 		return typeof id.match(/^custom\: /)==="object" || self.in_array(id,getValidSoundIDs(type));
 	}
-	
+
 	/**
 	 * This public method sets a specific sound in the options.
 	 * @param string sound type (possible values are "start" or "end")
@@ -617,15 +617,15 @@ function teaTimerCommon()
 			default:
 				throw new teaTimerInvalidSoundTypeException("setSound: First argument must be 'start' or 'end'.");
 		}
-		
+
 		if(id.match(/^custom\: /)===null && self.in_array(id,getValidSoundIDs(type))===false)
 		{
 			throw new teaTimerInvalidSoundIDException("setSound: Invalid sound ID given.");
 		}
-		
+
 		alertPrefs.setCharPref(type+"Sound",id);
 	}
-	
+
 	/**
 	 * This public method checks if sound alerts are initalized correctly in the stored preferences.
 	 * @param string sound type (possible values are "start" or "end")
@@ -642,7 +642,7 @@ function teaTimerCommon()
 			default:
 				throw new teaTimerInvalidSoundTypeException("checkIfSoundAlertIsInitalized: First argument must be 'start' or 'end'.");
 		}
-		
+
 		var id=null;
 		try
 		{
@@ -650,18 +650,18 @@ function teaTimerCommon()
 		}
 		catch(e)
 		{
-		    
+
 		}
-		
+
 		return ((id!==null && self.checkSoundId(type,id))?true:false);
 	}
-    
+
     /*
 		=========================
 		| string helper methods |
 		=========================
     */
-	
+
     /**
      * This public method can be used to check if a entered time is in a valid format.
      *
@@ -677,12 +677,12 @@ function teaTimerCommon()
 		{
 			throw new teaTimerTimeInputToShortException("Invalid time input, it's to short.");
 		}
-		
+
 		var time=null;
 		var validFormat1=/^[0-9]+$/; //allow inputs in seconds (example: 60)
 		var validFormat2=/^[0-9]+:[0-5][0-9]$/; //allow input in minute:seconds (example: 1:20)
 		var validFormat3=/^[0-9]+:[0-9]$/; //allow input in minute:seconds with one digit second (example: 1:9)
-		
+
 		if(validFormat1.test(input))
 		{
 			time=parseInt(input,10);
@@ -695,15 +695,15 @@ function teaTimerCommon()
 		{
 			throw new teaTimerInvalidTimeInputException("Invalid time input.");
 		}
-		
+
 		if(time<=0)
 		{
 			throw new teaTimerInvalidTimeException("Entered Time is smaller or equal 0. That's of course an invalid time.");
 		}
-		
+
 		return time;
     }
-	
+
     /**
      * This method tries to convert a given string  (like '1:20') into a number of seconds.
      * @param string TimeString (examples: '1:23', '0:40', '12:42')
@@ -717,13 +717,13 @@ function teaTimerCommon()
 		{
 				throw new teaTimerInvalidTimeStringException("getTimeFromTimeString: '"+str+"' is not a valid time string.");
 		}
-		
+
 		var minutes=parseInt(parts[0],10);
 		var seconds=parseInt(parts[1],10);
-		
+
 		return minutes*60+seconds;
     }
-	
+
     /**
      * This method returns the string representation (like '1:20') of a given time.
      * It's the opposite of getTimeFromTimeString
@@ -738,7 +738,7 @@ function teaTimerCommon()
 		timeStr=parseInt(time/60)+":"+((seconds<10)?"0":"")+seconds;
 		return timeStr;
     }
-	
+
     /**
      * Returns a text without whitespaces in front.
      * @param string text2ltrim
@@ -748,7 +748,7 @@ function teaTimerCommon()
     {
 	return text.replace(/^\s+/,"");
     }
-    
+
     /**
      * Returns a text without whitespaces at the end.
      * @param string text2rtrim
@@ -758,7 +758,7 @@ function teaTimerCommon()
     {
 		return text.replace(/\s+$/,"");
     }
-    
+
     /**
      * The famous trim function.
      * @param string text2trim
@@ -768,12 +768,12 @@ function teaTimerCommon()
     {
 		return self.ltrim(self.rtrim(text));
     }
-    
+
     /**
      * This public method returns the localized string (property) with the specified ID.
      * A list of names/values can be found in locale folder (teatimer.properties)
      * In fact this method is just a wrapper for GetStringFromName of the stringbundle XPC
-     * 
+     *
      * @param string name
      * @returns string the localized string.
      **/
@@ -781,12 +781,12 @@ function teaTimerCommon()
     {
         return strings.GetStringFromName(name);
     }
-    
+
     /**
      * This public method returns the localized string (property) with the specified ID, but in difference to getString this method is for formatted strings (strings with variables).
      * A list of names/values can be found in locale folder (teatimer.properties)
      * In fact this method is just a wrapper for formatStringFromName of the stringbundle XPC
-     * 
+     *
      * @param string name
      * @param array values for placeholders as array (NOTE: this array must be a real array. Objects, like {0:"foo"} are not working.)
      * @returns string the localized string.
@@ -795,20 +795,20 @@ function teaTimerCommon()
     {
         return strings.formatStringFromName(name,params,params.length);
     }
-    
-    
-    
+
+
+
     /*
 		=========================
 		| Miscellaneous methods |
 		=========================
     */
-	
+
 	this.basename=function(path) {
 		var parts=path.split("/"); //@2do Check if this works on Windows, too!
 		return parts[ parts.length-1 ];
 	}
-	
+
 	/**
 	 * This public method can be used to add a CSS class to a specific DOM element.
 	 * @param object the DOM element
@@ -834,14 +834,14 @@ function teaTimerCommon()
 		{
 			newClassStr=className;
 		}
-		
+
 		object.setAttribute("class",newClassStr);
 	}
-	
+
 	/**
 	 * This public method removes a certain CSS class from a specific DOM element.
 	 * If there's no class left the class attribute will be removed from the object.
-	 * 
+	 *
 	 * @param object the DOM element
 	 * @param string the class that should be removed
 	 **/
@@ -867,7 +867,7 @@ function teaTimerCommon()
 			object.removeAttribute("class");
 		}
 	}
-	
+
     /**
      * Checks if a value exists in an array
      *
@@ -886,9 +886,9 @@ function teaTimerCommon()
 		{
 			throw new TypeError("Warning: in_array(): Wrong datatype for second argument.");
 		}
-		
+
 		strict=((typeof strict==="boolean")?strict:false);
-		
+
 		for(var i=0; i<haystack.length; i++)
 		{
 			if(haystack[i] instanceof Array)
@@ -917,7 +917,7 @@ function teaTimerCommon()
 			else
 			{
 				if(
-					(strict===true && needle===haystack[i]) || 
+					(strict===true && needle===haystack[i]) ||
 					(strict===false && needle==haystack[i])
 					)
 				{
@@ -925,10 +925,10 @@ function teaTimerCommon()
 				}
 			}
 		}
-		
+
 		return false;
     }
-	
+
     /**
      * This public method dumps the given string to the console if teaTimer.debug===true and browser dom.window.dump.enabled===true
      * @param string String to dump
@@ -941,7 +941,7 @@ function teaTimerCommon()
 			component=((typeof component==="string" && component.length>0)?component:"unknown component");
 			dump("teaTimer ("+component+") says: "+msgString);
 		}
-		
+
 		return true;
     }
 }
