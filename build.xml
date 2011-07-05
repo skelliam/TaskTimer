@@ -32,16 +32,16 @@
 					skin/widgetAlert/default/bg.png
 					locale/en-US/teatimer.dtd
 					locale/en-US/teatimer.properties
-                    locale/be-BY/teatimer.dtd
-					locale/be-BY/teatimer.properties
-                    locale/cs-CZ/teatimer.dtd
-					locale/cs-CZ/teatimer.properties
-                    locale/ch-ZN/teatimer.dtd
-					locale/ch-ZN/teatimer.properties
-					locale/de/teatimer.dtd
+                    locale/de/teatimer.dtd
 					locale/de/teatimer.properties
+                    locale/fr-FR/teatimer.dtd
+					locale/fr-FR/teatimer.properties
                     locale/sv-SE/teatimer.dtd
 					locale/sv-SE/teatimer.properties
+                    locale/zh-CN/teatimer.dtd
+					locale/zh-CN/teatimer.properties
+                    locale/sr/teatimer.dtd
+					locale/sr/teatimer.properties
 					" />
 	</target>
 
