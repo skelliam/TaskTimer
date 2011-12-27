@@ -16,7 +16,7 @@
         <em:translator>English locale by Hannah Meyer and Philipp Söhnlein</em:translator>
         <em:translator>French locale by Hannah Meyer and Goofy (babelzilla.org)</em:translator>
         <em:translator>German locale by Philipp Söhnlein</em:translator>
-        <!--<em:translator>Turkish locale by Ersen Yoldac (babelzilla.org)</em:translator>-->
+        <em:translator>Turkish locale by alfapegasi and Ersen Yoldac (babelzilla.org)</em:translator>
         <!--<em:translator>Portuguese / Brasilian locale by petruc (babelzilla.org)</em:translator>-->
         <!--<em:translator>Belarusian locale by Drive DRKA (babelzilla.org)</em:translator>-->
         <!--<em:translator>Czech  locale by Kirklan (babelzilla.org)</em:translator>-->
@@ -42,7 +42,7 @@
                         <em:translator>English locale by Hannah Meyer and Philipp Söhnlein</em:translator>
                         <em:translator>French locale by Hannah Meyer and Goofy (babelzilla.org)</em:translator>
                         <em:translator>German locale by Philipp Söhnlein</em:translator>
-                        <!--<em:translator>Turkish locale by Ersen Yoldac (babelzilla.org)</em:translator>-->
+                        <em:translator>Turkish locale by alfapegasi and Ersen Yoldac (babelzilla.org)</em:translator>
                         <!--<em:translator>Portuguese / Brasilian locale by petruc (babelzilla.org)</em:translator>-->
                         <!--<em:translator>Belarusian locale by Drive DRKA (babelzilla.org)</em:translator>-->
                         <!--<em:translator>Czech locale by Kirklan (babelzilla.org)</em:translator>-->
@@ -70,7 +70,7 @@
                         <em:translator>Englische Lokalisierung von Hannah Meyer und Philipp Söhnlein (http://www.philipp-soehnlein.de/)</em:translator>
                         <em:translator>Französische Lokalisierung von Hannah Meyer und Goofy (babelzilla.org)</em:translator>
                         <em:translator>Deutsche Lokalisierung von Philipp Söhnlein (http://www.philipp-soehnlein.de/)</em:translator>
-                        <!--<em:translator>Türkische Lokalisierung von Ersen Yoldac (babelzilla.org)</em:translator>-->
+                        <em:translator>Türkische Lokalisierung von alfapegasi und Ersen Yoldac (babelzilla.org)</em:translator>
                         <!--<em:translator>Portugiesische / brasilianische Lokalisierung von petruc (babelzilla.org)</em:translator>-->
                         <!--<em:translator>Weißrussische Lokalisierung von Drive DRKA (babelzilla.org)</em:translator>-->
                         <!--<em:translator>Tschechische Lokalisierung von Kirklan (babelzilla.org)</em:translator>-->
@@ -97,7 +97,7 @@
                         <em:translator>Localisation anglaise de Philipp Söhnlein</em:translator>
                         <em:translator>Localisation française de Hannah Meyer et Goofy (babelzilla.org)</em:translator>
                         <em:translator>Localisation allemande de Philipp Söhnlein</em:translator>
-                        <!--<em:translator>Localisation turce de Ersen Yoldac (babelzilla.org)</em:translator>-->
+                        <em:translator>Localisation turce de alfapegasi et Ersen Yoldac (babelzilla.org)</em:translator>
                         <!--<em:translator>Localisation portugais / brésilien de petruc (babelzilla.org)</em:translator>-->
                         <!--<em:translator>Localisation biélorusse de Drive DRKA (babelzilla.org)</em:translator>-->
                         <!--<em:translator>Localisation tchèque / brésilien de Kirklan (babelzilla.org)</em:translator>-->

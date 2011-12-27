@@ -15,35 +15,35 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-content			teatimer	chrome/content/ contentaccessible=yes
-#content		teatimer	jar:chrome/teaTimer.jar!/content/ contentaccessible=yes
+#content			teatimer	chrome/content/ contentaccessible=yes
+content		teatimer	jar:chrome/teaTimer.jar!/content/ contentaccessible=yes
 
 overlay			chrome://browser/content/browser.xul	        chrome://teatimer/content/teatimer.xul
 
-#locale			teatimer	de									jar:chrome/teaTimer.jar!/locale/de/
-#locale			teatimer	en-US 								jar:chrome/teaTimer.jar!/locale/en-US/
-#locale			teatimer	fr-FR 								jar:chrome/teaTimer.jar!/locale/fr-FR/
-##locale			teatimer	pl-PL 								jar:chrome/teaTimer.jar!/locale/pl-PL/
-##locale			teatimer	tr-TR 								jar:chrome/teaTimer.jar!/locale/tr-TR/
-##locale			teatimer	pt-BR 								jar:chrome/teaTimer.jar!/locale/pt-BR/
-##locale			teatimer	be-BY 								jar:chrome/teaTimer.jar!/locale/be-BY/
-##locale			teatimer	cs-CZ 								jar:chrome/teaTimer.jar!/locale/cs-CZ/
-#locale			teatimer	sv-SE 								jar:chrome/teaTimer.jar!/locale/sv-SE/
-#locale			teatimer	zh-CN 								jar:chrome/teaTimer.jar!/locale/zh-CN/
-#locale			teatimer	sr 								    jar:chrome/teaTimer.jar!/locale/sr/
+locale			teatimer	de									jar:chrome/teaTimer.jar!/locale/de/
+locale			teatimer	en-US 								jar:chrome/teaTimer.jar!/locale/en-US/
+locale			teatimer	fr-FR 								jar:chrome/teaTimer.jar!/locale/fr-FR/
+#locale			teatimer	pl-PL 								jar:chrome/teaTimer.jar!/locale/pl-PL/
+locale			teatimer	tr-TR 								jar:chrome/teaTimer.jar!/locale/tr-TR/
+#locale			teatimer	pt-BR 								jar:chrome/teaTimer.jar!/locale/pt-BR/
+#locale			teatimer	be-BY 								jar:chrome/teaTimer.jar!/locale/be-BY/
+#locale			teatimer	cs-CZ 								jar:chrome/teaTimer.jar!/locale/cs-CZ/
+locale			teatimer	sv-SE 								jar:chrome/teaTimer.jar!/locale/sv-SE/
+locale			teatimer	zh-CN 								jar:chrome/teaTimer.jar!/locale/zh-CN/
+locale			teatimer	sr 								    jar:chrome/teaTimer.jar!/locale/sr/
 
-locale			teatimer	de									chrome/locale/de/
-locale			teatimer	en-US 								chrome/locale/en-US/
-locale			teatimer	fr-FR 								chrome/locale/fr-FR/
-#locale			teatimer	pl-PL								chrome/locale/pl-PL/
+#locale			teatimer	de									chrome/locale/de/
+#locale			teatimer	en-US 								chrome/locale/en-US/
+#locale			teatimer	fr-FR 								chrome/locale/fr-FR/
+##locale			teatimer	pl-PL								chrome/locale/pl-PL/
 #locale			teatimer	tr-TR								chrome/locale/tr-TR/
-#locale			teatimer	pt-BR								chrome/locale/pt-BR/
-#locale			teatimer	be-BY								chrome/locale/be-BY/
-#locale			teatimer	cs-CZ								chrome/locale/cs-CZ/
-locale			teatimer	sv-SE								chrome/locale/sv-SE/
-locale			teatimer	zh-CN								chrome/locale/zh-CN/
-locale			teatimer	sr  								chrome/locale/sr/
+##locale			teatimer	pt-BR								chrome/locale/pt-BR/
+##locale			teatimer	be-BY								chrome/locale/be-BY/
+##locale			teatimer	cs-CZ								chrome/locale/cs-CZ/
+#locale			teatimer	sv-SE								chrome/locale/sv-SE/
+#locale			teatimer	zh-CN								chrome/locale/zh-CN/
+#locale			teatimer	sr  								chrome/locale/sr/
 
-skin	        teatimer	classic/1.0	chrome/skin/
-#skin	        teatimer	classic/1.0	jar:chrome/teaTimer.jar!/skin/
+#skin	        teatimer	classic/1.0	chrome/skin/
+skin	        teatimer	classic/1.0	jar:chrome/teaTimer.jar!/skin/
 style	        chrome://browser/content/browser.xul            chrome://teatimer/skin/style.css
