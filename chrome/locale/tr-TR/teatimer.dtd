@@ -3,11 +3,9 @@
 <!ENTITY main.contextMenu.options "Seçenekler...">
 <!ENTITY main.contextMenu.cancel "İptal">
 <!ENTITY main.contextMenu.quicktimer "Hızlı Zamanlayıcı...">
-
 <!ENTITY options.windowTitle "TeaTimer - Seçenekler">
 <!ENTITY options.tabs.teavarities "Çay çeşitleri">
 <!ENTITY options.tabs.alerts "Uyarılar">
-
 <!ENTITY options.varities.addANewTea "Yeni çay ekle">
 <!ENTITY options.varities.newTea.name.label "Çay">
 <!ENTITY options.varities.newTea.time.label "Zaman">
@@ -30,13 +28,14 @@
 <!ENTITY options.alerts.widgetAlert.groupboxcaption "Web Sitesi-Widget Uyarısı">
 <!ENTITY options.alerts.widgetAlert.description "Zamanlayıcı bittiğinde Web Sitesi-Widget doğrudan web sitesinde görünür.">
 <!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Zamanlayıcı bittiğinde web sitesi-widget göster">
-<!ENTITY options.alerts.widgetAlert.showTimeLabel "Widget\'ın otomatik kaybolacağı süre (saniye; 0=hiç):">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "Widget'ın otomatik kaybolacağı süre (saniye; 0=hiç):">
 <!ENTITY options.alerts.soundAlerts.groupboxcaption "Sesli Uyarılar">
 <!ENTITY options.alerts.soundAlerts.startSound.label "Zamanlayıcı başlatıldığında bu sesi çal:">
 <!ENTITY options.alerts.soundAlerts.endSound.label "Zamanlayıcı bitirdiğinde bu sesi çal:">
 <!ENTITY options.alerts.soundAlerts.startSound.preview "Önizleme">
 <!ENTITY options.alerts.soundAlerts.endSound.preview "Önizleme">
 <!ENTITY options.alerts.soundAlerts.sounds.none "Hiçbiri">
+<!ENTITY options.alerts.soundAlerts.sounds.systembeep "Sistem Uyarısı">
 <!ENTITY options.alerts.soundAlerts.sounds.cup "Fincan">
 <!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Yumurta Zamanlayıcı">
 <!ENTITY options.alerts.soundAlerts.sounds.pour "Dök">
@@ -44,12 +43,10 @@
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Höpürdetme">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Konuşma">
 <!ENTITY options.alerts.soundAlerts.sounds.custom "Özel...">
-
 <!ENTITY options.buttons.ok.label "TAMAM">
 <!ENTITY options.buttons.ok.accesskey "t">
 <!ENTITY options.buttons.cancel.label "İptal">
 <!ENTITY options.buttons.cancel.accesskey "i">
-
 <!ENTITY quicktimer.windowTitle "TeaTimer - Hızlı Zamanlayıcı">
 <!ENTITY quicktimer.countdownTime.label "Lütfen varsayılan gersayım süresini girin:">
 <!ENTITY quicktimer.countdownTime.accesskey "g">
@@ -59,7 +56,6 @@
 <!ENTITY quicktimer.buttons.ok.accesskey "t">
 <!ENTITY quicktimer.buttons.cancel.label "İptal">
 <!ENTITY quicktimer.buttons.cancel.accesskey "i">
-
 <!ENTITY teaready.windowTitle "TeaTimer - Çayınız hazır">
 <!ENTITY teaready.buttons.ok.label "TAMAM">
 <!ENTITY teaready.header "TeaTimer diyor ki:">
