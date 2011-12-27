@@ -3,7 +3,6 @@
 <!ENTITY main.contextMenu.options "Inställningar…">
 <!ENTITY main.contextMenu.cancel "Avbryt">
 <!ENTITY main.contextMenu.quicktimer "Snabbtidur…">
-
 <!ENTITY options.windowTitle "TeaTimer: Inställningar">
 <!ENTITY options.tabs.teavarities "Tesorter">
 <!ENTITY options.tabs.alerts "Aviseringar">
@@ -26,16 +25,17 @@
 <!ENTITY options.alerts.general.groupboxcaption "Allmänna aviseringar">
 <!ENTITY options.alerts.general.showDialogAlert "Visa dialogfönster när tiduret når noll">
 <!ENTITY options.alerts.general.showStatusbarAlert "Blinka tilläggsfältet när tiduret når noll">
-<!ENTITY options.alerts.widgetAlert.groupboxcaption "Webbplatswidget-avisering">
-<!ENTITY options.alerts.widgetAlert.description "Webbplatswidgeten visas direkt på webbplatsen när tiduret når noll.">
-<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Visa webbplatswidgeten när tiduret når noll">
-<!ENTITY options.alerts.widgetAlert.showTimeLabel "Antal sekunder innan widgeten stängs automatiskt (0=aldrig):">
+<!ENTITY options.alerts.widgetAlert.groupboxcaption "Webbplatsgränssnittskomponent-avisering">
+<!ENTITY options.alerts.widgetAlert.description "Webbplatsgränssnittskomponenten visas direkt på webbplatsen när tiduret når noll.">
+<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Visa webbplatsgränssnittskomponenten när tiduret når noll">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "Antal sekunder innan gränssnittskomponenten stängs automatiskt (0=aldrig):">
 <!ENTITY options.alerts.soundAlerts.groupboxcaption "Ljudaviseringar">
 <!ENTITY options.alerts.soundAlerts.startSound.label "Spela upp detta ljud när tiduret startar:">
 <!ENTITY options.alerts.soundAlerts.endSound.label "Spela upp detta ljud när tiduret når noll:">
 <!ENTITY options.alerts.soundAlerts.startSound.preview "Spela upp">
 <!ENTITY options.alerts.soundAlerts.endSound.preview "Spela upp">
 <!ENTITY options.alerts.soundAlerts.sounds.none "Inget">
+<!ENTITY options.alerts.soundAlerts.sounds.systembeep "Datorns standardljud">
 <!ENTITY options.alerts.soundAlerts.sounds.cup "Tekopp">
 <!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Äggklocka">
 <!ENTITY options.alerts.soundAlerts.sounds.pour "Häll upp">
@@ -47,7 +47,6 @@
 <!ENTITY options.buttons.ok.accesskey "O">
 <!ENTITY options.buttons.cancel.label "Avbryt">
 <!ENTITY options.buttons.cancel.accesskey "A">
-
 <!ENTITY quicktimer.windowTitle "TeaTimer: Snabbtidur">
 <!ENTITY quicktimer.countdownTime.label "Ange standardnedräkningstiden:">
 <!ENTITY quicktimer.countdownTime.accesskey "t">
@@ -57,9 +56,8 @@
 <!ENTITY quicktimer.buttons.ok.accesskey "O">
 <!ENTITY quicktimer.buttons.cancel.label "Avbryt">
 <!ENTITY quicktimer.buttons.cancel.accesskey "A">
-
 <!ENTITY teaready.windowTitle "TeaTimer: Ditt te är färdigt">
 <!ENTITY teaready.buttons.ok.label "OK">
 <!ENTITY teaready.header "TeaTimer meddelar:">
 <!ENTITY teaready.message "Teet har dragit färdigt.">
-<!ENTITY teaready.teaname "Njut av din kopp {$TEANAME}.">
+<!ENTITY teaready.teaname "Njut av din kopp {$TEANAME}!">
