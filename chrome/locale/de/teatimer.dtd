@@ -37,6 +37,7 @@
 <!ENTITY options.alerts.soundAlerts.startSound.preview "Vorschau">
 <!ENTITY options.alerts.soundAlerts.endSound.preview "Vorschau">
 <!ENTITY options.alerts.soundAlerts.sounds.none "Keinen">
+<!ENTITY options.alerts.soundAlerts.sounds.systembeep "Standard-Alarm">
 <!ENTITY options.alerts.soundAlerts.sounds.cup "Tasse">
 <!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Eieruhr">
 <!ENTITY options.alerts.soundAlerts.sounds.pour "Aufgießen">

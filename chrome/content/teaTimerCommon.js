@@ -467,6 +467,7 @@ function teaTimerCommon()
         if(type==="start")
         {
             validSounds.push("none");
+            validSounds.push("systembeep");
             validSounds.push("cup");
             validSounds.push("eggtimer");
             validSounds.push("pour");
@@ -474,6 +475,7 @@ function teaTimerCommon()
         else
         {
             validSounds.push("none");
+            validSounds.push("systembeep");
             validSounds.push("eggtimer");
             validSounds.push("fanfare");
             validSounds.push("slurp");

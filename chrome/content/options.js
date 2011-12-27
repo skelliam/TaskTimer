@@ -3,7 +3,7 @@
 	Copyright (C) 2011 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License version 3 as 
+	it under the terms of the GNU General Public License version 3 as
 	published by the Free Software Foundation.
 
 	This program is distributed in the hope that it will be useful,
@@ -20,7 +20,7 @@ function teaTimerOptionsWindow()
     const common=new teaTimerCommon();
     const sound=Components.classes["@mozilla.org/sound;1"].createInstance().QueryInterface(Components.interfaces.nsISound);
     const self=this;
-    
+
     var tree=null; //container for the tree element (teelist)
     var treeBody=null; //container for tree body (treechildren element)
     var deleteButton=null; //container for the tea delete button
@@ -30,10 +30,10 @@ function teaTimerOptionsWindow()
 	var btnPreviewStartSound=null; //container for start sound preview button
 	var btnPreviewEndSound=null; //container for end sound preview button
 	var widgetShowTimeTxtField=null;
-	
+
 	var currentStartSoundValue=null;
 	var currentEndSoundValue=null;
-        
+
     this.init=function()
     {
         //general
@@ -41,25 +41,25 @@ function teaTimerOptionsWindow()
         document.getElementById("teaTimer-optionsWinBtnCancel").addEventListener("command",teaTimerOptionsWindowInstance.cancelButtonCommand,false);
         document.getElementById("teaTimer-optionsWinBtnOk").addEventListener("command",teaTimerOptionsWindowInstance.okButtonCommand,false);
         sound.init();
-        
+
         //tea varities tab
         nameTxtField=document.getElementById("teaTimer-optionsNewTeaName");
         nameTxtField.addEventListener("keypress",teaTimerOptionsWindowInstance.addTxtFieldsKeypress,false);
 		timeTxtField=document.getElementById("teaTimer-optionsNewTeaTime");
         timeTxtField.addEventListener("keypress",teaTimerOptionsWindowInstance.addTxtFieldsKeypress,false);
-        
+
 		document.getElementById("teaTimer-optionsBtnAddTea").addEventListener("command",teaTimerOptionsWindowInstance.addButtonCommand,false);
 		tree=document.getElementById("teaTimer-optionsTeas");
 		tree.addEventListener("select",teaTimerOptionsWindowInstance.treeSelected,false);
 		treeBody=document.getElementById("teaTimer-optionsTeasTreeChildren");
 		deleteButton=document.getElementById("teaTimer-optionsBtnDelTea");
 		deleteButton.addEventListener("command",teaTimerOptionsWindowInstance.deleteSelectedTeas,false);
-		
+
 		fillTreeWithDBValues();
-		
+
 		selSortingOrder=document.getElementById("teaTimer-sortingOrder");
 		initSortingSelectBox();
-        
+
         //alerts tab
 		var chkPopupAlert=document.getElementById("teaTimer-optionsPopupAlert");
 		if(common.isAlertDesired("popup"))
@@ -70,7 +70,7 @@ function teaTimerOptionsWindow()
 		{
 			chkPopupAlert.removeAttribute("checked","false");
 		}
-		
+
 		var chkStatusbarAlert=document.getElementById("teaTimer-optionsStatusbarAlert");
 		if(common.isAlertDesired("statusbar"))
 		{
@@ -80,7 +80,7 @@ function teaTimerOptionsWindow()
 		{
 			chkStatusbarAlert.removeAttribute("checked","false");
 		}
-		
+
 		var chkWidgetAlert=document.getElementById("teaTimer-optionsWidgetAlert");
 		if(common.isAlertDesired("widget"))
 		{
@@ -90,29 +90,29 @@ function teaTimerOptionsWindow()
 		{
 			chkWidgetAlert.removeAttribute("checked","false");
 		}
-		
+
 		widgetShowTimeTxtField=document.getElementById("teaTimer-optionsWidgetShowTime");
 		widgetShowTimeTxtField.value=common.getWidgetAlertShowTime();
 		widgetShowTimeTxtField.addEventListener("keypress",teaTimerOptionsWindowInstance.widgetShowTimeTxtFieldKeypress,false);
-		
+
         initSoundSelectBox("start");
         initSoundSelectBox("end");
 		btnPreviewStartSound=document.getElementById("teaTimer-optionsBtnPreviewStartSound");
         btnPreviewStartSound.addEventListener("command",teaTimerOptionsWindowInstance.previewStartSound,false);
 		btnPreviewEndSound=document.getElementById("teaTimer-optionsBtnPreviewEndSound");
         btnPreviewEndSound.addEventListener("command",teaTimerOptionsWindowInstance.previewEndSound,false);
-        
+
         if(getValueOfSoundSelectBox("start")==="none")
         {
             btnPreviewStartSound.setAttribute("disabled",true);
         }
-        
+
         if(getValueOfSoundSelectBox("end")==="none")
         {
             btnPreviewEndSound.setAttribute("disabled",true);
         }
     }
-    
+
     /**
      * This public method is called, when a key is pressed in the window, so it can handle shortcuts.
      **/
@@ -123,7 +123,7 @@ function teaTimerOptionsWindow()
             window.close();
         }
     }
-    
+
     /**
      * This public method is called, when a key is pressed in one of the "add tea textfields". Useful for handling special inputs.
      **/
@@ -134,7 +134,7 @@ function teaTimerOptionsWindow()
             self.addButtonCommand();
         }
     }
-    
+
 	/**
 	 * This public method is called, when a key is pressed in the teaTimer-optionsWidgetShowTime text field. Useful for handling special inputs.
 	 **/
@@ -145,7 +145,7 @@ function teaTimerOptionsWindow()
             self.okButtonCommand();
         }
 	}
-	
+
     /**
      * This public method is called, when the "add tea" button is clicked.
      * It handles validation and adding a tea to the tree.
@@ -155,7 +155,7 @@ function teaTimerOptionsWindow()
         var inputok=false;
         var teaName=nameTxtField.value;
         var teaTime=timeTxtField.value;
-        
+
 		if(teaName.length<=0)
 		{
 			alert(common.getString("options.validate.nameErrorNoName"));
@@ -179,24 +179,24 @@ function teaTimerOptionsWindow()
 			{
 				errorMsg=common.getString("options.validate.timeInputInWrongFormat");
 			}
-			  
+
 			errorMsg+="\n"+common.getString("options.validate.timeInputAdvice");
 			alert(errorMsg);
 			timeTxtField.focus();
 			}
 		}
-        
+
         if(inputok)
         {
             var newID=getLastTeaIDFromTree()+1;
             addTeaToTree(newID,teaName,teaTime);
-            
+
             nameTxtField.value="";
             timeTxtField.value="";
             nameTxtField.focus();
         }
     }
-    
+
     /**
      * This private method is used to find the ID of the last tea in the tealist.
      * @returns integer ID
@@ -213,10 +213,10 @@ function teaTimerOptionsWindow()
                 lastID=id;
             }
         }
-        
+
         return lastID;
     }
-    
+
     /**
      * This private method adds a tea into the tealist.
      * @param integer ID
@@ -231,23 +231,23 @@ function teaTimerOptionsWindow()
 		treecell.setAttribute("label",ID);
         treecell.setAttribute("editable","false");
 		treerow.appendChild(treecell);
-	    
+
         var treeNameCell=document.createElement("treecell");
 		treeNameCell.setAttribute("label",name);
 		treeNameCell.setAttribute("editable","true");
 		treerow.appendChild(treeNameCell);
-	    
+
 		var treeTimeCell=document.createElement("treecell");
 		treeTimeCell.setAttribute("label",common.getTimeStringFromTime(time));
 		treeTimeCell.setAttribute("editable","true");
 		treerow.appendChild(treeTimeCell);
-			
+
 		var treeitem=document.createElement("treeitem");
 		treeitem.appendChild(treerow);
-			
+
 		parent.appendChild(treeitem);
     }
-    
+
     /**
      * This public method is called when the OK-button is pressed.
      * It validates the teas in the tealist and induces the final saving proccess.
@@ -274,21 +274,21 @@ function teaTimerOptionsWindow()
 					alert(e.humanReadableOutput);
 				}
             }
-            
+
             if(valid)
             {
                 writeTreeTeasinDB();
-				saveSortingOrder();
-				saveAlerts();
-				saveSounds();
+                saveSortingOrder();
+                saveAlerts();
+                saveSounds();
                 window.close();
             }
         }
     }
-	
+
 	/**
 	 * This private method validates the alert settings and throws exceptions if there was an unvalid settings found.
-	 * 
+	 *
 	 * @throws teaTimerInvalidSoundIDException
 	 * @throws teaTimerInvalidSortOrderException
 	 * @throws teaTimerInvalidWidgetAlertShowTimeException
@@ -304,7 +304,7 @@ function teaTimerOptionsWindow()
 			ex.humanReadableOutput=common.getString("options.validate.soundError");
 			throw ex;
 		}
-		
+
 		try
 		{
 			common.validateSortingOrder(selSortingOrder.value);
@@ -315,7 +315,7 @@ function teaTimerOptionsWindow()
 			ex.humanReadbleOutput=common.getString("options.validate.sortingError");
 			throw ex;
 		}
-		
+
 		var widgetShowTime=parseInt(widgetShowTimeTxtField.value,10);
 		if(!(widgetShowTime>=0))
 		{
@@ -323,10 +323,10 @@ function teaTimerOptionsWindow()
 			ex.humanReadableOutput=common.getString("options.validate.widgetAlertShowTimeError");
 			throw ex;
 		}
-		
+
 		return true;
 	}
-    
+
     /**
      * This private function checks if the fields in the tealist (tree) are valid.
      * @returns boolean true, if everything is okay
@@ -347,7 +347,7 @@ function teaTimerOptionsWindow()
 				ex.humanReadableOutput=common.getStringf("options.validate.nameErrorInvalidName",new Array(""+(i+1)));
                 throw ex;
             }
-            
+
             try
             {
                 common.validateEnteredTime(treeTeaTime);
@@ -359,10 +359,10 @@ function teaTimerOptionsWindow()
 				throw ex;
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * This private method dumps the current content of the tea list into the DB.
      **/
@@ -395,7 +395,7 @@ function teaTimerOptionsWindow()
                     common.log("Options","Setting name\n");
                     teaDB.setName(teaData["ID"],treeTeaName);
                 }
-                
+
                 if(treeTeaTime!=teaData["time"])
                 {
                     common.log("Options","Setting time\n");
@@ -403,7 +403,7 @@ function teaTimerOptionsWindow()
                 }
             }
         }
-        
+
         //hide teas that are in DB, but not in the list. They will be deleted on next start
         for(var i in teasInDB)
         {
@@ -415,15 +415,15 @@ function teaTimerOptionsWindow()
             }
         }
     }
-    
+
     /**
-     * This public method is called, when the cancel button is pressed. 
+     * This public method is called, when the cancel button is pressed.
      **/
     this.cancelButtonCommand=function()
     {
         window.close();
     }
-    
+
     /**
      * This public method is called, when a item in the tree is selected.
      * It handles also the "disabled"-state of the delete button.
@@ -431,10 +431,10 @@ function teaTimerOptionsWindow()
     this.treeSelected=function()
     {
 		var selectedItems=getSelectedTreeIndexes();
-	
+
 		deleteButton.setAttribute("disabled",((selectedItems.length>0)?"false":"true"));
     }
-    
+
     /**
      * This private method checks which items in the tree are selected.
      * @returns array IDs of selected rows.
@@ -444,22 +444,22 @@ function teaTimerOptionsWindow()
 		var rangeStartOffset=new Object();
 		var rangeEndOffset=new Object();
 		var rangeCount=tree.view.selection.getRangeCount();
-		
+
 		var selectedItems=new Array();
-		
+
 		for(var r=0; r<rangeCount; r++)
 		{
 			tree.view.selection.getRangeAt(r,rangeStartOffset,rangeEndOffset);
-			
+
 			for(var v=rangeStartOffset.value; v<=rangeEndOffset.value; v++)
 			{
 			selectedItems.push(v);
 			}
 		}
-		
+
 		return selectedItems;
     }
-    
+
     /**
      * This private method checks how many teas are in the tealist (tree).
      * @return integer number of teas
@@ -468,7 +468,7 @@ function teaTimerOptionsWindow()
 	{
 		return treeBody.getElementsByTagName("treeitem").length;
     }
-    
+
     /**
      * This public method is called, when the "delete selected teas" button is pressed and removes the items from the tree.
      * It does not the deletion proccess, that is done, when the dialog is closed with "OK".
@@ -486,11 +486,11 @@ function teaTimerOptionsWindow()
 				treeBody.removeChild(treeitems[selectedItems[deletedItems]-deletedItems]);
 				deletedItems++;
 			}
-			
+
 			i++;
 		} while(deletedItems<selectedItems.length);
     }
-    
+
     /**
      * This private method adds the current database content into the tea list (tree).
      **/
@@ -503,7 +503,7 @@ function teaTimerOptionsWindow()
 			addTeaToTree(tea["ID"],tea["name"],tea["time"]);
 		}
     }
-    
+
 	/**
 	 * This private method inits either the sorting select box (menulist).
 	 * That means, it sets the currently saved sorting mechanism as selected.
@@ -522,7 +522,7 @@ function teaTimerOptionsWindow()
 			}
 		}
 	}
-	
+
 	/**
 	 * This private method inits either the startsound or the endsound select box (menulist).
 	 * That means, it adds events and sets the currently saved sound as selected.
@@ -531,7 +531,7 @@ function teaTimerOptionsWindow()
     var initSoundSelectBox=function(type)
     {
         type=(type==="start")?"start":"end";
-        
+
 		var customSoundMenuItem=null;
         if(type==="start")
         {
@@ -540,7 +540,7 @@ function teaTimerOptionsWindow()
             box.addEventListener("command",teaTimerOptionsWindowInstance.startSoundChanged,false);
 			customSoundMenuItem=document.getElementById("teaTimer-optionsStartSoundCustom");
         }
-        
+
         if(type==="end")
         {
             var currentSound=common.getIdOfEndSound();
@@ -548,9 +548,9 @@ function teaTimerOptionsWindow()
             document.getElementById("teaTimer-optionsEndSound").addEventListener("command",teaTimerOptionsWindowInstance.endSoundChanged,false);
 			customSoundMenuItem=document.getElementById("teaTimer-optionsEndSoundCustom");
         }
-		
+
 		customSoundMenuItem.addEventListener("command", function (event) { teaTimerOptionsWindowInstance.customSoundMenuItemCommand(type); } , false);
-        
+
         var sounds=box.getElementsByTagName("menuitem");
         for(var i=0; i<sounds.length; i++)
         {
@@ -564,7 +564,7 @@ function teaTimerOptionsWindow()
 				else {
 					currentEndSoundValue=value;
 				}
-				
+
 				found=1;
             }
 			else if(value==="custom: unset" && currentSound.match(/^custom\:.*\.wav/)) {
@@ -574,20 +574,20 @@ function teaTimerOptionsWindow()
 				else {
 					currentEndSoundValue='custom';
 				}
-				
+
 				sounds[i].label+=" ("+common.basename(currentSound)+")";
 				sounds[i].value=currentSound;
-				
+
 				found=1;
 			}
-			
+
 			if(found) {
 				box.selectedIndex=i;
 				break;
 			}
         }
     }
-	
+
 	this.customSoundMenuItemCommand=function(type) {
 		var fallbackValue=(type==='start') ? currentStartSoundValue : currentEndSoundValue;
         if (fallbackValue==="custom") {
@@ -595,21 +595,21 @@ function teaTimerOptionsWindow()
         }
 		showCustomSoundFilePicker(type,fallbackValue);
 	}
-    
+
 	var showCustomSoundFilePicker=function(type,fallbackValue) {
 		type=(type==="start")?"start":"end";
-		
+
 		var nsIFilePicker = Components.interfaces.nsIFilePicker;
 		var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
 		fp.appendFilter(common.getString("options.sound.customSoundFilePicker.filter"),"*.wav");
 		fp.init(window, "TeaTimer - "+common.getString("options.sound.customSoundFilePicker.windowTitle"), nsIFilePicker.modeOpen);
-		
+
 		var result=fp.show();
 		if(result==0 && fp.file) {
 			//@2do check if it's possible, to check the file (really a WAV file)
 			var fullpath=fp.file.path;
 			var filename=common.basename(fullpath);
-			
+
 			var menuitem=document.getElementById('teaTimer-options'+((type==='start') ? 'Start' : 'End')+'SoundCustom');
 			if(menuitem.label.match(/\(.*\)$/)) {
 				menuitem.label=menuitem.label.replace(/\(.*\)$/, "("+filename+")");
@@ -624,7 +624,7 @@ function teaTimerOptionsWindow()
 			document.getElementById(idOfSelectBox).value=fallbackValue;
 		}
 	}
-	
+
 	/**
 	 * This public method is called when the start sound changes.
 	 **/
@@ -632,7 +632,7 @@ function teaTimerOptionsWindow()
     {
         soundChanged("start");
     }
-    
+
 	/**
 	 * This public method is called when the end sound changes.
 	 **/
@@ -640,7 +640,7 @@ function teaTimerOptionsWindow()
     {
         soundChanged("end");
     }
-    
+
 	/**
 	 * This private checks if some action needs to be done, when a sound select box (menulist) changes.
 	 * It currently only enables or disables the preview button, depending on the choosen values.
@@ -649,7 +649,7 @@ function teaTimerOptionsWindow()
     var soundChanged=function(type)
     {
         type=(type==="start")?"start":"end";
-        
+
         var idOfSelectBox=null;
         var previewButton=null;
         if(type==="start")
@@ -662,7 +662,7 @@ function teaTimerOptionsWindow()
             idOfSelectBox="teaTimer-optionsEndSound";
             previewButton=btnPreviewEndSound;
         }
-        
+
 		var selectBoxValue=document.getElementById(idOfSelectBox).value;
         if(selectBoxValue==="none")
         {
@@ -672,7 +672,7 @@ function teaTimerOptionsWindow()
         {
             previewButton.removeAttribute("disabled");
         }
-		
+
 		if(type==='start') {
 			currentStartSoundValue=selectBoxValue;
 		}
@@ -680,7 +680,7 @@ function teaTimerOptionsWindow()
 			currentEndSoundValue=selectBoxValue;
 		}
     }
-    
+
 	/**
 	 * This public method previews (plays) the start sound.
 	 **/
@@ -688,7 +688,7 @@ function teaTimerOptionsWindow()
     {
         previewSound("start");
     }
-    
+
 	/**
 	 * This public method previews (plays) the end sound.
 	 **/
@@ -696,17 +696,39 @@ function teaTimerOptionsWindow()
     {
         previewSound("end");
     }
-    
+
 	/**
 	 * This private method previews (plays) either the start or the end sound.
 	 **/
     var previewSound=function(type)
     {
         type=(type==="start")?"start":"end";
-		var urlObj=common.getURLtoSound(type,getValueOfSoundSelectBox(type),true);
-		sound.play(urlObj);
+        var soundID = getValueOfSoundSelectBox(type);
+        if (soundID === 'systembeep') {
+            sound.beep();
+        }
+        else {
+            var urlObj=common.getURLtoSound(type,soundID,true);
+            try {
+                sound.play(urlObj);
+            }
+            catch(e) {
+                // A WAV file was choosen, but can not be played. --> Fallback to systembeep
+                document.getElementById('teaTimer-optionsStartSound').selectedIndex = 0;
+                teaTimerOptionsWindowInstance.startSoundChanged();
+                document.getElementById('teaTimer-optionsEndSound').selectedIndex = 1;
+                teaTimerOptionsWindowInstance.endSoundChanged();
+
+                try {
+                    alert(common.getString("options.sound.previewError"));
+                }
+                catch(e) {
+                    common.log("Options","No translation for options.sound.previewError found.");
+                }
+            }
+        }
     }
-	
+
 	/**
 	 * This private method returns the sound ID of the currently selected start or end sound.
 	 * @param string type ("start" or "end")
@@ -718,7 +740,7 @@ function teaTimerOptionsWindow()
 		var idOfSelectBox=((type==="start")?"teaTimer-optionsStartSound":"teaTimer-optionsEndSound");
 		return document.getElementById(idOfSelectBox).value;
 	}
-	
+
 	/**
 	 * This method bundles all the "writing alerts to stored preferences"-stuff.
 	 **/
@@ -727,18 +749,18 @@ function teaTimerOptionsWindow()
 		var popupValue=document.getElementById("teaTimer-optionsPopupAlert").getAttribute("checked");
 		popupValue=(popupValue==="true")?true:false;
 		common.setAlert("popup",popupValue);
-		
+
 		var statusbarValue=document.getElementById("teaTimer-optionsStatusbarAlert").getAttribute("checked");
 		statusbarValue=(statusbarValue==="true")?true:false;
 		common.setAlert("statusbar",statusbarValue);
-		
+
 		var widgetValue=document.getElementById("teaTimer-optionsWidgetAlert").getAttribute("checked");
 		widgetValue=(widgetValue==="true")?true:false;
 		common.setAlert("widget",widgetValue);
-		
+
 		common.setWidgetAlertShowTime(parseInt(widgetShowTimeTxtField.value,10));
 	}
-	
+
 	/**
 	 * This private method saves the sorting order in the options "database".
 	 **/
@@ -746,7 +768,7 @@ function teaTimerOptionsWindow()
 	{
 		common.setSortingOrder(selSortingOrder.value);
 	}
-	
+
 	/**
 	 * This private method saves the start end the end sounds into the options "database".
 	 **/
@@ -759,4 +781,3 @@ function teaTimerOptionsWindow()
 
 var teaTimerOptionsWindowInstance=new teaTimerOptionsWindow();
 window.addEventListener("load",teaTimerOptionsWindowInstance.init,false);
-

@@ -22,7 +22,7 @@
     <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
     <script type="application/x-javascript" src="chrome://teatimer/content/options.js" />
-    
+
     <tabbox>
         <tabs>
             <tab label="&options.tabs.teavarities;" />
@@ -45,10 +45,10 @@
                             <button id="teaTimer-optionsBtnAddTea" label="&options.varities.newTea.button;" />
                         </hbox>
                     </groupbox>
-                    
+
                     <groupbox>
                         <caption label="&options.varities.manageExistingTeas;" />
-                        
+
                         <tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
                             <treecols editable="true">
                                 <treecol label="&options.varities.manageExistingTeas.tree.id;" id="teaTimer-optionsTeas-idColumn" hidden="true" />
@@ -75,11 +75,11 @@
                             </treechildren>
                         </tree>
                     </groupbox>
-                
+
                     <hbox align="right">
                         <button id="teaTimer-optionsBtnDelTea" label="&options.varities.manageExistingTeas.deleteSelectedTea;" disabled="true" />
                     </hbox>
-                    
+
                     <groupbox align="center" orient="horizontal">
                         <caption label="&options.varities.sorting;" />
                         <label control="teaTimer-sortingOrder" value="&options.varities.sorting.sortTeasInTeaTimerContextMenu;" />
@@ -120,6 +120,7 @@
                             <menulist id="teaTimer-optionsStartSound">
                                 <menupopup>
                                     <menuitem label="&options.alerts.soundAlerts.sounds.none;" value="none" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.systembeep;" value="systembeep" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.cup;" value="cup" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.eggtimer;" value="eggtimer" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.pour;" value="pour" />
@@ -128,13 +129,14 @@
                             </menulist>
                             <button id="teaTimer-optionsBtnPreviewStartSound" label="&options.alerts.soundAlerts.startSound.preview;" />
                         </hbox>
-                        
+
                         <hbox align="center">
                             <label control="teaTimer-optionsEndSound" value="&options.alerts.soundAlerts.endSound.label;" />
                             <spacer flex="1" />
                             <menulist id="teaTimer-optionsEndSound">
                                 <menupopup>
                                     <menuitem label="&options.alerts.soundAlerts.sounds.none;" value="none" />
+                                    <menuitem label="&options.alerts.soundAlerts.sounds.systembeep;" value="systembeep" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.eggtimer;" value="eggtimer" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.fanfare;" value="fanfare" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.slurp;" value="slurp" />
@@ -144,13 +146,13 @@
                             </menulist>
                             <button id="teaTimer-optionsBtnPreviewEndSound" label="&options.alerts.soundAlerts.endSound.preview;" />
                         </hbox>
-                    </vbox>  
+                    </vbox>
                 </groupbox>
                 </vbox>
             </tabpanel>
         </tabpanels>
     </tabbox>
-    
+
     <hbox align="right">
         <button label="&options.buttons.cancel.label;" id="teaTimer-optionsWinBtnCancel" accesskey="&options.buttons.cancel.accesskey;" />
         <button label="&options.buttons.ok.label;" id="teaTimer-optionsWinBtnOk" accesskey="&options.buttons.ok.accesskey;" />

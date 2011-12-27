@@ -36,6 +36,7 @@
 <!ENTITY options.alerts.soundAlerts.startSound.preview "Preview">
 <!ENTITY options.alerts.soundAlerts.endSound.preview "Preview">
 <!ENTITY options.alerts.soundAlerts.sounds.none "None">
+<!ENTITY options.alerts.soundAlerts.sounds.systembeep "System Beep">
 <!ENTITY options.alerts.soundAlerts.sounds.cup "Cup">
 <!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Egg Timer">
 <!ENTITY options.alerts.soundAlerts.sounds.pour "Pour">
