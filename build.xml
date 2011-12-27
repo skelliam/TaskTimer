@@ -42,6 +42,8 @@
 					locale/zh-CN/teatimer.properties
                     locale/sr/teatimer.dtd
 					locale/sr/teatimer.properties
+                    locale/tr-TR/teatimer.dtd
+					locale/tr-TR/teatimer.properties
 					" />
 	</target>
 
