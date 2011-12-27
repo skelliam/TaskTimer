@@ -1,39 +1,39 @@
-<!ENTITY main.contextMenu.showIconAndTime "Simge ve zamanı göster">
-<!ENTITY main.contextMenu.showIconOnly "Sadece simgeyi göster">
+<!ENTITY main.contextMenu.showIconAndTime "Simge ve zaman göster">
+<!ENTITY main.contextMenu.showIconOnly "Yalnızca simge göster">
 <!ENTITY main.contextMenu.options "Seçenekler...">
 <!ENTITY main.contextMenu.cancel "İptal">
-<!ENTITY main.contextMenu.quicktimer "Hızlı Zamanlayıcı…">
+<!ENTITY main.contextMenu.quicktimer "Hızlı Zamanlayıcı...">
 
 <!ENTITY options.windowTitle "TeaTimer - Seçenekler">
 <!ENTITY options.tabs.teavarities "Çay çeşitleri">
 <!ENTITY options.tabs.alerts "Uyarılar">
 
-<!ENTITY options.varities.addANewTea "Yeni bir çay ekle">
+<!ENTITY options.varities.addANewTea "Yeni çay ekle">
 <!ENTITY options.varities.newTea.name.label "Çay">
 <!ENTITY options.varities.newTea.time.label "Zaman">
 <!ENTITY options.varities.newTea.button "Ekle">
 <!ENTITY options.varities.manageExistingTeas "Mevcut çayları yönet">
 <!ENTITY options.varities.manageExistingTeas.tree.id "Kimlik">
-<!ENTITY options.varities.manageExistingTeas.tree.name "İsim">
+<!ENTITY options.varities.manageExistingTeas.tree.name "Ad">
 <!ENTITY options.varities.manageExistingTeas.tree.time "Zaman">
 <!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "Seçilen çayı sil">
 <!ENTITY options.varities.sorting "Sıralama">
-<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "TeaTimer bağlam menüsündeki çayları sınıflandır">
-<!ENTITY options.varities.sorting.nameASC "alfabetik sırayla artma">
-<!ENTITY options.varities.sorting.nameDESC "alfabetik sırayla azalma">
-<!ENTITY options.varities.sorting.timeASC "zamana göre artma">
-<!ENTITY options.varities.sorting.timeDESC "zamana göre azalma">
+<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "TeaTimer içerik menüsündeki çayları sırala:">
+<!ENTITY options.varities.sorting.nameASC "alfabetik artan.">
+<!ENTITY options.varities.sorting.nameDESC "alfabetik azalan.">
+<!ENTITY options.varities.sorting.timeASC "zamana göre artan.">
+<!ENTITY options.varities.sorting.timeDESC "zamana göre azalan.">
 <!ENTITY options.varities.sorting.id "yukarıdaki listeyle aynı.">
 <!ENTITY options.alerts.general.groupboxcaption "Genel Uyarılar">
-<!ENTITY options.alerts.general.showDialogAlert "Zamanlayıcı bittiğinde diyalog penceresini göster">
+<!ENTITY options.alerts.general.showDialogAlert "Zamanlayıcı bittiğinde iletişim penceresini göster">
 <!ENTITY options.alerts.general.showStatusbarAlert "Zamanlayıcı bittiğinde durum çubuğu yanıp sönsün">
 <!ENTITY options.alerts.widgetAlert.groupboxcaption "Web Sitesi-Widget Uyarısı">
-<!ENTITY options.alerts.widgetAlert.description "Zamanlayıcı bittiğinde Web Sitesi- Widget  doğrudan web sitesinde görünür.">
-<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Zamanlayıcı bittiğinde web sitesi widget göster">
-<!ENTITY options.alerts.widgetAlert.showTimeLabel "Widget'ın otomatik olarak kaybolacağı saniya sayısı (0=asla):">
+<!ENTITY options.alerts.widgetAlert.description "Zamanlayıcı bittiğinde Web Sitesi-Widget doğrudan web sitesinde görünür.">
+<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Zamanlayıcı bittiğinde web sitesi-widget göster">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "Widget\'ın otomatik kaybolacağı süre (saniye; 0=hiç):">
 <!ENTITY options.alerts.soundAlerts.groupboxcaption "Sesli Uyarılar">
 <!ENTITY options.alerts.soundAlerts.startSound.label "Zamanlayıcı başlatıldığında bu sesi çal:">
-<!ENTITY options.alerts.soundAlerts.endSound.label "Zamanlayıcı bittiğinde bu sesi çal:">
+<!ENTITY options.alerts.soundAlerts.endSound.label "Zamanlayıcı bitirdiğinde bu sesi çal:">
 <!ENTITY options.alerts.soundAlerts.startSound.preview "Önizleme">
 <!ENTITY options.alerts.soundAlerts.endSound.preview "Önizleme">
 <!ENTITY options.alerts.soundAlerts.sounds.none "Hiçbiri">
@@ -43,23 +43,25 @@
 <!ENTITY options.alerts.soundAlerts.sounds.fanfare "Tantana">
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Höpürdetme">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Konuşma">
+<!ENTITY options.alerts.soundAlerts.sounds.custom "Özel...">
+
 <!ENTITY options.buttons.ok.label "TAMAM">
-<!ENTITY options.buttons.ok.accesskey "o">
+<!ENTITY options.buttons.ok.accesskey "t">
 <!ENTITY options.buttons.cancel.label "İptal">
-<!ENTITY options.buttons.cancel.accesskey "c">
+<!ENTITY options.buttons.cancel.accesskey "i">
 
 <!ENTITY quicktimer.windowTitle "TeaTimer - Hızlı Zamanlayıcı">
 <!ENTITY quicktimer.countdownTime.label "Lütfen varsayılan gersayım süresini girin:">
-<!ENTITY quicktimer.countdownTime.accesskey "t">
-<!ENTITY quicktimer.startCountdownRightNow.label "TAMAM'ı tıklar tıklamaz gerisayımı başlat.">
-<!ENTITY quicktimer.startCountdownRightNow.accesskey "s">
+<!ENTITY quicktimer.countdownTime.accesskey "g">
+<!ENTITY quicktimer.startCountdownRightNow.label "TAMAM\'ı tıklar tıklamaz gerisayımı başlat.">
+<!ENTITY quicktimer.startCountdownRightNow.accesskey "b">
 <!ENTITY quicktimer.buttons.ok.label "TAMAM">
-<!ENTITY quicktimer.buttons.ok.accesskey "o">
+<!ENTITY quicktimer.buttons.ok.accesskey "t">
 <!ENTITY quicktimer.buttons.cancel.label "İptal">
-<!ENTITY quicktimer.buttons.cancel.accesskey "c">
+<!ENTITY quicktimer.buttons.cancel.accesskey "i">
 
 <!ENTITY teaready.windowTitle "TeaTimer - Çayınız hazır">
 <!ENTITY teaready.buttons.ok.label "TAMAM">
 <!ENTITY teaready.header "TeaTimer diyor ki:">
 <!ENTITY teaready.message "Demleme tamamlandı.">
-<!ENTITY teaready.teaname "{$TEANAME} girin. :-)">
+<!ENTITY teaready.teaname "{$TEANAME}; afiyet olsun. :-)">
