@@ -1,19 +1,17 @@
-<!ENTITY main.contextMenu.showIconAndTime "Прикажи иконицу и време">
-<!ENTITY main.contextMenu.showIconOnly "Прикажи само иконицу">
+<!ENTITY main.contextMenu.showIconAndTime "Прикажи икону и време">
+<!ENTITY main.contextMenu.showIconOnly "Прикажи само икону">
 <!ENTITY main.contextMenu.options "Поставке…">
 <!ENTITY main.contextMenu.cancel "Откажи">
 <!ENTITY main.contextMenu.quicktimer "Брз бројач…">
-
 <!ENTITY options.windowTitle "Поставке">
 <!ENTITY options.tabs.teavarities "Сорте чаја">
 <!ENTITY options.tabs.alerts "Обавештења">
-
 <!ENTITY options.varities.addANewTea "Додај нови чај">
 <!ENTITY options.varities.newTea.name.label "Чај">
 <!ENTITY options.varities.newTea.time.label "Време">
 <!ENTITY options.varities.newTea.button "Додај">
 <!ENTITY options.varities.manageExistingTeas "Управљај постојећим чајевима">
-<!ENTITY options.varities.manageExistingTeas.tree.id "ID">
+<!ENTITY options.varities.manageExistingTeas.tree.id "ИД">
 <!ENTITY options.varities.manageExistingTeas.tree.name "Назив">
 <!ENTITY options.varities.manageExistingTeas.tree.time "Време">
 <!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "Обриши изабрани чај">
@@ -27,16 +25,17 @@
 <!ENTITY options.alerts.general.groupboxcaption "Општа обавештења">
 <!ENTITY options.alerts.general.showDialogAlert "Прикажи прозорче када се бројач заврши">
 <!ENTITY options.alerts.general.showStatusbarAlert "Затрепери линију стања када се бројач заврши">
-<!ENTITY options.alerts.widgetAlert.groupboxcaption "Обавештење о справици">
-<!ENTITY options.alerts.widgetAlert.description "Справица се појављује директно на веб сајту када се бројач заврши.">
-<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Прикажи справицу када се бројач заврши">
-<!ENTITY options.alerts.widgetAlert.showTimeLabel "Број секунди када справица сама нестане (0=никад):">
+<!ENTITY options.alerts.widgetAlert.groupboxcaption "Обавештење о елементу">
+<!ENTITY options.alerts.widgetAlert.description "Елемент се појављује директно на сајту када се бројач заврши.">
+<!ENTITY options.alerts.widgetAlert.activateCheckboxLabel "Прикажи елемент када се бројач заврши">
+<!ENTITY options.alerts.widgetAlert.showTimeLabel "Број секунди када елемент сам нестане (0=никад):">
 <!ENTITY options.alerts.soundAlerts.groupboxcaption "Звучна обавештења">
 <!ENTITY options.alerts.soundAlerts.startSound.label "Репродукуј овај звук када је бројач покренут:">
-<!ENTITY options.alerts.soundAlerts.endSound.label "Репродукуј овај звук када бројач заврши:">
+<!ENTITY options.alerts.soundAlerts.endSound.label "Пусти овај звук када бројач заврши:">
 <!ENTITY options.alerts.soundAlerts.startSound.preview "Прегледај">
 <!ENTITY options.alerts.soundAlerts.endSound.preview "Прегледај">
 <!ENTITY options.alerts.soundAlerts.sounds.none "Ништа">
+<!ENTITY options.alerts.soundAlerts.sounds.systembeep "Системски звук">
 <!ENTITY options.alerts.soundAlerts.sounds.cup "Шоља">
 <!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Јаје">
 <!ENTITY options.alerts.soundAlerts.sounds.pour "Сипање">
@@ -44,12 +43,10 @@
 <!ENTITY options.alerts.soundAlerts.sounds.slurp "Мљацкање">
 <!ENTITY options.alerts.soundAlerts.sounds.speech "Говор">
 <!ENTITY options.alerts.soundAlerts.sounds.custom "Прилагоди…">
-
 <!ENTITY options.buttons.ok.label "У реду">
 <!ENTITY options.buttons.ok.accesskey "У">
 <!ENTITY options.buttons.cancel.label "Откажи">
 <!ENTITY options.buttons.cancel.accesskey "О">
-
 <!ENTITY quicktimer.windowTitle "Брз бројач">
 <!ENTITY quicktimer.countdownTime.label "Унесите прилагођено време одбројавања:">
 <!ENTITY quicktimer.countdownTime.accesskey "н">
@@ -59,7 +56,6 @@
 <!ENTITY quicktimer.buttons.ok.accesskey "У">
 <!ENTITY quicktimer.buttons.cancel.label "Откажи">
 <!ENTITY quicktimer.buttons.cancel.accesskey "О">
-
 <!ENTITY teaready.windowTitle "Ваш чај је спреман">
 <!ENTITY teaready.buttons.ok.label "У реду">
 <!ENTITY teaready.header "Титајмер:">
