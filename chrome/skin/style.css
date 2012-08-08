@@ -1,5 +1,5 @@
 /*
-    TeaTimer: A Firefox extension that protects you from oversteeped tea.
+    TaskTimer: A Firefox extension that protects you from oversteeped task.
     Copyright (C) 2011 Philipp Söhnlein
 
     This program is free software: you can redistribute it and/or modify
@@ -14,21 +14,21 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#teatimer-box.invisible #teatimer-countdown
+#tasktimer-box.invisible #tasktimer-countdown
 {
     visibility: hidden;
 }
 
-#teatimer-box.finished
+#tasktimer-box.finished
 {
     color: #090;
 }
 
-#teatimer-box.iconOnlyView #teatimer-countdownbox
+#tasktimer-box.iconOnlyView #tasktimer-countdownbox
 {
 	display: none;
 }
-#teatimer-box
+#tasktimer-box
 {
     -moz-box-align: center;
     -moz-box-orient: horizontal;

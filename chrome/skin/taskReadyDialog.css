@@ -1,5 +1,5 @@
 /*
-    TeaTimer: A Firefox extension that protects you from oversteeped tea.
+    TaskTimer: A Firefox extension that protects you from oversteeped task.
     Copyright (C) 2011 Philipp Söhnlein
 
     This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ dialog
 #wrapper
 {
 	padding-left: 45px;
-	background-image: url(icon32.png);
+	background-image: url(bulldozer_48.png);
 	background-repeat: no-repeat;
 	background-position: top left;
 	padding-top: 8px;
@@ -35,7 +35,7 @@ dialog
 }
 
 #messageline,
-#teanameline,
+#tasknameline,
 #websitewidgeterrorline
 {
 	padding-left: 13px;

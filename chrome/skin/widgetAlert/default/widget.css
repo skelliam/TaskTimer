@@ -1,5 +1,5 @@
 /*
-	TeaTimer: A Firefox extension that protects you from oversteeped tea.
+	TaskTimer: A Firefox extension that protects you from oversteeped task.
 	Copyright (C) 2011 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
@@ -15,16 +15,16 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-html>body #teaTimer-alertWidget:hover,
-html>body #teaTimer-alertWidget h1:hover,
-html>body #teaTimer-alertWidget p:hover
+html>body #taskTimer-alertWidget:hover,
+html>body #taskTimer-alertWidget h1:hover,
+html>body #taskTimer-alertWidget p:hover
 {
 	cursor: pointer;
 }
 
-html>body #teaTimer-alertWidget h1,
-html>body #teaTimer-alertWidget p,
-html>body #teaTimer-alertWidget p span
+html>body #taskTimer-alertWidget h1,
+html>body #taskTimer-alertWidget p,
+html>body #taskTimer-alertWidget p span
 {
 	color: #FFF;
 	font-family: "Lucida Grande", "Arial", sans-serif;
@@ -32,7 +32,7 @@ html>body #teaTimer-alertWidget p span
 	text-align: center;
 }
 
-html>body #teaTimer-alertWidget
+html>body #taskTimer-alertWidget
 {
 	position: fixed;
 	top: 40%;
@@ -44,7 +44,7 @@ html>body #teaTimer-alertWidget
 	background-image: url(bg.png);
 }
 
-html>body #teaTimer-alertWidgetBox h1
+html>body #taskTimer-alertWidgetBox h1
 {
 	margin: 0;
 	margin-left: auto;
@@ -57,19 +57,19 @@ html>body #teaTimer-alertWidgetBox h1
 	font-size: 1.2em;
 }
 
-html>body #teaTimer-alertWidget p
+html>body #taskTimer-alertWidget p
 {
 	margin-bottom: 0;
 	padding-bottom: 0;
 }
 
-html>body>#teaTimer-alertWidget #teaTimer-alertWidgetTeaName
+html>body>#taskTimer-alertWidget #taskTimer-alertWidgetTaskName
 {
 	font-style: italic;
 }
 
 /*
-#teaTimer-alertWidget
+#taskTimer-alertWidget
 {
 	position: fixed;
 	top: 0;
@@ -79,7 +79,7 @@ html>body>#teaTimer-alertWidget #teaTimer-alertWidgetTeaName
 	background-color: #EEE;
 }
 
-#teaTimer-alertWidgetBox
+#taskTimer-alertWidgetBox
 {
 	width: 400px;
 	height: 150px;
@@ -93,7 +93,7 @@ html>body>#teaTimer-alertWidget #teaTimer-alertWidgetTeaName
 	margin-top: -85px;
 }
 
-#teaTimer-alertWidgetBox h1
+#taskTimer-alertWidgetBox h1
 {
 	margin: 0;
 	padding: 0;
@@ -104,7 +104,7 @@ html>body>#teaTimer-alertWidget #teaTimer-alertWidgetTeaName
 */
 
 /*
-#teaTimer-alertWidget
+#taskTimer-alertWidget
 {
 	position: fixed;
 	top: 5px;
@@ -122,29 +122,29 @@ html>body>#teaTimer-alertWidget #teaTimer-alertWidgetTeaName
 	font-family: sans-serif;
 }
 
-#teaTimer-alertWidget h1#teaTimer-alertWidgetHeadline
+#taskTimer-alertWidget h1#taskTimer-alertWidgetHeadline
 {
 	font-size: 1.1em;
 }
 
-#teaTimer-alertWidget p
+#taskTimer-alertWidget p
 {
 	font-size: 1em;
 }
 
-#teaTimer-alertWidget p#teaTimer-alertWidgetCompleteMessage
+#taskTimer-alertWidget p#taskTimer-alertWidgetCompleteMessage
 {
 	margin-bottom: 0;
 	padding-bottom: 0;
 }
 
-#teaTimer-alertWidget p#teaTimer-alertWidgetEnjoyLine
+#taskTimer-alertWidget p#taskTimer-alertWidgetEnjoyLine
 {
 	margin-top: 0;
 	padding-top: 0;
 }
 
-#teaTimer-alertWidget #teaTimer-alertWidgetTeaName
+#taskTimer-alertWidget #taskTimer-alertWidgetTaskName
 {
 	font-style: italic;
 }
