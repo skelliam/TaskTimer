@@ -1,9 +1,9 @@
 /*
-	TeaTimer: A Firefox extension that protects you from oversteeped tea.
+	TaskTimer: A Firefox extension that protects you from oversteeped task.
 	Copyright (C) 2011 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License version 3 as
+	it under the terms of the GNU General Public License version 3 as 
 	published by the Free Software Foundation.
 
 	This program is distributed in the hope that it will be useful,
@@ -15,318 +15,283 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function teaTimerTeaDB()
+function taskTimerTaskDB()
 {
     var self=this;
 
-    const common=new teaTimerCommon();
-
+    const common=new taskTimerCommon();
     const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-    const teaDB=storedPrefs.getBranch("extensions.teatimer.teas.");
-
+    const taskDB=storedPrefs.getBranch("extensions.tasktimer.tasks.");
+    const sqldb = new SQLite("tasktimer.sqlite", {location:'ProfD'});
+    
     /**
-     * This method generates a basic preconfigured tea database.
+     * This method generates a basic preconfigured task database.
      **/
-    this.initTeaDB=function()
+    this.initTaskDB=function()
     {
-	common.log("teaTimer","Initiating Tea Database\n");
-	teaDB.setCharPref("1.name","Earl Grey");
-	teaDB.setIntPref("1.time",180);
-	teaDB.setBoolPref("1.checked",true);
-	teaDB.setBoolPref("1.hidden",false);
+      //common.log("taskTimer","Initiating Task Database\n");
+      /* tasks:
+       *    id:    An ID for the project
+       *    name:  The name of the project
+       *    hidden:  Whether or not this task should be hidden (not used anymore)
+       */
+      sqldb.execute("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, hidden INTEGER, active INTEGER)");
+      
+      /* worktimes:
+       *    time:        An integer value representing time since 1/1/1970 00:00:00 in seconds (Unix style type)
+       *    start/stop:  An integer representing whether or not this entry was to start working or to stop working.
+       *    taskid:       Which project ID this entry is for.
+       */
+      sqldb.execute("CREATE TABLE IF NOT EXISTS worktimes (time INTEGER, taskid INTEGER)");       
 
-	teaDB.setCharPref("2.name","Rooibos");
-	teaDB.setIntPref("2.time",420);
-	teaDB.setBoolPref("2.checked",false);
-	teaDB.setBoolPref("2.hidden",false);
-
-	teaDB.setCharPref("3.name","White Tea");
-	teaDB.setIntPref("3.time",120);
-	teaDB.setBoolPref("3.checked",false);
-	teaDB.setBoolPref("3.hidden",false);
+      //FIXME: this is not very reliable, make this better.  Somehow I want to ENSURE that id #1 is the idle task.
+      var tasks = sqldb.execute("SELECT * from tasks");
+      var query = sprintf("INSERT INTO tasks (name, active, hidden) VALUES ('%s', %d, %d)", 'Idle', 0, 0);
+      if ((tasks.length == 0) || (tasks == null) || (tasks == 0)) {
+         alert('First run: Database is initialized!');
+         sqldb.execute(query);
+      }
     }
-
+	
     /**
-     * This method counts the number of available teas in the database.
-     * @returns integer number of teas
+     * This method counts the number of available tasks in the database.
+     * @returns integer number of tasks
      **/
-    this.getNumberOfTeas=function()
+    this.getNumberOfTasks=function()
     {
-		var teas=0;
-        const offset=23;
-        var end=offset;
-		for(var i=1; i<=end; i++)
-		{
-		    try
-		    {
-				if(self.checkTeaWithID(i))
-				{
-				    teas++;
-                    end=i+offset;
-				}
-		    }
-		    catch(ex)
-		    {
-				//do nothing
-		    }
-		}
-
-		return teas;
+       //TODO: FIXME, not sure what this should do but we won't have much of a limitation with sqlite :)
+       return 100;
     }
-
+    
     /**
-     * This private method checks if a certain tea is marked for deletion (hidden).
-     * @param integer teaID
+     * This private method checks if a certain task is marked for deletion (hidden).
+     * @param integer taskID
      * @return bool hidden oder not?
-     * @throws teaTimerInvalidTeaIDException
+     * @throws taskTimerInvalidTaskIDException
      **/
-    var checkIfTeaIsHidden=function(id)
+    var checkIfTaskIsHidden=function(id)
     {
-		if(checkTeaWithID(id)===false)
-		{
-			throw new teaTimerInvalidTeaIDException("checkIfTeaIsHidden: Invalid call, first parameter must be a tea ID.");
-		}
-
-		return ((getTeaData(id)["hidden"]===true)?true:false);
+       var result = sqldb.execute(sprintf("SELECT hidden FROM tasks WHERE id=%d", id));
+       return (result["hidden"] == 1? true : false);
     }
-
+    
     /**
-     * This public method adds a tea to the DB.
-     * @param string teaName
-     * @param integer teaTime (in seconds)
-     * @param boolean mark tea as active tea?
-     * @returns integer new teaID
-     * @throws teaTimerDBInsufficientInputDataException
+     * This public method adds a task to the DB.
+     * @param string taskName
+     * @param integer taskTime (in seconds)
+     * @param boolean mark task as active task?
+     * @returns integer new taskID
+     * @throws taskTimerDBInsufficientInputDataException
      **/
-    this.addTea=function(name,time,checked)
+    this.addTask=function(name,time,checked)
     {
-        if(!(
-            typeof name==="string" && name.length>0 &&
-            typeof time==="number" && parseInt(time,10)>0
-            )
-        )
-        {
-            throw new teaTimerDBInsufficientInputDataException("addTea: First parameter must be a string with more than 0 chars, second parameter must be a vaild time integer.");
-        }
-
-		time=parseInt(time,10);
-        checked=(checked===true)?true:false;
-
-        var id=getNextAutoIncrementId();
-        teaDB.setCharPref(id+".name",name);
-		teaDB.setIntPref(id+".time",time);
-		teaDB.setBoolPref(id+".checked",checked);
-		teaDB.setBoolPref(id+".hidden",false);
-
-        if(checked===true)
-        {
-            self.setTeaChecked(id); //we should call this, to make sure, that no other tea is marked as active.
-        }
-
-        return id;
+       sqldb.execute(sprintf("INSERT INTO tasks (name, active, hidden) VALUES('%s', %d, %d)", name, (checked ? 1 : 0), 0));
     }
-
+    
     /**
-     * This private method calculates the next free ID.
-     * @returns integer ID
-     **/
-    var getNextAutoIncrementId=function()
-    {
-        var allTeaIDs=self.getIDsOfTeas();
-        return allTeaIDs[allTeaIDs.length-1]+1;
-    }
-
-    /**
-     * This public method lets you set the name of a certain existing tea.
-     * @param integer teaID
+     * This public method lets you set the name of a certain existing task.
+     * @param integer taskID
      * @param string newName
-     * @throws teaTimerInvalidTeaIDException
-     * @throws teaTimerInvalidTeaNameException
+     * @throws taskTimerInvalidTaskIDException
+     * @throws taskTimerInvalidTaskNameException
      **/
     this.setName=function(id,name)
     {
-        if(self.checkTeaWithID(id)===false)
+        if(self.checkTaskWithID(id)===false)
         {
-            throw new teaTimerInvalidTeaIDException("setName: Invalid call, first parameter must be a tea ID.");
+            throw new taskTimerInvalidTaskIDException("setName: Invalid call, first parameter must be a task ID.");
         }
-
+        
         if(!(typeof name==="string" && name.length>0))
         {
-            throw new teaTimerInvalidTeaNameException("setName: Invalid call, second parameter must be a valid name.");
+            throw new taskTimerInvalidTaskNameException("setName: Invalid call, second parameter must be a valid name.");
         }
-
-        teaDB.setCharPref(id+".name",name);
+        
+        taskDB.setCharPref(id+".name",name);
     }
-
+    
     /**
-     * This public method lets you set the time of a certain existing tea.
-     * @param integer teaID
+     * This public method lets you set the time of a certain existing task.
+     * @param integer taskID
      * @param integer new time (in seconds)
-     * @throws teaTimerInvalidTeaIDException
-     * @throws teaTimerInvalidTeaTimeException
+     * @throws taskTimerInvalidTaskIDException
+     * @throws taskTimerInvalidTaskTimeException
      **/
     this.setTime=function(id,time)
     {
-        if(self.checkTeaWithID(id)===false)
+        if(self.checkTaskWithID(id)===false)
         {
-            throw new teaTimerInvalidTeaIDException("setTime: Invalid call, first parameter must be a tea ID.");
+            throw new taskTimerInvalidTaskIDException("setTime: Invalid call, first parameter must be a task ID.");
         }
-
+        
         if(!(typeof time==="number" && parseInt(time,10)>0))
         {
-            throw new teaTimerInvalidTeaTimeException("setTime: Invalid call, second parameter must be a time integer greater than 0.");
+            throw new taskTimerInvalidTaskTimeException("setTime: Invalid call, second parameter must be a time integer greater than 0.");
         }
-
-        teaDB.setIntPref(id+".time",parseInt(time,10));
+        
+        taskDB.setIntPref(id+".time",parseInt(time,10));
     }
-
+    
      /**
-     * This public method sets a certain existing tea for deletion (hidden).
-     * @param integer teaID
-     * @throws teaTimerInvalidTeaIDException
+     * This public method sets a certain existing task for deletion (hidden).
+     * @param integer taskID
+     * @throws taskTimerInvalidTaskIDException
      **/
     this.setHidden=function(id)
     {
-	if(self.checkTeaWithID(id)===false)
+	if(self.checkTaskWithID(id)===false)
         {
-            throw new teaTimerInvalidTeaIDException("setHidden: Invalid call, first parameter must be a tea ID.");
+            throw new taskTimerInvalidTaskIDException("setHidden: Invalid call, first parameter must be a task ID.");
         }
-
-        teaDB.setBoolPref(id+".hidden",true);
+        
+        taskDB.setBoolPref(id+".hidden",true);
     }
-
+    
     /**
-     * This public method finally deletes a certain tea.
-     * It does not check, if the tea was marked as "hidden" before!
-     * @param integer teaID
-     * @throws teaTimerInvalidTeaIDException
+     * This public method finally deletes a certain task.
+     * It does not check, if the task was marked as "hidden" before!
+     * @param integer taskID
+     * @throws taskTimerInvalidTaskIDException
      **/
-    this.deleteTea=function(id)
+    this.deleteTask=function(id)
     {
-        if(self.checkTeaWithID(id)===false)
+        if(self.checkTaskWithID(id)===false)
         {
-            throw new teaTimerInvalidTeaIDException("setTime: Invalid call, first parameter must be a tea ID.");
+            throw new taskTimerInvalidTaskIDException("setTime: Invalid call, first parameter must be a task ID.");
         }
-
-        teaDB.clearUserPref(id+".name");
-        teaDB.clearUserPref(id+".time");
-        teaDB.clearUserPref(id+".checked");
-		teaDB.clearUserPref(id+".hidden");
+        
+        taskDB.clearUserPref(id+".name");
+        taskDB.clearUserPref(id+".time");
+        taskDB.clearUserPref(id+".checked");
+		  taskDB.clearUserPref(id+".hidden");
     }
-
+    
     /**
-     * You can use this method to check if there's a tea with a certain ID.
+     * You can use this method to check if there's a task with a certain ID.
      *
-     * @param integer TeaID2check
+     * @param integer TaskID2check
      * @returns boolean true or false
      **/
-    this.checkTeaWithID=function(id)
+    this.checkTaskWithID=function(id)
     {
-		var result=false;
-		try
-		{
-			if(
-				teaDB.getCharPref(id+".name").length>0 &&
-				teaDB.getIntPref(id+".time")>0 &&
-				typeof teaDB.getBoolPref(id+".checked")==="boolean"
-			)
-			{
-				result=true;
-		    }
-		}
-		catch(e)
-		{
-
-		}
-
-		return result;
+  		 var result=false;
+       taskids = sqldb.execute(sprintf("SELECT id FROM tasks where id=%d", id));
+       if (taskids.length>0)
+       {
+          result = true
+       }
+		 return result;
+    }
+	
+    this.getTaskData=function(id)
+    {
+       //Get all fields of a specific task
+       task = sqldb.execute(sprintf("SELECT * FROM tasks WHERE id=%d", id));
+       return task;       
     }
 
+
+    this.getDataOfAllTasks=function(includehidden,sorting)
+    {
+       //includehidden=((includehidden===true)?true:false);
+       //TODO handle includehidden and sorting
+       var tasks = sqldb.execute("SELECT * from tasks");
+       return tasks;
+    }
+
+    this.getTimeWorkedOnTaskInRange=function(id, start, end)
+    {
+       var sum = 0;
+       var oldtime = 0;
+       var records = sqldb.execute(sprintf("SELECT * FROM worktimes WHERE time > %d AND time < %d ORDER BY time", start, end));
+       for (var i=0; i<records.length; i++)
+       {
+
+          if (records[i].taskid == id)  //this is the task we are interested in, and we started working on it.
+          {
+             if (oldtime > 0) {
+                //if for some reason there are double entries
+                sum += (records[i].time - oldtime);
+             }
+             if (i == records.length) {
+                //this is the last record to process.  If it is the task we are interested in, 
+                //also add the whatever time until right this instant
+                var now = new Date().getTime()/1000;
+                sum += (now - records[i].time)
+             }             
+             oldtime = records[i].time;
+          }
+          else  //not the task we are interested in.
+          {
+             if (oldtime > 0) {
+                //we've stopped working on the task
+                sum += (records[i].time - oldtime);
+                oldtime = 0;
+             }
+             
+          }
+             
+       }
+       return sum;  //should be a sum of time worked on this task from start-->end
+    }
+	
     /**
-     * This method queries the database and returns an arary with the ID, the name, the time and the 'choosen state' of a certain tea.
-     *
-     * @param integer ID of tea you want to get data from
-     * @returns array teaData
-     * @throws teaTimerInvalidTeaIDException
+     * This method returns the ID of the currently choosen/checked task.
+     * @returns integer taskID
      **/
-    this.getTeaData=function(id)
+    this.getIdOfCurrentTask=function()
     {
-	if(self.checkTeaWithID(id)===false)
-	{
-	    throw new teaTimerInvalidTeaIDException("getTeaData: Invalid ID given.");
-	}
+       var id = 1;  //when in doubt, always task 1 which is idle or non-working time.
+       var result = sqldb.execute("SELECT id FROM tasks WHERE active=1 AND hidden=0");
+       if (result.length>0)
+       {
+		    id = result[0].id;
+       }
+       return id;
+    }
 
-	var name=teaDB.getCharPref(id+".name");
-	var time=teaDB.getIntPref(id+".time");
-	var choosen=teaDB.getBoolPref(id+".checked");
-	var hidden=false;
-	try
-	{
-	    var hidden=teaDB.getBoolPref(id+".hidden");
-	}
-	catch(e)
-	{
+    this.getNameOfCurrentTask=function()
+    {
+       var name = "ERROR: Unknown!"
+       var result = sqldb.execute("SELECT name FROM tasks WHERE active=1 AND hidden=0");
+       if (result.length>0)
+       {
+		    name = result[0].name;
+       }
+       return name;
+    }
 
-	}
+    this.getMostRecentTask=function()
+    {
+       //determine what the most recent task entry was
+       var stat = 0;
+       var result = sqldb.execute("SELECT MAX(time), taskid FROM worktimes");
+       if (result.length > 0) {
+          stat = result.taskid;
+       }
+       return stat;
+    }
 
-	return {"ID":id,"name":name,"time":time,"choosen":choosen,"hidden":hidden};
+    var makeWorkEntry=function(id, time)
+    {
+       //only add an entry if it is different from the most recent one, we don't need double entries
+       if (id != self.getMostRecentTask()) {
+          sqldb.execute(sprintf("INSERT INTO worktimes (taskid, time) VALUES(%s, %s)", id, parseInt(time)));
+       }
+    }
+
+    this.startWorkingOnTask=function(id, time)
+    {
+        makeWorkEntry(id, time);
     }
 
     /**
-     * This method can be used to get an array with all teas and the corresponding data.
-     *
-     * Structure of array is:
-     * 	Array(
-     *		1=>Array(ID,name,time,choosen),
-     *		2=>Array(ID,name,time,choosen)
-     *		...
-     * 		)
-     *
-     * @param bool includehidden (include hidden teas also)
+     * This method returns an array with all available task IDs.
+     * @param bool includehidden (include hidden tasks also)
      * @param string sorting (id, name ASC, name DESC, time ASC, time DESC)
-     * @returns array
+     * @returns array taskIDs
      **/
-    this.getDataOfAllTeas=function(includehidden,sorting)
-    {
-		includehidden=((includehidden===true)?true:false);
-		var teaIDs=self.getIDsOfTeas(includehidden,sorting);
-		var teas=new Array();
-		for(var i in teaIDs)
-		{
-			teas.push(self.getTeaData(teaIDs[i]));
-		}
-
-		return teas;
-    }
-
-    /**
-     * This method returns the ID of the currently choosen/checked tea.
-     * @returns integer teaID
-     **/
-    this.getIdOfCurrentTea=function()
-    {
-		var id=1;
-		var teaIDs=self.getIDsOfTeas();
-		for(var i in teaIDs)
-		{
-			var tea=self.getTeaData(teaIDs[i]);
-			if(tea["choosen"]===true)
-			{
-				id=teaIDs[i];
-				break;
-			}
-		}
-
-		return id;
-    }
-
-    /**
-     * This method returns an array with all available tea IDs.
-     * @param bool includehidden (include hidden teas also)
-     * @param string sorting (id, name ASC, name DESC, time ASC, time DESC)
-     * @returns array teaIDs
-     **/
-    this.getIDsOfTeas=function(includehidden,sorting)
+    this.getIDsOfTasks=function(includehidden,sorting)
     {
 		includehidden=((includehidden===true)?true:false);
 		try
@@ -337,31 +302,31 @@ function teaTimerTeaDB()
 		{
 			sorting="id";
 		}
-
-		var teas=new Array();
-		var numberOfTeas=self.getNumberOfTeas();
+		
+		var tasks=new Array();
+		var numberOfTasks=self.getNumberOfTasks();
         const offset=23;
         var end=offset;
 		for(var i=1; i<=end; i++)
 		{
-			if(self.checkTeaWithID(i))
+			if(self.checkTaskWithID(i))
 			{
 				if(
-				   (includehidden===false && self.getTeaData(i)["hidden"]===false) ||
+				   (includehidden===false && self.getTaskData(i)["hidden"]===false) ||
 				   (includehidden===true)
 				)
 				{
-					teas.push(i);
+					tasks.push(i);
 					end=i+offset;
 				}
 			}
-
-			if(teas.length-1===numberOfTeas)
+	    
+			if(tasks.length-1===numberOfTasks)
 			{
 				break;
 			}
 		}
-
+		
 		if(sorting!=="id")
 		{
 			try
@@ -370,20 +335,20 @@ function teaTimerTeaDB()
 				do
 				{
 					stop=true;
-					for(i=0; i<teas.length-1; i++)
+					for(i=0; i<tasks.length-1; i++)
 					{
-						var thisTea=self.getTeaData(teas[i]);
-						var nextTea=self.getTeaData(teas[i+1]);
+						var thisTask=self.getTaskData(tasks[i]);
+						var nextTask=self.getTaskData(tasks[i+1]);
 						if(
-							(sorting==="time ASC" && thisTea.time>nextTea.time) ||
-							(sorting==="time DESC" && thisTea.time<nextTea.time) ||
-							(sorting==="name ASC" && thisTea.name.toLowerCase()>nextTea.name.toLowerCase()) ||
-							(sorting==="name DESC" && thisTea.name.toLowerCase()<nextTea.name.toLowerCase())
+							(sorting==="time ASC" && thisTask.time>nextTask.time) ||
+							(sorting==="time DESC" && thisTask.time<nextTask.time) ||
+							(sorting==="name ASC" && thisTask.name>nextTask.name) ||
+							(sorting==="name DESC" && thisTask.name<nextTask.name)
 						)
 						{
-							tmp=teas[i];
-							teas[i]=teas[i+1];
-							teas[i+1]=tmp;
+							tmp=tasks[i];
+							tasks[i]=tasks[i+1];
+							tasks[i+1]=tmp;
 							stop=false;
 						}
 					}
@@ -392,85 +357,56 @@ function teaTimerTeaDB()
 			}
 			catch(e)
 			{
-				//if there was an error, ignore it, because it's better to return a wrong sorted list instead of failing at all.
+				//if there was an error, ignore it, because it's better to return a wrong sorted list instaskd of failing at all.
 			}
 		}
-
-		return teas;
+	
+		return tasks;
     }
-
+    
     /**
-     * This method returns an array with all tea IDs of teas, that are marked for deletion (hidden).
-     * @returns array teaIDs
+     * This method returns an array with all task IDs of tasks, that are marked for deletion (hidden).
+     * @returns array taskIDs
      **/
-    this.getIDsOfHiddenTeas=function()
+    this.getIDsOfHiddenTasks=function()
     {
-        var teas=self.getIDsOfTeas(true);
-        var hiddenTeas=new Array();
-        for(var i=0; i<teas.length; i++)
+        var tasks=self.getIDsOfTasks(true);
+        var hiddenTasks=new Array();
+        for(var i=0; i<tasks.length; i++)
         {
-            var teaID=teas[i];
-            if(self.getTeaData(teaID)["hidden"]===true)
+            var taskID=tasks[i];
+            if(self.getTaskData(taskID)["hidden"]===true)
             {
-                hiddenTeas.push(teaID);
+                hiddenTasks.push(taskID);
             }
         }
-
-        return hiddenTeas;
-
+        
+        return hiddenTasks;
+	
     }
     /**
-     * Use this method to tell the database, that a certain tea is choosen.
-     * The corresponding flag is set in the database for all teas.
+     * Use this method to tell the database, that a certain task is choosen.
+     * The corresponding flag is set in the database for all tasks.
      *
-     * @param integer teaID
-     * @throws teaTimerInvalidTeaIDException
+     * @param integer taskID
+     * @throws taskTimerInvalidTaskIDException
      **/
-    this.setTeaChecked=function(id)
+    this.setTaskChecked=function(id)
     {
-	if(self.checkTeaWithID(id)!==true)
-	{
-	    throw new teaTimerInvalidTeaIDException("setTeaChecked: There's no tea with ID '"+id+"'.");
-	}
-
-	var teas=self.getIDsOfTeas();
-	for(var i in teas)
-	{
-	    var teaID=teas[i];
-	    teaDB.setBoolPref(teaID+".checked",((teaID===id)?true:false));
-	}
-    }
-
-    /**
-     * This private method returns the brewing time (in seconds) of the currenlty choosen tea.
-     * @returns integer brewing time in seconds
-     **/
-    this.getSteepingTimeOfCurrentTea=function()
-    {
-	var time=null;
-	try
-	{
-	    time=self.getTeaData(self.getIdOfCurrentTea())["time"];
-	}
-	catch(e)
-	{
-	    var firstTeaID=self.getIDsOfTeas()[0];
-	    self.setTeaChecked(firstTeaID);
-	    time=self.getTeaData(firstTeaID)["time"];
-	}
-
-	return time;
+       sqldb.execute("UPDATE tasks SET active=0");  //deactivate all tasks
+       sqldb.execute(sprintf("UPDATE tasks SET active=%d WHERE id=%d", 1, id));
     }
 }
 
-function teaTimerInvalidTeaIDException(msg)
+function taskTimerInvalidTaskIDException(msg)
 {
-    this.name="teaTimerInvalidTeaIDException";
+    this.name="taskTimerInvalidTaskIDException";
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidTeaTimeException(msg)
+function taskTimerInvalidTaskTimeException(msg)
 {
-    this.name="teaTimerInvalidTeaTimeException";
+    this.name="taskTimerInvalidTaskTimeException";
     this.message=((msg===undefined)?null:msg);
 }
+

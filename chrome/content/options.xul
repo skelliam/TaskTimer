@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-    TeaTimer: A Firefox extension that protects you from oversteeped tea.
+    TaskTimer: A Firefox extension that protects you from oversteeped task.
     Copyright (C) 2011 Philipp Söhnlein
 
     This program is free software: you can redistribute it and/or modify
@@ -16,74 +16,58 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://teatimer/skin/options.css" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://teatimer/locale/teatimer.dtd">
+<?xml-stylesheet href="chrome://tasktimer/skin/options.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://tasktimer/locale/tasktimer.dtd">
 <window title="&options.windowTitle;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
-    <script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
-    <script type="application/x-javascript" src="chrome://teatimer/content/options.js" />
-
+    <script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"></script>
+    <script type="application/x-javascript" src="libs/sqlite-1.0.0.js"></script>
+    <script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js" />
+    <script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerTaskDB.js" />
+    <script type="application/x-javascript" src="chrome://tasktimer/content/tasktimer.js" />
+    <script type="application/x-javascript" src="chrome://tasktimer/content/options.js" />
+    
     <tabbox>
         <tabs>
-            <tab label="&options.tabs.teavarities;" />
+            <tab label="&options.tabs.taskvarities;" />
+            <tab label="&options.tabs.reporting;" />
             <tab label="&options.tabs.alerts;" />
         </tabs>
         <tabpanels>
-            <tabpanel id="teaTimer-optionsVaritiesTab">
+            <tabpanel id="taskTimer-optionsVaritiesTab">
                 <vbox flex="1">
                     <groupbox>
-                        <caption label="&options.varities.addANewTea;" />
+                        <caption label="&options.varities.addANewTask;" />
                         <hbox align="end">
                             <vbox flex="1">
-                                <label control="teaTimer-optionsNewTeaName" value="&options.varities.newTea.name.label;" />
-                                <textbox id="teaTimer-optionsNewTeaName" />
+                                <label control="taskTimer-optionsNewTaskName" value="&options.varities.newTask.name.label;" />
+                                <textbox id="taskTimer-optionsNewTaskName" />
                             </vbox>
-                            <vbox>
-                                <label control="teaTimer-optionsNewTeaTime" value="&options.varities.newTea.time.label;" />
-                                <textbox id="teaTimer-optionsNewTeaTime" />
-                            </vbox>
-                            <button id="teaTimer-optionsBtnAddTea" label="&options.varities.newTea.button;" />
+                            <button id="taskTimer-optionsBtnAddTask" label="&options.varities.newTask.button;" />
                         </hbox>
                     </groupbox>
-
+                    
                     <groupbox>
-                        <caption label="&options.varities.manageExistingTeas;" />
-
-                        <tree id="teaTimer-optionsTeas" hidecolumnpicker="true" editable="true">
+                        <caption label="&options.varities.manageExistingTasks;" />
+                        
+                        <tree id="taskTimer-optionsTasks" hidecolumnpicker="true" editable="true">
                             <treecols editable="true">
-                                <treecol label="&options.varities.manageExistingTeas.tree.id;" id="teaTimer-optionsTeas-idColumn" hidden="true" />
-                                <treecol label="&options.varities.manageExistingTeas.tree.name;" id="teaTimer-optionsTeas-teaColumn" type="text" editable="true" flex="2" />
-                                <treecol label="&options.varities.manageExistingTeas.tree.time;" id="teaTimer-optionsTeas-timeColumn" type="text" editable="true" flex="1" />
+                                <treecol label="&options.varities.manageExistingTasks.tree.id;" id="taskTimer-optionsTasks-idColumn" hidden="true" />
+                                <treecol label="&options.varities.manageExistingTasks.tree.name;" id="taskTimer-optionsTasks-taskColumn" type="text" editable="true" flex="2" />
+                                <treecol label="&options.varities.manageExistingTasks.tree.time;" id="taskTimer-optionsTasks-timeColumn" type="text" editable="true" flex="1" />
                             </treecols>
-                            <treechildren id="teaTimer-optionsTeasTreeChildren">
-                            <!--
-                            <treeitem>
-                                <treerow>
-                                    <treecell label="1" />
-                                    <treecell editable="true" label="Earl Grey" />
-                                    <treecell editable="true" label="3:00" />
-                                </treerow>
-                            </treeitem>
-                            <treeitem>
-                                <treerow>
-                                    <treecell label="2" />
-                                    <treecell editable="true" label="Rooibos" />
-                                    <treecell editable="true" label="7:00" />
-                                </treerow>
-                            </treeitem>
-                            -->
+                            <treechildren id="taskTimer-optionsTasksTreeChildren">
                             </treechildren>
                         </tree>
                     </groupbox>
-
+                
                     <hbox align="right">
-                        <button id="teaTimer-optionsBtnDelTea" label="&options.varities.manageExistingTeas.deleteSelectedTea;" disabled="true" />
+                        <button id="taskTimer-optionsBtnDelTask" label="&options.varities.manageExistingTasks.deleteSelectedTask;" disabled="true" />
                     </hbox>
-
+                    
                     <groupbox align="center" orient="horizontal">
                         <caption label="&options.varities.sorting;" />
-                        <label control="teaTimer-sortingOrder" value="&options.varities.sorting.sortTeasInTeaTimerContextMenu;" />
-                        <menulist id="teaTimer-sortingOrder">
+                        <label control="taskTimer-sortingOrder" value="&options.varities.sorting.sortTasksInTaskTimerContextMenu;" />
+                        <menulist id="taskTimer-sortingOrder">
                             <menupopup>
                                 <menuitem label="&options.varities.sorting.nameASC;" value="name ASC" />
                                 <menuitem label="&options.varities.sorting.nameDESC;" value="name DESC" />
@@ -94,67 +78,79 @@
                         </menulist>
                     </groupbox>
                 </vbox>
-            </tabpanel>
-            <tabpanel id="teaTimer-optionsAlertsTab">
+             </tabpanel>
+
+             <tabpanel id="jopTimer-reportingTab">
+                <vbox flex="1">
+                   <groupbox>
+                      <caption label="&options.reporting.timeaccumcaption;" />
+                      <checkbox id="taskTimer-optionsShowAccumulatedTime" label="&options.reporting.showaccumulatedtime.label;" />
+                      <hbox align="center">
+                         <label control="taskTimer-optionsAccumulatedStartTime" value="&options.reporting.accumulatedstarttime.label;" />
+                         <textbox id="taskTimer-optionsAccumulatedStartTime" />
+                      </hbox> 
+                   </groupbox>
+                </vbox>
+             </tabpanel>
+
+            <tabpanel id="taskTimer-optionsAlertsTab">
                 <vbox flex="1">
                 <groupbox>
                     <caption label="&options.alerts.general.groupboxcaption;" />
-                    <checkbox id="teaTimer-optionsPopupAlert" label="&options.alerts.general.showDialogAlert;" />
-                    <checkbox id="teaTimer-optionsStatusbarAlert" label="&options.alerts.general.showStatusbarAlert;" />
+                    <checkbox id="taskTimer-optionsPopupAlert" label="&options.alerts.general.showDialogAlert;" />
+                    <checkbox id="taskTimer-optionsStatusbarAlert" label="&options.alerts.general.showStatusbarAlert;" />
                 </groupbox>
                 <groupbox>
                     <caption label="&options.alerts.widgetAlert.groupboxcaption;" />
                     <description>&options.alerts.widgetAlert.description;</description>
-                    <checkbox id="teaTimer-optionsWidgetAlert" label="&options.alerts.widgetAlert.activateCheckboxLabel;" />
+                    <checkbox id="taskTimer-optionsWidgetAlert" label="&options.alerts.widgetAlert.activateCheckboxLabel;" />
                     <hbox align="center">
-                        <label control="teaTimer-optionsWidgetShowTime" value="&options.alerts.widgetAlert.showTimeLabel;" />
-                        <textbox id="teaTimer-optionsWidgetShowTime" />
+                        <label control="taskTimer-optionsWidgetShowTime" value="&options.alerts.widgetAlert.showTimeLabel;" />
+                        <textbox id="taskTimer-optionsWidgetShowTime" />
                     </hbox>
                 </groupbox>
                 <groupbox>
                     <caption label="&options.alerts.soundAlerts.groupboxcaption;" />
                     <vbox>
                         <hbox align="center">
-                            <label control="teaTimer-optionsStartSound" value="&options.alerts.soundAlerts.startSound.label;" />
+                            <label control="taskTimer-optionsStartSound" value="&options.alerts.soundAlerts.startSound.label;" />
                             <spacer flex="1" />
-                            <menulist id="teaTimer-optionsStartSound">
+                            <menulist id="taskTimer-optionsStartSound">
                                 <menupopup>
                                     <menuitem label="&options.alerts.soundAlerts.sounds.none;" value="none" />
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.systembeep;" value="systembeep" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.cup;" value="cup" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.eggtimer;" value="eggtimer" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.pour;" value="pour" />
-                                    <menuitem id="teaTimer-optionsStartSoundCustom" label="&options.alerts.soundAlerts.sounds.custom;" value="custom: unset" />
+                                    <menuitem id="taskTimer-optionsStartSoundCustom" label="&options.alerts.soundAlerts.sounds.custom;" value="custom: unset" />
                                 </menupopup>
                             </menulist>
-                            <button id="teaTimer-optionsBtnPreviewStartSound" label="&options.alerts.soundAlerts.startSound.preview;" />
+                            <button id="taskTimer-optionsBtnPreviewStartSound" label="&options.alerts.soundAlerts.startSound.preview;" />
                         </hbox>
-
+                        
                         <hbox align="center">
-                            <label control="teaTimer-optionsEndSound" value="&options.alerts.soundAlerts.endSound.label;" />
+                            <label control="taskTimer-optionsEndSound" value="&options.alerts.soundAlerts.endSound.label;" />
                             <spacer flex="1" />
-                            <menulist id="teaTimer-optionsEndSound">
+                            <menulist id="taskTimer-optionsEndSound">
                                 <menupopup>
                                     <menuitem label="&options.alerts.soundAlerts.sounds.none;" value="none" />
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.systembeep;" value="systembeep" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.eggtimer;" value="eggtimer" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.fanfare;" value="fanfare" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.slurp;" value="slurp" />
                                     <menuitem label="&options.alerts.soundAlerts.sounds.speech;" value="speech" />
-                                    <menuitem id="teaTimer-optionsEndSoundCustom" label="&options.alerts.soundAlerts.sounds.custom;" value="custom: unset" />
+                                    <menuitem id="taskTimer-optionsEndSoundCustom" label="&options.alerts.soundAlerts.sounds.custom;" value="custom: unset" />
                                 </menupopup>
                             </menulist>
-                            <button id="teaTimer-optionsBtnPreviewEndSound" label="&options.alerts.soundAlerts.endSound.preview;" />
+                            <button id="taskTimer-optionsBtnPreviewEndSound" label="&options.alerts.soundAlerts.endSound.preview;" />
                         </hbox>
-                    </vbox>
+                    </vbox>  
                 </groupbox>
                 </vbox>
             </tabpanel>
         </tabpanels>
     </tabbox>
-
+    
     <hbox align="right">
-        <button label="&options.buttons.cancel.label;" id="teaTimer-optionsWinBtnCancel" accesskey="&options.buttons.cancel.accesskey;" />
-        <button label="&options.buttons.ok.label;" id="teaTimer-optionsWinBtnOk" accesskey="&options.buttons.ok.accesskey;" />
+        <button label="&options.buttons.cancel.label;" id="taskTimer-optionsWinBtnCancel" accesskey="&options.buttons.cancel.accesskey;" />
+        <button label="&options.buttons.ok.label;" id="taskTimer-optionsWinBtnOk" accesskey="&options.buttons.ok.accesskey;" />
     </hbox>
 </window>

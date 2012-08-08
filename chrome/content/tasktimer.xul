@@ -15,49 +15,32 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<!DOCTYPE window SYSTEM "chrome://teatimer/locale/teatimer.dtd">
-<overlay id="teatimer-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
-	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerTeaDB.js" />
-	<script type="application/x-javascript" src="chrome://teatimer/content/teatimer.js" />
+<!DOCTYPE window SYSTEM "chrome://tasktimer/locale/tasktimer.dtd">
+<overlay id="tasktimer-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+   <script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"></script>
+   <script type="application/x-javascript" src="libs/sqlite-1.0.0.js"></script>
+   <script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js" />
+   <script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerTaskDB.js" />
+   <script type="application/x-javascript" src="chrome://tasktimer/content/tasktimer.js" />
 	
     <toolbar id="addon-bar">
-        <toolbaritem id="teatimer-box">
-            <box id="teatimer-countdownbox"> <!-- this box is necessary, because #teatimer-countdown can blink using "visibility: hidden". Hidden elements don't recieve click events --> 
-                <label id="teatimer-countdown" value="TeaTimer" />
+        <toolbaritem id="tasktimer-box">
+            <box id="tasktimer-countdownbox"> <!-- this box is necessary, because #tasktimer-countdown can blink using "visibility: hidden". Hidden elements don't recieve click events --> 
+                <label id="tasktimer-countdown" value="TaskTimer" />
             </box>
                 
-            <toolbarbutton id="teatimer-toolbarbutton" label="TeaTimer" type="menu" image="chrome://teatimer/skin/icon-inactive.png" class="toolbarbutton-1 chromeclass-toolbar-additional" orient="horizontal">
-                <menupopup id="teatimer-contextMenu" position="before_end">
-                    <menuitem id="teatimer-showModeIconAndTime" label="&main.contextMenu.showIconAndTime;" name="teatimer-viewMode" value="iconAndText" type="radio" />
-                    <menuitem id="teatimer-showModeIconOnly"    label="&main.contextMenu.showIconOnly;"    name="teatimer-viewMode" value="iconOnly"    type="radio" />
-                    <menuseparator id="teatimer-endViewModeSeparator" />
-                    <!-- list of teas is filled in by script here -->
-                    <menuseparator id="teatimer-endTealistSeparator" />
-                    <menuitem id="teatimer-options" label="&main.contextMenu.options;" />
-                    <menuitem id="teatimer-cancel" label="&main.contextMenu.cancel;" />
-                    <menuitem id="teatimer-quicktimer" label="&main.contextMenu.quicktimer;" />
+            <toolbarbutton id="tasktimer-toolbarbutton" label="TaskTimer" type="menu" image="chrome://tasktimer/skin/icon-inactive.png" class="toolbarbutton-1 chromeclass-toolbar-additional" orient="horizontal">
+                <menupopup id="tasktimer-contextMenu" position="before_end">
+                    <menuitem id="tasktimer-showModeIconAndTime" label="&main.contextMenu.showIconAndTime;" name="tasktimer-viewMode" value="iconAndText" type="radio" />
+                    <menuitem id="tasktimer-showModeIconOnly"    label="&main.contextMenu.showIconOnly;"    name="tasktimer-viewMode" value="iconOnly"    type="radio" />
+                    <menuseparator id="tasktimer-endViewModeSeparator" />
+                    <!-- list of tasks is filled in by script here -->
+                    <menuseparator id="tasktimer-endTasklistSeparator" />
+                    <menuitem id="tasktimer-options" label="&main.contextMenu.options;" />
+                    <menuitem id="tasktimer-cancel" label="&main.contextMenu.cancel;" />
+                    <menuitem id="tasktimer-quicktimer" label="&main.contextMenu.quicktimer;" />
                 </menupopup>
             </toolbarbutton>
         </toolbaritem>
 	</toolbar>
-    
-	<!--<statusbar id="status-bar">-->
-	<!--	<statusbarpanel id="teatimer-panel" context="teatimer-contextMenu">-->
-	<!--		<box id="teatimer-box"> --> <!-- This extra box is needed, because FF<3 can not handle CSS background images for statusbarpanel elements -->
-	<!--			<box id="teatimer-countdownbox">-->
-	<!--				<label id="teatimer-countdown" value="TeaTimer" />-->
-	<!--			</box>-->
-	<!--			<popup id="teatimer-contextMenu" position="before_end" tooltiptext="">-->
-	<!--				<menuitem id="teatimer-showModeIconAndTime" label="&main.contextMenu.showIconAndTime;" name="teatimer-viewMode" value="iconAndText" type="radio" />-->
-	<!--				<menuitem id="teatimer-showModeIconOnly" label="&main.contextMenu.showIconOnly;" name="teatimer-viewMode" value="iconOnly" type="radio" />-->
-	<!--				<menuseparator id="teatimer-endViewModeSeparator" />-->
-	<!--				<menuseparator id="teatimer-endTealistSeparator" />-->
-	<!--				<menuitem id="teatimer-options" label="&main.contextMenu.options;" />-->
-	<!--				<menuitem id="teatimer-cancel" label="&main.contextMenu.cancel;" />-->
-	<!--				<menuitem id="teatimer-quicktimer" label="&main.contextMenu.quicktimer;" />-->
-	<!--			</popup>-->
-	<!--		</box>-->
-	<!--	</statusbarpanel>-->
-	<!--</statusbar>-->
 </overlay>

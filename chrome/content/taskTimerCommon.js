@@ -1,5 +1,5 @@
 /*
-	TeaTimer: A Firefox extension that protects you from oversteeped tea.
+	TaskTimer: A Firefox extension that protects you from oversteeped task.
 	Copyright (C) 2011 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,21 @@
 */
 
 
-function teaTimerCommon()
+function taskTimerCommon()
 {
-    var debug=false;
+    var debug=true;
     var self=this;
     const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-    const teaTimerPrefs=storedPrefs.getBranch("extensions.teatimer.");
-    const alertPrefs=storedPrefs.getBranch("extensions.teatimer.alerts.");
-    const strings=Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle("chrome://teatimer/locale/teatimer.properties");
+    const taskTimerPrefs=storedPrefs.getBranch("extensions.tasktimer.");
+    const alertPrefs=storedPrefs.getBranch("extensions.tasktimer.alerts.");
+    const reportingPrefs=storedPrefs.getBranch("extensions.tasktimer.reporting.");
+    const strings=Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle("chrome://tasktimer/locale/tasktimer.properties");
     const quitObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
     quitObserver.addObserver(this,"quit-application-granted",false);
 
     /**
      * This observer method is called, when the Firefox quits.
-     * It checks which teas are marked for deletion and finally deletes them
+     * It checks which tasks are marked for deletion and finally deletes them
      **/
     this.observe=function(subject,actionID,actionValue)
     {
@@ -37,24 +38,24 @@ function teaTimerCommon()
 		{
             try
             {
-                var teaDB=new teaTimerTeaDB();
-                var hiddenTeas=teaDB.getIDsOfHiddenTeas();
-                for(var i=0; i<hiddenTeas.length; i++)
+                var taskDB=new taskTimerTaskDB();
+                var hiddenTasks=taskDB.getIDsOfHiddenTasks();
+                for(var i=0; i<hiddenTasks.length; i++)
                 {
                     try
                     {
-                        teaDB.deleteTea(hiddenTeas[i]);
-                        self.log("Common","tea with ID "+hiddenTeas[i]+" deleted.\n");
+                        taskDB.deleteTask(hiddenTasks[i]);
+                        self.log("Common","task with ID "+hiddenTasks[i]+" deleted.\n");
                     }
                     catch(e)
                     {
-                        //it's not really a problem, if there was an error, while deleting a tea, because it's still hidden. So, please forgive me, when I'm just swallowing up the error.
+                        //it's not really a problem, if there was an error, while deleting a task, because it's still hidden. So, please forgive me, when I'm just swallowing up the error.
                     }
                 }
             }
             catch(e)
             {
-                //it's not really a problem, if there was an error, while deleting a tea, because it's still hidden. So, please forgive me, when I'm just swallowing up the error.
+                //it's not really a problem, if there was an error, while deleting a task, because it's still hidden. So, please forgive me, when I'm just swallowing up the error.
             }
 		    quitObserver.removeObserver(this,"quit-application-granted");
 		}
@@ -71,7 +72,7 @@ function teaTimerCommon()
 	/**
 	 * This public method checks, if the given alarm is active (should be fired) or not.
 	 * @param string alertType ("popup", "statusbar" or "widget")
-	 * @throws teaTimerInvalidAlertTypeException
+	 * @throws taskTimerInvalidAlertTypeException
 	 * @return bool true or false
 	 **/
 	this.isAlertDesired=function(type)
@@ -88,7 +89,7 @@ function teaTimerCommon()
 				type="Widget";
 				break;
 			default:
-				throw new teaTimerInvalidAlertTypeException("isAlertDesired: First parameter must be a vaild alert type.");
+				throw new taskTimerInvalidAlertTypeException("isAlertDesired: First parameter must be a vaild alert type.");
 		}
 
 		var desired=false;
@@ -109,8 +110,8 @@ function teaTimerCommon()
 	 * This public method activates or deactivates a certain alert.
 	 * @param string alertType ("popup", "statusbar" or "widget")
 	 * @param bool activate (=true) or deactivate(=false)
-	 * @throws teaTimerInvalidAlertTypeException
-	 * @throws teaTimerInvalidAlertStatusException
+	 * @throws taskTimerInvalidAlertTypeException
+	 * @throws taskTimerInvalidAlertStatusException
 	 **/
 	this.setAlert=function(type,status)
 	{
@@ -126,12 +127,12 @@ function teaTimerCommon()
 				type="Widget";
 				break;
 			default:
-				throw new teaTimerInvalidAlertTypeException("setAlert: First parameter must be a vaild alert type.");
+				throw new taskTimerInvalidAlertTypeException("setAlert: First parameter must be a vaild alert type.");
 		}
 
 		if(typeof status!=="boolean")
 		{
-			throw new teaTimerInvalidAlertStatusException("setAlert: Second parameter must be boolean.");
+			throw new taskTimerInvalidAlertStatusException("setAlert: Second parameter must be boolean.");
 		}
 
 		alertPrefs.setBoolPref("do"+type+"Alert",status);
@@ -176,14 +177,14 @@ function teaTimerCommon()
 
 	/*
 		=======================
-		| Tea Sorting methods |
+		| Task Sorting methods |
 		=======================
 	*/
 
 	/**
-	 * This public method returns the current tea sorting identifier ("id", "name ASC", "name DESC", "time ASC" or "time DESC")
+	 * This public method returns the current task sorting identifier ("id", "name ASC", "name DESC", "time ASC" or "time DESC")
 	 *
-	 * @returns string tea sorting
+	 * @returns string task sorting
 	 **/
 	this.getSortingOrder=function()
 	{
@@ -191,7 +192,7 @@ function teaTimerCommon()
 	}
 
 	/**
-	 * This public method can be used to set the new tea sorting mode.
+	 * This public method can be used to set the new task sorting mode.
 	 *
 	 * @param string view mode (currently "id", "name ASC", "name DESC", "time ASC" or "time DESC" are valid)
 	 **/
@@ -202,9 +203,9 @@ function teaTimerCommon()
 	}
 
 	/**
-	 * This public method can be used to check, if the given string is a valid tea sorting identifier.
+	 * This public method can be used to check, if the given string is a valid task sorting identifier.
 	 *
-	 * @param string suspected tea sorting identifier
+	 * @param string suspected task sorting identifier
 	 * @returns boolean true or false
 	 **/
 	this.validateSortingOrder=function(sorting)
@@ -241,7 +242,7 @@ function teaTimerCommon()
 
 		try
 		{
-			value=(type==="char")?teaTimerPrefs.getCharPref(name):teaTimerPrefs.getBoolPref(name);
+			value=(type==="char")?taskTimerPrefs.getCharPref(name):taskTimerPrefs.getBoolPref(name);
 			validateOptionValue(name,value);
 		}
 		catch(e)
@@ -273,7 +274,7 @@ function teaTimerCommon()
 	}
 
 	/**
-	 * This private method can be used, to set general tea timer options (Noote that alerts and teas are manipulated with dedicated methods, not with this one.).
+	 * This private method can be used, to set general task timer options (Noote that alerts and tasks are manipulated with dedicated methods, not with this one.).
 	 *
 	 * @param string option name
 	 * @param string option value
@@ -285,11 +286,11 @@ function teaTimerCommon()
 		var type=getTypeOfOption(name);
 		if(type==="char")
 		{
-			teaTimerPrefs.setCharPref(name,value);
+			taskTimerPrefs.setCharPref(name,value);
 		}
 		else
 		{
-			teaTimerPrefs.setBoolPref(name,value);
+			taskTimerPrefs.setBoolPref(name,value);
 		}
 	}
 
@@ -298,7 +299,7 @@ function teaTimerCommon()
 	 *
 	 * @param string suspected option name
 	 * @returns boolean true (if first parameter was either "sortingOrder" or "viewMode")
-	 * @throws teaTimerInvalidOptionNameException
+	 * @throws taskTimerInvalidOptionNameException
 	 **/
 	var validateOptionName=function(name)
 	{
@@ -308,7 +309,7 @@ function teaTimerCommon()
 			case "viewMode":
 				break;
 			default:
-				throw new teaTimerInvalidOptionNameException("validateOptionName: '"+name+"' is no valid option.");
+				throw new taskTimerInvalidOptionNameException("validateOptionName: '"+name+"' is no valid option.");
 		}
 
 		return true;
@@ -320,8 +321,8 @@ function teaTimerCommon()
 	 * @param string name of option that should have the given value
 	 * @param string value2check
 	 * @returns boolean true
-	 * @throws teaTimerInvalidSortOrderException
-	 * @throws teaTimerInvalidViewModeException
+	 * @throws taskTimerInvalidSortOrderException
+	 * @throws taskTimerInvalidViewModeException
 	 **/
 	var validateOptionValue=function(group,value)
 	{
@@ -338,7 +339,7 @@ function teaTimerCommon()
 					case "time DESC":
 						break;
 					default:
-						throw new teaTimerInvalidSortOrderException("validateOptionValue(sortingOrder): '"+value+"' is no valid sort order.");
+						throw new taskTimerInvalidSortOrderException("validateOptionValue(sortingOrder): '"+value+"' is no valid sort order.");
 				}
 				break;
 			case "viewMode":
@@ -348,7 +349,7 @@ function teaTimerCommon()
 					case "iconOnly":
 						break;
 					default:
-						throw new teaTimerInvalidViewModeException("validateOptionValue(viewMode): '"+value+"' is no valid view mode.");
+						throw new taskTimerInvalidViewModeException("validateOptionValue(viewMode): '"+value+"' is no valid view mode.");
 				}
 				break;
 		}
@@ -365,13 +366,13 @@ function teaTimerCommon()
 	/**
 	 * This public method can be used to write the widget alert show time (=time until fade out is started) into the stored preferences.
 	 * @param integer time
-	 * @throws teaTimerInvalidWidgetAlertShowTimeException
+	 * @throws taskTimerInvalidWidgetAlertShowTimeException
 	 **/
 	this.setWidgetAlertShowTime=function(time)
 	{
 		if(!(typeof time==="number" && time>=0))
 		{
-			throw new teaTimerInvalidWidgetAlertShowTimeException("setWidgetAlertShowTime: First parameter must be an integer greater or equal 0.");
+			throw new taskTimerInvalidWidgetAlertShowTimeException("setWidgetAlertShowTime: First parameter must be an integer greater or equal 0.");
 		}
 
 		time=parseInt(time,10);
@@ -381,7 +382,7 @@ function teaTimerCommon()
 	/**
 	 * This public method can be used to query the time when the website widget should fade out.
 	 * @returns integer time in seconds (standard=5)
-	 * @throws teaTimerInvalidWidgetAlertShowTimeException
+	 * @throws taskTimerInvalidWidgetAlertShowTimeException
 	 **/
 	this.getWidgetAlertShowTime=function()
 	{
@@ -391,7 +392,7 @@ function teaTimerCommon()
 			time=alertPrefs.getIntPref("widgetAlertShowTime");
 			if(time<0)
 			{
-				throw new teaTimerInvalidWidgetAlertShowTimeException();
+				throw new taskTimerInvalidWidgetAlertShowTimeException();
 			}
 		}
 		catch(e)
@@ -467,7 +468,6 @@ function teaTimerCommon()
         if(type==="start")
         {
             validSounds.push("none");
-            validSounds.push("systembeep");
             validSounds.push("cup");
             validSounds.push("eggtimer");
             validSounds.push("pour");
@@ -475,7 +475,6 @@ function teaTimerCommon()
         else
         {
             validSounds.push("none");
-            validSounds.push("systembeep");
             validSounds.push("eggtimer");
             validSounds.push("fanfare");
             validSounds.push("slurp");
@@ -492,8 +491,8 @@ function teaTimerCommon()
 	 * @param string sound ID
 	 * @param boolean return URL as object (=true) or as String (=false), optional (standard=false);
 	 * @return object or string, depending on parameter #3
-	 * @throws teaTimerInvalidSoundTypeException
-	 * @throws teaTimerInvalidSoundIDException
+	 * @throws taskTimerInvalidSoundTypeException
+	 * @throws taskTimerInvalidSoundIDException
 	 **/
 	this.getURLtoSound=function(type,id,returnObject)
 	{
@@ -503,22 +502,22 @@ function teaTimerCommon()
 			case "start":
 				break;
 			default:
-				throw new teaTimerInvalidSoundTypeException("getURLtoSound: First argument must be 'start' or 'end'.");
+				throw new taskTimerInvalidSoundTypeException("getURLtoSound: First argument must be 'start' or 'end'.");
 		}
 
 		if(id.match(/^custom\: /)===null && self.in_array(id,getValidSoundIDs(type))===false)
 		{
-			throw new teaTimerInvalidSoundIDException("getURLtoSound: Invalid sound ID given.");
+			throw new taskTimerInvalidSoundIDException("getURLtoSound: Invalid sound ID given.");
 		}
 
 		if(id==="none")
 		{
-			throw new teaTimerInvalidSoundIDException("getURLtoSound: Can't provide URL to sound with ID 'none', because it has none. :-)");
+			throw new taskTimerInvalidSoundIDException("getURLtoSound: Can't provide URL to sound with ID 'none', because it has none. :-)");
 		}
 
 		returnObject=((returnObject===true)?true:false);
 
-		var url="chrome://teatimer/content/sound/";
+		var url="chrome://tasktimer/content/sound/";
 		if(type==="start")
 		{
 			if(id.match(/^custom\: /)) {
@@ -586,7 +585,7 @@ function teaTimerCommon()
 	 * @param string sound type (possible values are "start" or "end")
 	 * @param string soundID
 	 * @returns boolean true or false
-	 * @throws teaTimerInvalidSoundTypeException
+	 * @throws taskTimerInvalidSoundTypeException
 	 **/
 	this.checkSoundId=function(type,id)
 	{
@@ -596,7 +595,7 @@ function teaTimerCommon()
 			case "start":
 				break;
 			default:
-				throw new teaTimerInvalidSoundTypeException("checkSoundId: First argument must be 'start' or 'end'.");
+				throw new taskTimerInvalidSoundTypeException("checkSoundId: First argument must be 'start' or 'end'.");
 		}
 
 		return typeof id.match(/^custom\: /)==="object" || self.in_array(id,getValidSoundIDs(type));
@@ -606,8 +605,8 @@ function teaTimerCommon()
 	 * This public method sets a specific sound in the options.
 	 * @param string sound type (possible values are "start" or "end")
 	 * @param string soundID
-	 * @throws teaTimerInvalidSoundTypeException
-	 * @throws teaTimerInvalidSoundIDException
+	 * @throws taskTimerInvalidSoundTypeException
+	 * @throws taskTimerInvalidSoundIDException
 	 **/
 	this.setSound=function(type,id)
 	{
@@ -617,12 +616,12 @@ function teaTimerCommon()
 			case "start":
 				break;
 			default:
-				throw new teaTimerInvalidSoundTypeException("setSound: First argument must be 'start' or 'end'.");
+				throw new taskTimerInvalidSoundTypeException("setSound: First argument must be 'start' or 'end'.");
 		}
 
 		if(id.match(/^custom\: /)===null && self.in_array(id,getValidSoundIDs(type))===false)
 		{
-			throw new teaTimerInvalidSoundIDException("setSound: Invalid sound ID given.");
+			throw new taskTimerInvalidSoundIDException("setSound: Invalid sound ID given.");
 		}
 
 		alertPrefs.setCharPref(type+"Sound",id);
@@ -632,7 +631,7 @@ function teaTimerCommon()
 	 * This public method checks if sound alerts are initalized correctly in the stored preferences.
 	 * @param string sound type (possible values are "start" or "end")
 	 * @returns boolean
-	 * @throws teaTimerInvalidSoundTypeException
+	 * @throws taskTimerInvalidSoundTypeException
 	 **/
 	this.checkIfSoundAlertIsInitalized=function(type)
 	{
@@ -642,7 +641,7 @@ function teaTimerCommon()
 			case "start":
 				break;
 			default:
-				throw new teaTimerInvalidSoundTypeException("checkIfSoundAlertIsInitalized: First argument must be 'start' or 'end'.");
+				throw new taskTimerInvalidSoundTypeException("checkIfSoundAlertIsInitalized: First argument must be 'start' or 'end'.");
 		}
 
 		var id=null;
@@ -669,15 +668,15 @@ function teaTimerCommon()
      *
      * @param string the potential time
      * @return integer the validated time in seconds
-     * @throws teaTimerQuickTimerInvalidInputException
-     * @throws teaTimerInvalidTimeException
+     * @throws taskTimerQuickTimerInvalidInputException
+     * @throws taskTimerInvalidTimeException
      **/
     this.validateEnteredTime=function(input)
     {
 		input=self.trim(input);
 		if(input.length<=0)
 		{
-			throw new teaTimerTimeInputToShortException("Invalid time input, it's to short.");
+			throw new taskTimerTimeInputToShortException("Invalid time input, it's to short.");
 		}
 
 		var time=null;
@@ -695,12 +694,12 @@ function teaTimerCommon()
 		}
 		else
 		{
-			throw new teaTimerInvalidTimeInputException("Invalid time input.");
+			throw new taskTimerInvalidTimeInputException("Invalid time input.");
 		}
 
 		if(time<=0)
 		{
-			throw new teaTimerInvalidTimeException("Entered Time is smaller or equal 0. That's of course an invalid time.");
+			throw new taskTimerInvalidTimeException("Entered Time is smaller or equal 0. That's of course an invalid time.");
 		}
 
 		return time;
@@ -710,20 +709,24 @@ function teaTimerCommon()
      * This method tries to convert a given string  (like '1:20') into a number of seconds.
      * @param string TimeString (examples: '1:23', '0:40', '12:42')
      * @returns integer seconds
-     * @throws teaTimerInvalidTimeStringException
+     * @throws taskTimerInvalidTimeStringException
      **/
     this.getTimeFromTimeString=function(str)
     {
 		var parts=str.split(":");
-		if(parts.length!==2)
+		if(parts.length==2)
 		{
-				throw new teaTimerInvalidTimeStringException("getTimeFromTimeString: '"+str+"' is not a valid time string.");
+         var hours = 0;
+         var minutes=parseInt(parts[0]);
+         var seconds=parseInt(parts[1]);
 		}
-
-		var minutes=parseInt(parts[0],10);
-		var seconds=parseInt(parts[1],10);
-
-		return minutes*60+seconds;
+      else if (parts.length==3)
+      {
+         var hours=parseInt(parts[0]);
+         var minutes=parseInt(parts[1]);
+         var seconds=parseInt(parts[2]);
+      }
+		return (hours*60*60)+(minutes*60)+seconds;
     }
 
     /**
@@ -735,9 +738,10 @@ function teaTimerCommon()
      **/
     this.getTimeStringFromTime=function(time)
     {
-		var timeStr="";
-		var seconds=(time%60);
-		timeStr=parseInt(time/60)+":"+((seconds<10)?"0":"")+seconds;
+		var seconds=(time)%60;      //seconds left after removing minutes
+      var minutes=(time/60)%60;   //minutes left after removing hours
+      var hours=(time/60/60);     //hours
+      var timeStr=sprintf("%2d:%02d:%02d", parseInt(hours), parseInt(minutes), parseInt(seconds)); 
 		return timeStr;
     }
 
@@ -773,7 +777,7 @@ function teaTimerCommon()
 
     /**
      * This public method returns the localized string (property) with the specified ID.
-     * A list of names/values can be found in locale folder (teatimer.properties)
+     * A list of names/values can be found in locale folder (tasktimer.properties)
      * In fact this method is just a wrapper for GetStringFromName of the stringbundle XPC
      *
      * @param string name
@@ -786,7 +790,7 @@ function teaTimerCommon()
 
     /**
      * This public method returns the localized string (property) with the specified ID, but in difference to getString this method is for formatted strings (strings with variables).
-     * A list of names/values can be found in locale folder (teatimer.properties)
+     * A list of names/values can be found in locale folder (tasktimer.properties)
      * In fact this method is just a wrapper for formatStringFromName of the stringbundle XPC
      *
      * @param string name
@@ -931,8 +935,22 @@ function teaTimerCommon()
 		return false;
     }
 
+    this.getReportingPrefs=function()
+    {
+       var prefs = new Array();
+       prefs.showAccumulatedTime = reportingPrefs.getBoolPref("showAccumulatedTime");
+       prefs.showAccumulatedTimeSince = reportingPrefs.getCharPref("showAccumulatedTimeSince");
+       return prefs;
+    }
+
+    this.setReportingPrefs=function(prefs)
+    {
+       reportingPrefs.setBoolPref("showAccumulatedTime", prefs.showAccumulatedTime ? "true" : "false");
+       reportingPrefs.setCharPref("showAccumulatedTimeSince", prefs.showAccumulatedTimeSince);
+    }
+
     /**
-     * This public method dumps the given string to the console if teaTimer.debug===true and browser dom.window.dump.enabled===true
+     * This public method dumps the given string to the console if taskTimer.debug===true and browser dom.window.dump.enabled===true
      * @param string String to dump
      * @returns boolean true
      **/
@@ -941,88 +959,94 @@ function teaTimerCommon()
 		if(debug)
 		{
 			component=((typeof component==="string" && component.length>0)?component:"unknown component");
-			dump("teaTimer ("+component+") says: "+msgString);
+			dump("taskTimer ("+component+") says: "+msgString);
 		}
 
 		return true;
     }
+
+    this.getTimeSec=function()
+    {
+       return parseInt(new Date().getTime()/1000);  //The standard implementation returns milliseconds, I want seconds.
+    }
+
 }
 
-function teaTimerInvalidTeaNameException(msg)
+function taskTimerInvalidTaskNameException(msg)
 {
-    this.name="teaTimerInvalidTeaNameException";
+    this.name="taskTimerInvalidTaskNameException";
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerTimeInputToShortException(msg)
+function taskTimerTimeInputToShortException(msg)
 {
-    this.name="teaTimerTimeInputToShortException";
+    this.name="taskTimerTimeInputToShortException";
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidTimeInputException(msg)
+function taskTimerInvalidTimeInputException(msg)
 {
-    this.name="teaTimerInvalidTimeInputException";
+    this.name="taskTimerInvalidTimeInputException";
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidTimeException(msg)
+function taskTimerInvalidTimeException(msg)
 {
-    this.name="teaTimerInvalidTimeException";
+    this.name="taskTimerInvalidTimeException";
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidTimeStringException(msg)
+function taskTimerInvalidTimeStringException(msg)
 {
-    this.name="teaTimerInvalidTimeStringException";
+    this.name="taskTimerInvalidTimeStringException";
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidAlertTypeException(msg)
+function taskTimerInvalidAlertTypeException(msg)
 {
-    this.name="teaTimerInvalidAlertTypeException";
+    this.name="taskTimerInvalidAlertTypeException";
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidAlertStatusException(msg)
+function taskTimerInvalidAlertStatusException(msg)
 {
-    this.name="teaTimerInvalidAlertStatusException";
+    this.name="taskTimerInvalidAlertStatusException";
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidWidgetAlertShowTimeException(msg)
+function taskTimerInvalidWidgetAlertShowTimeException(msg)
 {
-	this.name="teaTimerInvalidWidgetAlertShowTimeException";
+	this.name="taskTimerInvalidWidgetAlertShowTimeException";
 	this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidSoundTypeException(msg)
+function taskTimerInvalidSoundTypeException(msg)
 {
-    this.name="teaTimerInvalidSoundTypeException";
+    this.name="taskTimerInvalidSoundTypeException";
     this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidSoundIDException(msg)
+function taskTimerInvalidSoundIDException(msg)
 {
-	this.name="teaTimerInvalidSoundIDException";
+	this.name="taskTimerInvalidSoundIDException";
 	this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidSortOrderException(msg)
+function taskTimerInvalidSortOrderException(msg)
 {
-	this.name="teaTimerInvalidSortOrderException";
+	this.name="taskTimerInvalidSortOrderException";
 	this.message=((msg===undefined)?null:msg);
 }
 
 
-function teaTimerInvalidViewModeException(msg)
+function taskTimerInvalidViewModeException(msg)
 {
-	this.name="teaTimerInvalidViewModeException";
+	this.name="taskTimerInvalidViewModeException";
 	this.message=((msg===undefined)?null:msg);
 }
 
-function teaTimerInvalidOptionNameException(msg)
+function taskTimerInvalidOptionNameException(msg)
 {
-	this.name="teaTimerInvalidOptionNameException";
+	this.name="taskTimerInvalidOptionNameException";
 	this.message=((msg===undefined)?null:msg);
 }

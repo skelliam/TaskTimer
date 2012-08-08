@@ -1,5 +1,5 @@
 /*
-	TeaTimer: A Firefox extension that protects you from oversteeped tea.
+	TaskTimer: A Firefox extension that protects you from oversteeped task.
 	Copyright (C) 2011 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
@@ -14,17 +14,17 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-function teaTimerQuickTimer()
+function taskTimerQuickTimer()
 {
-    const common=new teaTimerCommon();
+    const common=new taskTimerCommon();
     
     this.init=function()
     {
-        document.getElementById("teaTimer-qtTime").focus();
-        document.addEventListener("keypress",teaTimerQtInstance.documentKeypress,false);
-		document.getElementById("teaTimer-qtTime").addEventListener("keypress",teaTimerQtInstance.timeKeypress,false);
-        document.getElementById("teaTimer-qtBtnCancel").addEventListener("command",teaTimerQtInstance.cancelButtonCommand,false);
-        document.getElementById("teaTimer-qtBtnOk").addEventListener("command",teaTimerQtInstance.okButtonCommand,false);
+        document.getElementById("taskTimer-qtTime").focus();
+        document.addEventListener("keypress",taskTimerQtInstance.documentKeypress,false);
+		document.getElementById("taskTimer-qtTime").addEventListener("keypress",taskTimerQtInstance.timeKeypress,false);
+        document.getElementById("taskTimer-qtBtnCancel").addEventListener("command",taskTimerQtInstance.cancelButtonCommand,false);
+        document.getElementById("taskTimer-qtBtnOk").addEventListener("command",taskTimerQtInstance.okButtonCommand,false);
     }
     
     this.documentKeypress=function(event)
@@ -51,26 +51,26 @@ function teaTimerQuickTimer()
     var handleTimeInput=function()
     {
 	var ok=false;
-        var input=document.getElementById("teaTimer-qtTime").value;
+        var input=document.getElementById("taskTimer-qtTime").value;
 	
 	try
 	{
             var time=common.validateEnteredTime(input);
             ok=true;
-            window.opener.teaTimerInstance.stopCountdown();
-            window.opener.teaTimerInstance.reloadCountdown();
-            window.opener.teaTimerInstance.setCountdown(time);
-            window.opener.teaTimerInstance.setQuickTimerMode();
-			if(document.getElementById("teaTimer-qtChkStartCountdown").checked)
+            window.opener.taskTimerInstance.stopCounting();
+            window.opener.taskTimerInstance.reloadCountdown();
+            window.opener.taskTimerInstance.setCounter(time);
+            window.opener.taskTimerInstance.setQuickTimerMode();
+			if(document.getElementById("taskTimer-qtChkstartCounting").checked)
             {
-                window.opener.teaTimerInstance.startCountdown();
+                window.opener.taskTimerInstance.startCounting();
             }
-            window.opener.teaTimerInstance.setQuickTimerMode();
+            window.opener.taskTimerInstance.setQuickTimerMode();
         }
         catch(e)
         {
             var errorMsg="";
-            if(e.name==="teaTimerTimeInputToShortException")
+            if(e.name==="taskTimerTimeInputToShortException")
             {
                 errorMsg=common.getString("quicktimer.validate.timeInputToShort");
             }
@@ -98,5 +98,5 @@ function teaTimerQuickTimer()
 
 
 
-var teaTimerQtInstance=new teaTimerQuickTimer();
-window.addEventListener("load",teaTimerQtInstance.init,false);
+var taskTimerQtInstance=new taskTimerQuickTimer();
+window.addEventListener("load",taskTimerQtInstance.init,false);

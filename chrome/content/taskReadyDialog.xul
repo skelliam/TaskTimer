@@ -16,18 +16,18 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
-<?xml-stylesheet href="chrome://teatimer/skin/teaReadyDialog.css" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://teatimer/locale/teatimer.dtd">
-<dialog title="&teaready.windowTitle;"
+<?xml-stylesheet href="chrome://tasktimer/skin/taskReadyDialog.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://tasktimer/locale/tasktimer.dtd">
+<dialog title="&taskready.windowTitle;"
    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
    buttons="accept"
-   buttonlabelaccept="&teaready.buttons.ok.label;"
+   buttonlabelaccept="&taskready.buttons.ok.label;"
    ondialogaccept="window.close();">
-	<script type="application/x-javascript" src="chrome://teatimer/content/teaTimerCommon.js" />
-	<script type="application/x-javascript" src="chrome://teatimer/content/teaReadyDialog.js" />
+	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js" />
+   <script type="application/x-javascript" src="chrome://tasktimer/content/taskReadyDialog.js" />
 	<box orient="vertical" id="wrapper">
-	  <description value="&teaready.header;" class="header" />
-	  <description id="messageline">&teaready.message;</description>
-	  <description id="teanameline">&teaready.teaname;</description>
+	  <description value="&taskready.header;" class="header" />
+	  <description id="messageline">&taskready.message;</description>
+	  <description id="tasknameline">&taskready.taskname;</description>
 	</box>
 </dialog>
