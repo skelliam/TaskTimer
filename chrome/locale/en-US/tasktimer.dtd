@@ -1,29 +1,36 @@
 <!ENTITY main.contextMenu.showIconAndTime "Show icon and time">
 <!ENTITY main.contextMenu.showIconOnly "Show icon only">
-<!ENTITY main.contextMenu.options "Options…">
+<!ENTITY main.contextMenu.options "Options...">
 <!ENTITY main.contextMenu.cancel "Cancel">
-<!ENTITY main.contextMenu.quicktimer "Quick Timer…">
+<!ENTITY main.contextMenu.quicktimer "Quick Timer...">
 
-<!ENTITY options.windowTitle "TeaTimer - Options">
-<!ENTITY options.tabs.teavarities "Tea varities">
+<!ENTITY options.windowTitle "TaskTimer - Options">
+<!ENTITY options.tabs.taskvarities "Task Varieties">
+<!ENTITY options.tabs.reporting "Time Reporting">
 <!ENTITY options.tabs.alerts "Alerts">
-<!ENTITY options.varities.addANewTea "Add a new tea">
-<!ENTITY options.varities.newTea.name.label "Tea">
-<!ENTITY options.varities.newTea.time.label "Time">
-<!ENTITY options.varities.newTea.button "Add">
-<!ENTITY options.varities.manageExistingTeas "Manage existing teas">
-<!ENTITY options.varities.manageExistingTeas.tree.id "ID">
-<!ENTITY options.varities.manageExistingTeas.tree.name "Name">
-<!ENTITY options.varities.manageExistingTeas.tree.time "Time">
-<!ENTITY options.varities.manageExistingTeas.deleteSelectedTea "Delete selected tea">
+
+<!ENTITY options.varities.addANewTask "Add a new task">
+<!ENTITY options.varities.newTask.name.label "Task">
+<!ENTITY options.varities.newTask.time.label "Time">
+<!ENTITY options.varities.newTask.button "Add">
+<!ENTITY options.varities.manageExistingTasks "Manage existing tasks">
+<!ENTITY options.varities.manageExistingTasks.tree.id "ID">
+<!ENTITY options.varities.manageExistingTasks.tree.name "Name">
+<!ENTITY options.varities.manageExistingTasks.tree.time "Last 24h: Time Spent">
+<!ENTITY options.varities.manageExistingTasks.deleteSelectedTask "Hide selected task">
 <!ENTITY options.varities.sorting "Sorting">
-<!ENTITY options.varities.sorting.sortTeasInTeaTimerContextMenu "Sort teas in TeaTimer context menu">
+<!ENTITY options.varities.sorting.sortTasksInTaskTimerContextMenu "Sort tasks in TaskTimer context menu">
 <!ENTITY options.varities.sorting.nameASC "alphabetically ascending.">
 <!ENTITY options.varities.sorting.nameDESC "alphabetically descending.">
 <!ENTITY options.varities.sorting.timeASC "by time ascending.">
 <!ENTITY options.varities.sorting.timeDESC "by time descending.">
 <!ENTITY options.varities.sorting.id "exactly like the list above.">
 <!ENTITY options.alerts.general.groupboxcaption "General Alerts">
+
+<!ENTITY options.reporting.timeaccumcaption "Time Accumulation">
+<!ENTITY options.reporting.showaccumulatedtime.label "Show timer as total accumulated project time since a certain time today">
+<!ENTITY options.reporting.accumulatedstarttime.label "The time should be accumulated since this time (like 8:00):">
+
 <!ENTITY options.alerts.general.showDialogAlert "Show dialog window when timer finishes">
 <!ENTITY options.alerts.general.showStatusbarAlert "Blink statusbar when timer finishes">
 <!ENTITY options.alerts.widgetAlert.groupboxcaption "Website-Widget Alert">
@@ -36,7 +43,6 @@
 <!ENTITY options.alerts.soundAlerts.startSound.preview "Preview">
 <!ENTITY options.alerts.soundAlerts.endSound.preview "Preview">
 <!ENTITY options.alerts.soundAlerts.sounds.none "None">
-<!ENTITY options.alerts.soundAlerts.sounds.systembeep "System Beep">
 <!ENTITY options.alerts.soundAlerts.sounds.cup "Cup">
 <!ENTITY options.alerts.soundAlerts.sounds.eggtimer "Egg Timer">
 <!ENTITY options.alerts.soundAlerts.sounds.pour "Pour">
@@ -49,18 +55,18 @@
 <!ENTITY options.buttons.cancel.label "Cancel">
 <!ENTITY options.buttons.cancel.accesskey "c">
 
-<!ENTITY quicktimer.windowTitle "TeaTimer - Quick Timer">
+<!ENTITY quicktimer.windowTitle "TaskTimer - Quick Timer">
 <!ENTITY quicktimer.countdownTime.label "Please enter the custom countdown time:">
 <!ENTITY quicktimer.countdownTime.accesskey "t">
-<!ENTITY quicktimer.startCountdownRightNow.label "Start countdown immediately after clicking OK.">
-<!ENTITY quicktimer.startCountdownRightNow.accesskey "s">
+<!ENTITY quicktimer.startCountingRightNow.label "Start countdown immediately after clicking OK.">
+<!ENTITY quicktimer.startCountingRightNow.accesskey "s">
 <!ENTITY quicktimer.buttons.ok.label "OK">
 <!ENTITY quicktimer.buttons.ok.accesskey "o">
 <!ENTITY quicktimer.buttons.cancel.label "Cancel">
 <!ENTITY quicktimer.buttons.cancel.accesskey "c">
 
-<!ENTITY teaready.windowTitle "TeaTimer - Your tea is ready">
-<!ENTITY teaready.buttons.ok.label "OK">
-<!ENTITY teaready.header "TeaTimer says:">
-<!ENTITY teaready.message "Steeping complete.">
-<!ENTITY teaready.teaname "Enjoy your {$TEANAME}. :-)">
+<!ENTITY taskready.windowTitle "TaskTimer - Your task is ready">
+<!ENTITY taskready.buttons.ok.label "OK">
+<!ENTITY taskready.header "TaskTimer says:">
+<!ENTITY taskready.message "Steeping complete.">
+<!ENTITY taskready.taskname "Enjoy your {$TASKNAME}. :-)">
