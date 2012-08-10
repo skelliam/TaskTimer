@@ -1,49 +1,49 @@
 #
-#	TeaTimer: A Firefox extension that protects you from oversteeped tea.
-#	Copyright (C) 2011 Philipp Söhnlein
+#  TaskTimer: A Firefox extension that protects you from oversteeped task.
+#  Copyright (C) 2011 Philipp Söhnlein
 #
-#	This program is free software: you can redistribute it and/or modify
-#	it under the terms of the GNU General Public License version 3 as
-#	published by the Free Software Foundation.
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License version 3 as
+#  published by the Free Software Foundation.
 #
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	GNU General Public License for more details.
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
 #
-#	You should have received a copy of the GNU General Public License
-#	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#content			teatimer	chrome/content/ contentaccessible=yes
-content		teatimer	jar:chrome/teaTimer.jar!/content/ contentaccessible=yes
+content			tasktimer	chrome/content/ contentaccessible=yes
 
-overlay			chrome://browser/content/browser.xul	        chrome://teatimer/content/teatimer.xul
+overlay			chrome://browser/content/browser.xul	        chrome://tasktimer/content/tasktimer.xul
 
-locale			teatimer	de									jar:chrome/teaTimer.jar!/locale/de/
-locale			teatimer	en-US 								jar:chrome/teaTimer.jar!/locale/en-US/
-locale			teatimer	fr-FR 								jar:chrome/teaTimer.jar!/locale/fr-FR/
-#locale			teatimer	pl-PL 								jar:chrome/teaTimer.jar!/locale/pl-PL/
-locale			teatimer	tr-TR 								jar:chrome/teaTimer.jar!/locale/tr-TR/
-#locale			teatimer	pt-BR 								jar:chrome/teaTimer.jar!/locale/pt-BR/
-#locale			teatimer	be-BY 								jar:chrome/teaTimer.jar!/locale/be-BY/
-#locale			teatimer	cs-CZ 								jar:chrome/teaTimer.jar!/locale/cs-CZ/
-locale			teatimer	sv-SE 								jar:chrome/teaTimer.jar!/locale/sv-SE/
-locale			teatimer	zh-CN 								jar:chrome/teaTimer.jar!/locale/zh-CN/
-locale			teatimer	sr 								    jar:chrome/teaTimer.jar!/locale/sr/
+#locale			tasktimer	de									jar:chrome/taskTimer.jar!/locale/de/
+#locale			tasktimer	en-US 								jar:chrome/taskTimer.jar!/locale/en-US/
+#locale			tasktimer	fr-FR 								jar:chrome/taskTimer.jar!/locale/fr-FR/
+#locale			tasktimer	pl-PL 								jar:chrome/taskTimer.jar!/locale/pl-PL/
+#locale			tasktimer	tr-TR 								jar:chrome/taskTimer.jar!/locale/tr-TR/
+#locale			tasktimer	pt-BR 								jar:chrome/taskTimer.jar!/locale/pt-BR/
+#locale			tasktimer	be-BY 								jar:chrome/taskTimer.jar!/locale/be-BY/
+#locale			tasktimer	cs-CZ 								jar:chrome/taskTimer.jar!/locale/cs-CZ/
+#locale			tasktimer	sv-SE 								jar:chrome/taskTimer.jar!/locale/sv-SE/
+#locale			tasktimer	zh-CN 								jar:chrome/taskTimer.jar!/locale/zh-CN/
+#locale			tasktimer	sr 								    jar:chrome/taskTimer.jar!/locale/sr/
 
-#locale			teatimer	de									chrome/locale/de/
-#locale			teatimer	en-US 								chrome/locale/en-US/
-#locale			teatimer	fr-FR 								chrome/locale/fr-FR/
-##locale			teatimer	pl-PL								chrome/locale/pl-PL/
-#locale			teatimer	tr-TR								chrome/locale/tr-TR/
-##locale			teatimer	pt-BR								chrome/locale/pt-BR/
-##locale			teatimer	be-BY								chrome/locale/be-BY/
-##locale			teatimer	cs-CZ								chrome/locale/cs-CZ/
-#locale			teatimer	sv-SE								chrome/locale/sv-SE/
-#locale			teatimer	zh-CN								chrome/locale/zh-CN/
-#locale			teatimer	sr  								chrome/locale/sr/
+#locale			tasktimer	de									chrome/locale/de/
+locale			tasktimer	en-US 								chrome/locale/en-US/
+#locale			tasktimer	fr-FR 								chrome/locale/fr-FR/
+##locale			tasktimer	pl-PL								chrome/locale/pl-PL/
+#locale			tasktimer	tr-TR								chrome/locale/tr-TR/
+##locale			tasktimer	pt-BR								chrome/locale/pt-BR/
+##locale			tasktimer	be-BY								chrome/locale/be-BY/
+##locale			tasktimer	cs-CZ								chrome/locale/cs-CZ/
+#locale			tasktimer	sv-SE								chrome/locale/sv-SE/
+#locale			tasktimer	zh-CN								chrome/locale/zh-CN/
+#locale			tasktimer	sr  								chrome/locale/sr/
 
-#skin	        teatimer	classic/1.0	chrome/skin/
-skin	        teatimer	classic/1.0	jar:chrome/teaTimer.jar!/skin/
-style	        chrome://browser/content/browser.xul            chrome://teatimer/skin/style.css
+skin	        tasktimer	classic/1.0	chrome/skin/
+#skin	        tasktimer	classic/1.0	jar:chrome/taskTimer.jar!/skin/
+
+style	        chrome://browser/content/browser.xul            chrome://tasktimer/skin/style.css

@@ -3,8 +3,8 @@
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
-                    em:id="tasktimer@codepaintedby.philipp-soehnlein.de"
-                    em:version="1.2.3"
+                    em:id="tasktimer@skelliam"
+                    em:version="0.1"
                     em:name="TaskTimer"
                     em:description="A Firefox extension that tracks time spent working on projects.  Released under the terms of the GPL v3."
                     em:creator="William Skellenger"
