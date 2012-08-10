@@ -3,14 +3,14 @@
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
-                    em:id="teatimer@codepaintedby.philipp-soehnlein.de"
-                    em:version="1.2.3pre"
-                    em:name="TeaTimer"
-                    em:description="A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3. See my website for more informations."
-                    em:creator="Philipp Söhnlein"
-                    em:homepageURL="http://codepaintedby.philipp-soehnlein.de/"
-                    em:iconURL="chrome://teatimer/skin/icon32.png"
-                    em:optionsURL="chrome://teatimer/content/options.xul"
+                    em:id="tasktimer@codepaintedby.philipp-soehnlein.de"
+                    em:version="1.2.3"
+                    em:name="TaskTimer"
+                    em:description="A Firefox extension that tracks time spent working on projects.  Released under the terms of the GPL v3."
+                    em:creator="William Skellenger"
+                    em:homepageURL="http://leftbraintinkering.blogspot.com/"
+                    em:iconURL="chrome://tasktimer/skin/bulldozer_48.png"
+                    em:optionsURL="chrome://tasktimer/content/options.xul"
                     em:type="2">
         <!-- for Firefox<3 -->
         <em:translator>English locale by Hannah Meyer and Philipp Söhnlein</em:translator>
@@ -20,6 +20,8 @@
         <!--<em:translator>Portuguese / Brasilian locale by petruc (babelzilla.org)</em:translator>-->
         <!--<em:translator>Belarusian locale by Drive DRKA (babelzilla.org)</em:translator>-->
         <!--<em:translator>Czech  locale by Kirklan (babelzilla.org)</em:translator>-->
+        <em:contributor>Based on TeaTimer, a Mozilla extension to save you from oversteeped tea, written by Philipp Soehnlein (http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer)</em:contributor>
+        <em:contributor>Bulldozer icon is from the Standard Road Icons set (http://www.standard-icons.com/stock-icons/standard-road-icons.htm), provided under Creative Commons Attribution-Share Alike 3.0 License.  See: http://www.aha-soft.com/</em:contributor>
         <em:translator>Swedish locale by Lakrits (babelzilla.org)</em:translator>
         <em:translator>Chinese locale by yfdyh000 and yliu (babelzilla.org)</em:translator>
         <em:translator>Serbian locale by DakSrbija and Rancher (babelzilla.org)</em:translator>
@@ -34,10 +36,10 @@
         <em:localized> <!-- for Firefox >3 -->
                 <Description>
                 <em:locale>en-US</em:locale>
-                        <em:name>TeaTimer</em:name>
-                        <em:description>A firefox extension that protects you from oversteeped tea. - Released under the terms of the GPL v3. See my website for more informations.</em:description>
-                        <em:creator>Philipp Söhnlein</em:creator>
-                        <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
+                        <em:name>TaskTimer</em:name>
+                        <em:description>A Firefox extension that tracks time spent working on projects.  It is based on TeaTimer by Philipp Soehnlein (http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer).  This derivative work is released under the terms of the GPL v3.</em:description>
+                        <em:creator>William Skellenger</em:creator>
+                        <em:homepageURL>http://leftbraintinkering.blogspot.com/</em:homepageURL>
                         <!--<em:translator>Polish locale by Paweł Sobczak (http://blog.pawelsobczak.pl/)</em:translator>-->
                         <em:translator>English locale by Hannah Meyer and Philipp Söhnlein</em:translator>
                         <em:translator>French locale by Hannah Meyer and Goofy (babelzilla.org)</em:translator>
@@ -62,7 +64,7 @@
         <em:localized> <!-- for Firefox >3 -->
                 <Description>
                         <em:locale>de</em:locale>
-                        <em:name>TeaTimer</em:name>
+                        <em:name>TaskTimer</em:name>
                         <em:description>Eine Firefox-Erweiterung die dich vor überzogenem Tee schützt. - Bereitgestellt unter den Lizenzbedingungen der GPL v3. Schau auf meine Webseite für weitere Informationen.</em:description>
                         <em:creator>Philipp Söhnlein</em:creator>
                         <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
@@ -89,7 +91,7 @@
         <em:localized> <!-- for Firefox >3 -->
                 <Description>
                         <em:locale>fr-FR</em:locale>
-                        <em:name>TeaTimer</em:name>
+                        <em:name>TaskTimer</em:name>
                         <em:description>Une extension de Firefox qui te protége contre thé infusé trop longtemps. - Mise à disposition sous les termes de la licence de la GPL v3. Pour des informations supplémentaires, visite mon site web.</em:description>
                         <em:creator>Philipp Söhnlein</em:creator>
                         <em:homepageURL>http://codepaintedby.philipp-soehnlein.de/projects/TeaTimer</em:homepageURL>
