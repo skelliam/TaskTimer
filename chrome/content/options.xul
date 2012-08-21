@@ -1,156 +1,83 @@
-<?xml version="1.0"?>
-<!--
-    TaskTimer: A Firefox extension that protects you from oversteeped task.
-    Copyright (C) 2011 Philipp Söhnlein
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License version 3 as
-    published by the Free Software Foundation.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
+<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://tasktimer/skin/options.css" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://tasktimer/locale/tasktimer.dtd">
-<window title="&options.windowTitle;" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    <script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"></script>
-    <script type="application/x-javascript" src="libs/sqlite-1.0.0.js"></script>
-    <script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js" />
-    <script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerTaskDB.js" />
-    <script type="application/x-javascript" src="chrome://tasktimer/content/tasktimer.js" />
-    <script type="application/x-javascript" src="chrome://tasktimer/content/options.js" />
-    
-    <tabbox>
-        <tabs>
-            <tab label="&options.tabs.taskvarities;" />
-            <tab label="&options.tabs.reporting;" />
-            <tab label="&options.tabs.alerts;" />
-        </tabs>
-        <tabpanels>
-            <tabpanel id="taskTimer-optionsVaritiesTab">
-                <vbox flex="1">
-                    <groupbox>
-                        <caption label="&options.varities.addANewTask;" />
-                        <hbox align="end">
-                            <vbox flex="1">
-                                <label control="taskTimer-optionsNewTaskName" value="&options.varities.newTask.name.label;" />
-                                <textbox id="taskTimer-optionsNewTaskName" />
-                            </vbox>
-                            <button id="taskTimer-optionsBtnAddTask" label="&options.varities.newTask.button;" />
-                        </hbox>
-                    </groupbox>
-                    
-                    <groupbox>
-                        <caption label="&options.varities.manageExistingTasks;" />
-                        
-                        <tree id="taskTimer-optionsTasks" hidecolumnpicker="true" editable="true">
-                            <treecols editable="true">
-                                <treecol label="&options.varities.manageExistingTasks.tree.id;" id="taskTimer-optionsTasks-idColumn" hidden="true" />
-                                <treecol label="&options.varities.manageExistingTasks.tree.name;" id="taskTimer-optionsTasks-taskColumn" type="text" editable="true" flex="2" />
-                                <treecol label="&options.varities.manageExistingTasks.tree.time;" id="taskTimer-optionsTasks-timeColumn" type="text" editable="true" flex="1" />
-                            </treecols>
-                            <treechildren id="taskTimer-optionsTasksTreeChildren">
-                            </treechildren>
-                        </tree>
-                    </groupbox>
-                
-                    <hbox align="right">
-                        <button id="taskTimer-optionsBtnDelTask" label="&options.varities.manageExistingTasks.deleteSelectedTask;" disabled="true" />
-                    </hbox>
-                    
-                    <groupbox align="center" orient="horizontal">
-                        <caption label="&options.varities.sorting;" />
-                        <label control="taskTimer-sortingOrder" value="&options.varities.sorting.sortTasksInTaskTimerContextMenu;" />
-                        <menulist id="taskTimer-sortingOrder">
-                            <menupopup>
-                                <menuitem label="&options.varities.sorting.nameASC;" value="name ASC" />
-                                <menuitem label="&options.varities.sorting.nameDESC;" value="name DESC" />
-                                <menuitem label="&options.varities.sorting.timeASC;" value="time ASC" />
-                                <menuitem label="&options.varities.sorting.timeDESC;" value="time DESC" />
-                                <menuitem label="&options.varities.sorting.id;" value="id" />
-                            </menupopup>
-                        </menulist>
-                    </groupbox>
-                </vbox>
-             </tabpanel>
-
-             <tabpanel id="jopTimer-reportingTab">
-                <vbox flex="1">
-                   <groupbox>
-                      <caption label="&options.reporting.timeaccumcaption;" />
-                      <checkbox id="taskTimer-optionsShowAccumulatedTime" label="&options.reporting.showaccumulatedtime.label;" />
-                      <hbox align="center">
-                         <label control="taskTimer-optionsAccumulatedStartTime" value="&options.reporting.accumulatedstarttime.label;" />
-                         <textbox id="taskTimer-optionsAccumulatedStartTime" />
-                      </hbox> 
-                   </groupbox>
-                </vbox>
-             </tabpanel>
-
-            <tabpanel id="taskTimer-optionsAlertsTab">
-                <vbox flex="1">
-                <groupbox>
-                    <caption label="&options.alerts.general.groupboxcaption;" />
-                    <checkbox id="taskTimer-optionsPopupAlert" label="&options.alerts.general.showDialogAlert;" />
-                    <checkbox id="taskTimer-optionsStatusbarAlert" label="&options.alerts.general.showStatusbarAlert;" />
-                </groupbox>
-                <groupbox>
-                    <caption label="&options.alerts.widgetAlert.groupboxcaption;" />
-                    <description>&options.alerts.widgetAlert.description;</description>
-                    <checkbox id="taskTimer-optionsWidgetAlert" label="&options.alerts.widgetAlert.activateCheckboxLabel;" />
-                    <hbox align="center">
-                        <label control="taskTimer-optionsWidgetShowTime" value="&options.alerts.widgetAlert.showTimeLabel;" />
-                        <textbox id="taskTimer-optionsWidgetShowTime" />
-                    </hbox>
-                </groupbox>
-                <groupbox>
-                    <caption label="&options.alerts.soundAlerts.groupboxcaption;" />
-                    <vbox>
-                        <hbox align="center">
-                            <label control="taskTimer-optionsStartSound" value="&options.alerts.soundAlerts.startSound.label;" />
-                            <spacer flex="1" />
-                            <menulist id="taskTimer-optionsStartSound">
-                                <menupopup>
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.none;" value="none" />
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.cup;" value="cup" />
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.eggtimer;" value="eggtimer" />
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.pour;" value="pour" />
-                                    <menuitem id="taskTimer-optionsStartSoundCustom" label="&options.alerts.soundAlerts.sounds.custom;" value="custom: unset" />
-                                </menupopup>
-                            </menulist>
-                            <button id="taskTimer-optionsBtnPreviewStartSound" label="&options.alerts.soundAlerts.startSound.preview;" />
-                        </hbox>
-                        
-                        <hbox align="center">
-                            <label control="taskTimer-optionsEndSound" value="&options.alerts.soundAlerts.endSound.label;" />
-                            <spacer flex="1" />
-                            <menulist id="taskTimer-optionsEndSound">
-                                <menupopup>
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.none;" value="none" />
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.eggtimer;" value="eggtimer" />
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.fanfare;" value="fanfare" />
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.slurp;" value="slurp" />
-                                    <menuitem label="&options.alerts.soundAlerts.sounds.speech;" value="speech" />
-                                    <menuitem id="taskTimer-optionsEndSoundCustom" label="&options.alerts.soundAlerts.sounds.custom;" value="custom: unset" />
-                                </menupopup>
-                            </menulist>
-                            <button id="taskTimer-optionsBtnPreviewEndSound" label="&options.alerts.soundAlerts.endSound.preview;" />
-                        </hbox>
-                    </vbox>  
-                </groupbox>
-                </vbox>
-            </tabpanel>
-        </tabpanels>
-    </tabbox>
-    
-    <hbox align="right">
-        <button label="&options.buttons.cancel.label;" id="taskTimer-optionsWinBtnCancel" accesskey="&options.buttons.cancel.accesskey;" />
-        <button label="&options.buttons.ok.label;" id="taskTimer-optionsWinBtnOk" accesskey="&options.buttons.ok.accesskey;" />
-    </hbox>
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="TaskTimer - Options">
+	<script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"/>
+	<script type="application/x-javascript" src="libs/sqlite-1.0.0.js"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerTaskDB.js"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/tasktimer.js"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/options.js"/>
+	<tabbox>
+		<tabs>
+			<tab label="Task Varieties"/>
+			<tab label="Time Reporting"/>
+			<tab label="TEST"/>
+		</tabs>
+		<tabpanels>
+			<tabpanel id="taskTimer-optionsVaritiesTab">
+				<vbox flex="1">
+					<groupbox>
+						<caption label="Add a new task"/>
+						<hbox align="end">
+							<vbox flex="1">
+								<label control="taskTimer-optionsNewTaskName" value="Task"/>
+								<textbox id="taskTimer-optionsNewTaskName"/>
+							</vbox>
+							<button id="taskTimer-optionsBtnAddTask" label="Add"/>
+						</hbox>
+					</groupbox>
+					<groupbox>
+						<caption label="Manage existing tasks"/>
+						<tree id="taskTimer-optionsTasks" hidecolumnpicker="true" editable="true">
+							<treecols editable="true">
+								<treecol label="ID" id="taskTimer-optionsTasks-idColumn" hidden="true"/>
+								<treecol label="Name" id="taskTimer-optionsTasks-taskColumn" type="text" editable="true" flex="2"/>
+								<treecol label="Last 24h: Time Spent" id="taskTimer-optionsTasks-timeColumn" type="text" editable="true" flex="1"/>
+							</treecols>
+							<treechildren id="taskTimer-optionsTasksTreeChildren"/>
+						</tree>
+					</groupbox>
+					<hbox align="right">
+						<button id="taskTimer-optionsBtnDelTask" label="Hide selected task" disabled="true"/>
+					</hbox>
+					<groupbox align="center" orient="horizontal">
+						<caption label="Sorting"/>
+						<label control="taskTimer-sortingOrder" value="Sort tasks in TaskTimer context menu"/>
+						<menulist id="taskTimer-sortingOrder">
+							<menupopup>
+								<menuitem label="alphabetically ascending." value="name ASC"/>
+								<menuitem label="alphabetically descending." value="name DESC"/>
+								<menuitem label="by time ascending." value="time ASC"/>
+								<menuitem label="by time descending." value="time DESC"/>
+								<menuitem label="exactly like the list above." value="id"/>
+							</menupopup>
+						</menulist>
+					</groupbox>
+				</vbox>
+			</tabpanel>
+			<tabpanel id="taskTimer-reportingTab">
+				<vbox flex="1">
+					<groupbox>
+						<caption label="Time Accumulation"/>
+						<checkbox id="taskTimer-optionsShowAccumulatedTime" label="Show timer as total accumulated project time since a certain time today"/>
+						<hbox align="center">
+							<label control="taskTimer-optionsAccumulatedStartTime" value="The time should be accumulated since this time (like 8:00):"/>
+							<textbox id="taskTimer-optionsAccumulatedStartTime"/>
+						</hbox>
+					</groupbox>
+				</vbox>
+			</tabpanel>
+			<tabpanel id="taskTimer-testtab">
+				<vbox>
+					<button label="TEST" id="taskTimer-optionsBtnTEST"/>
+					<button label="TEST2" id="taskTimer-optionsBtnTEST2"/>
+				</vbox>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+	<hbox align="right">
+		<button label="Cancel" id="taskTimer-optionsWinBtnCancel" accesskey="c"/>
+		<button label="OK" id="taskTimer-optionsWinBtnOk" accesskey="o"/>
+	</hbox>
 </window>

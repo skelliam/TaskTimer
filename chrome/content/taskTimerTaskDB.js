@@ -234,7 +234,7 @@ function taskTimerTaskDB()
        }
        return sum;  //should be a sum of time worked on this task from start-->end
     }
-	
+
     /**
      * This method returns the ID of the currently choosen/checked task.
      * @returns integer taskID

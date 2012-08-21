@@ -41,22 +41,11 @@ function taskTimer()
         tasktimerCountdown=document.getElementById("tasktimer-countdown");
         tasktimerToolbarbutton=tasktimerBox.getElementsByTagName("toolbarbutton")[0];
         
-        sound.init();
         document.getElementById("tasktimer-options").addEventListener("command",taskTimerInstance.openOptionsWindow,false);
         document.getElementById("tasktimer-quicktimer").addEventListener("command",taskTimerInstance.quicktimerMenuitemCommand,false);
         document.getElementById("tasktimer-cancel").addEventListener("command",taskTimerInstance.cancelTimer,false);
+        document.getElementById("tasktimer-test").addEventListener("command", taskTimerInstance.testFunction, false);
         
-        if(common.checkIfSoundAlertIsInitalized("start")===false)
-        {
-            common.setSound("start","eggtimer");
-        }
-        
-        if(common.checkIfSoundAlertIsInitalized("end")===false)
-        {
-            common.setSound("end","slurp");
-        }
-
-
         taskDB.initTaskDB();
         
         tasktimerContextMenu=document.getElementById("tasktimer-contextMenu");
@@ -95,6 +84,36 @@ function taskTimer()
         | UI methods |
         ==============
     */
+
+    this.testFunction=function()
+    {
+       var win = Components.classes['@mozilla.org/appshell/window-mediator;1']
+                     .getService(Components.interfaces.nsIWindowMediator)
+                     .getMostRecentWindow('navigator:browser');
+       win.gBrowser.selectedTab = win.gBrowser.addTab("chrome://tasktimer/content/summary.html");
+       var newTabBrowser = win.gBrowser.getBrowserForTab(win.gBrowser.selectedTab);
+       newTabBrowser.addEventListener("load", 
+             function() { 
+                var pre = newTabBrowser.contentDocument.createElement('pre');
+                var tasks = taskDB.getDataOfAllTasks();
+                for (var i=1; i<25; i++) {
+                   pre.textContent += "\n------";
+                   var datestr = "August " + String(i) + " 2012, 7:00a";
+                   var d1 = Date.parse(datestr).valueOf()/1000;
+                   var d2 = Date.parse(datestr).addHours(15).valueOf()/1000;
+                   pre.textContent += (datestr + "\n");
+                   for (var j=0; j<tasks.length; j++) {
+                      var id = j+1;
+                      var time = taskDB.getTimeWorkedOnTaskInRange(id, d1, d2);
+                      if (time > 0) {
+                        pre.textContent += (String(tasks[id-1].name) + " " + common.getTimeStringFromTime(time) + "\n");
+                      }
+                   }
+                }
+                newTabBrowser.contentDocument.body.appendChild(pre);
+             }, 
+             true);
+    }
     
     /**
      * This public method can be called to regenerate/update the tasks in task timer context menu, based on the current content of the database.
@@ -102,7 +121,7 @@ function taskTimer()
      **/
     this.prepareTaskSelectMenu=function()
     {
-        var tasks=taskDB.getDataOfAllTasks(false,common.getSortingOrder());
+        var tasks=taskDB.getDataOfAllTasks(false, common.getSortingOrder());
         var startSeparator=document.getElementById("tasktimer-endViewModeSeparator");
         var endSeparator=document.getElementById("tasktimer-endTasklistSeparator");
         var i=0;
@@ -283,12 +302,6 @@ function taskTimer()
         //Set timer interval 
         timerInterval=window.setInterval(taskTimerInstance.pulse,1000);
        
-        //Get rid of start sound 
-        //var soundID=common.getIdOfStartSound();
-        //if(soundID!=="none")
-        //{
-        //    sound.play(common.getURLtoSound("start",soundID,true));
-        //}
     }
     
     /**

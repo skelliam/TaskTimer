@@ -1,46 +1,28 @@
-<?xml version="1.0"?>
-<!--
-	TeaTimer: A Firefox extension that protects you from oversteeped tea.
-	Copyright (C) 2011 Philipp Söhnlein
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License version 3 as 
-	published by the Free Software Foundation.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-<!DOCTYPE window SYSTEM "chrome://tasktimer/locale/tasktimer.dtd">
+<?xml version="1.0" encoding="utf-8"?>
 <overlay id="tasktimer-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-   <script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"></script>
-   <script type="application/x-javascript" src="libs/sqlite-1.0.0.js"></script>
-   <script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js" />
-   <script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerTaskDB.js" />
-   <script type="application/x-javascript" src="chrome://tasktimer/content/tasktimer.js" />
-	
-    <toolbar id="addon-bar">
-        <toolbaritem id="tasktimer-box">
-            <box id="tasktimer-countdownbox"> <!-- this box is necessary, because #tasktimer-countdown can blink using "visibility: hidden". Hidden elements don't recieve click events --> 
-                <label id="tasktimer-countdown" value="TaskTimer" />
-            </box>
-                
-            <toolbarbutton id="tasktimer-toolbarbutton" label="TaskTimer" type="menu" image="chrome://tasktimer/skin/icon-inactive.png" class="toolbarbutton-1 chromeclass-toolbar-additional" orient="horizontal">
-                <menupopup id="tasktimer-contextMenu" position="before_end">
-                    <menuitem id="tasktimer-showModeIconAndTime" label="&main.contextMenu.showIconAndTime;" name="tasktimer-viewMode" value="iconAndText" type="radio" />
-                    <menuitem id="tasktimer-showModeIconOnly"    label="&main.contextMenu.showIconOnly;"    name="tasktimer-viewMode" value="iconOnly"    type="radio" />
-                    <menuseparator id="tasktimer-endViewModeSeparator" />
-                    <!-- list of tasks is filled in by script here -->
-                    <menuseparator id="tasktimer-endTasklistSeparator" />
-                    <menuitem id="tasktimer-options" label="&main.contextMenu.options;" />
-                    <menuitem id="tasktimer-cancel" label="&main.contextMenu.cancel;" />
-                    <menuitem id="tasktimer-quicktimer" label="&main.contextMenu.quicktimer;" />
-                </menupopup>
-            </toolbarbutton>
-        </toolbaritem>
+	<script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"/>
+	<script type="application/x-javascript" src="libs/sqlite-1.0.0.js"/>
+	<script type="application/x-javascript" src="libs/date.js"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerTaskDB.js"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/tasktimer.js"/>
+	<toolbar id="addon-bar">
+		<toolbaritem id="tasktimer-box">
+			<box id="tasktimer-countdownbox">
+				<label id="tasktimer-countdown" value="TaskTimer"/>
+			</box>
+			<toolbarbutton id="tasktimer-toolbarbutton" label="TaskTimer" type="menu" image="chrome://tasktimer/skin/bulldozer_24_inactive.png" class="toolbarbutton-1 chromeclass-toolbar-additional" orient="horizontal">
+				<menupopup id="tasktimer-contextMenu" position="before_end">
+					<menuitem id="tasktimer-showModeIconAndTime" label="Show icon and time" name="tasktimer-viewMode" value="iconAndText" type="radio"/>
+					<menuitem id="tasktimer-showModeIconOnly" label="Show icon only" name="tasktimer-viewMode" value="iconOnly" type="radio"/>
+					<menuseparator id="tasktimer-endViewModeSeparator"/>
+					<menuseparator id="tasktimer-endTasklistSeparator"/>
+					<menuitem id="tasktimer-options" label="Options..."/>
+					<menuitem id="tasktimer-cancel" label="Cancel"/>
+					<menuitem id="tasktimer-quicktimer" label="Quick Timer..."/>
+					<menuitem id="tasktimer-test" label="Test!"/>
+				</menupopup>
+			</toolbarbutton>
+		</toolbaritem>
 	</toolbar>
 </overlay>

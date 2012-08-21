@@ -18,7 +18,6 @@ function taskTimerOptionsWindow()
 {
    var taskDB=new taskTimerTaskDB();
    const common=new taskTimerCommon();
-   const sound=Components.classes["@mozilla.org/sound;1"].createInstance().QueryInterface(Components.interfaces.nsISound);
    const self=this;
     
    var tree=null; //container for the tree element (teelist)
@@ -26,12 +25,9 @@ function taskTimerOptionsWindow()
    var deleteButton=null; //container for the task delete button
    var nameTxtField=document.getElementById("taskTimer-optionsNewTaskName");
    var selSortingOrder=null; //container for select box with sorting order
-   var btnPreviewStartSound=null; //container for start sound preview button
-   var btnPreviewEndSound=null; //container for end sound preview button
    var widgetShowTimeTxtField=null;
-    
-   var currentStartSoundValue=null;
-   var currentEndSoundValue=null;
+   var btnTEST=null;
+   var btnTEST2=null;   
        
    this.init=function()
    {
@@ -39,7 +35,6 @@ function taskTimerOptionsWindow()
       document.addEventListener("keypress",taskTimerOptionsWindowInstance.documentKeypress,false);
       document.getElementById("taskTimer-optionsWinBtnCancel").addEventListener("command",taskTimerOptionsWindowInstance.cancelButtonCommand,false);
       document.getElementById("taskTimer-optionsWinBtnOk").addEventListener("command",taskTimerOptionsWindowInstance.okButtonCommand,false);
-      sound.init();
        
       //task types tab
       nameTxtField=document.getElementById("taskTimer-optionsNewTaskName");
@@ -63,59 +58,24 @@ function taskTimerOptionsWindow()
       var txtAccumSinceTime=document.getElementById("taskTimer-optionsAccumulatedStartTime");
       chkShowAccumulated.setAttribute("checked", prefs.showAccumulatedTime ? "true" : "false");
       txtAccumSinceTime.value = prefs.showAccumulatedTimeSince;
-      
-      //alerts tab
-      var chkPopupAlert=document.getElementById("taskTimer-optionsPopupAlert");
-       
-      if(common.isAlertDesired("popup"))
-      {
-         chkPopupAlert.setAttribute("checked","true");
-      }
-      else
-      {
-         chkPopupAlert.removeAttribute("checked","false");
-      }
-       
-      var chkStatusbarAlert=document.getElementById("taskTimer-optionsStatusbarAlert");
-      if(common.isAlertDesired("statusbar"))
-      {
-         chkStatusbarAlert.setAttribute("checked","true");
-      }
-      else
-      {
-         chkStatusbarAlert.removeAttribute("checked","false");
-      }
-       
-      var chkWidgetAlert=document.getElementById("taskTimer-optionsWidgetAlert");
-      if(common.isAlertDesired("widget"))
-      {
-         chkWidgetAlert.setAttribute("checked","true");
-      }
-      else
-      {
-         chkWidgetAlert.removeAttribute("checked","false");
-      }
-       
-      widgetShowTimeTxtField=document.getElementById("taskTimer-optionsWidgetShowTime");
-      widgetShowTimeTxtField.value=common.getWidgetAlertShowTime();
-      widgetShowTimeTxtField.addEventListener("keypress",taskTimerOptionsWindowInstance.widgetShowTimeTxtFieldKeypress,false);
-      
-      initSoundSelectBox("start");
-      initSoundSelectBox("end");
-      btnPreviewStartSound=document.getElementById("taskTimer-optionsBtnPreviewStartSound");
-      btnPreviewStartSound.addEventListener("command",taskTimerOptionsWindowInstance.previewStartSound,false);
-      btnPreviewEndSound=document.getElementById("taskTimer-optionsBtnPreviewEndSound");
-      btnPreviewEndSound.addEventListener("command",taskTimerOptionsWindowInstance.previewEndSound,false);
-       
-      if(getValueOfSoundSelectBox("start")==="none")
-      {
-         btnPreviewStartSound.setAttribute("disabled",true);
-      }
-       
-      if(getValueOfSoundSelectBox("end")==="none")
-      {
-         btnPreviewEndSound.setAttribute("disabled",true);
-      }
+
+      //TEST tab
+      btnTEST = document.getElementById("taskTimer-optionsBtnTEST");
+      btnTEST.addEventListener("command", taskTimerOptionsWindowInstance.testFunction, false); 
+      btnTEST2 = document.getElementById("taskTimer-optionsBtnTEST2");
+      btnTEST2.addEventListener("command", taskTimerOptionsWindowInstance.testFunction2, false); 
+   }
+
+   this.testFunction=function() {
+      var win = Components.classes['@mozilla.org/appshell/window-mediator;1']
+                  .getService(Components.interfaces.nsIWindowMediator)
+                  .getMostRecentWindow('navigator:browser');
+      win.gBrowser.selectedTab = win.gBrowser.addTab("chrome://tasktimer/content/summary.html");
+   }
+
+   this.testFunction2=function() {
+      self.okButtonCommand();
+      alert("hello");
    }
     
    /**
@@ -255,44 +215,8 @@ function taskTimerOptionsWindow()
       window.close();
    }
    
-   /**
-    * This private method validates the alert settings and throws exceptions if there was an unvalid settings found.
-    * 
-    * @throws taskTimerInvalidSoundIDException
-    * @throws taskTimerInvalidSortOrderException
-    * @throws taskTimerInvalidWidgetAlertShowTimeException
-    **/
    var validateAlertSettings=function()
    {
-      if (
-      common.checkSoundId("start",getValueOfSoundSelectBox("start"))===false ||
-      common.checkSoundId("end",getValueOfSoundSelectBox("end"))===false
-         )
-      {
-      var ex=new taskTimerInvalidSoundIDException();
-      ex.humanReadableOutput=common.getString("options.validate.soundError");
-      throw ex;
-      }
-      
-      try
-      {
-      common.validateSortingOrder(selSortingOrder.value);
-      }
-      catch(e)
-      {
-      var ex=new taskTimerInvalidSortOrderException();
-      ex.humanReadbleOutput=common.getString("options.validate.sortingError");
-      throw ex;
-      }
-       
-      var widgetShowTime=parseInt(widgetShowTimeTxtField.value,10);
-      if(!(widgetShowTime>=0))
-      {
-      var ex=new taskTimerInvalidWidgetAlertShowTimeException();
-      ex.humanReadableOutput=common.getString("options.validate.widgetAlertShowTimeError");
-      throw ex;
-      }
-       
       return true;
    }
     
@@ -495,203 +419,6 @@ function taskTimerOptionsWindow()
        }
      }
    }
-   
-   /**
-    * This private method inits either the startsound or the endsound select box (menulist).
-    * That means, it adds events and sets the currently saved sound as selected.
-    * @param string type ("start" or "end")
-    **/
-   var initSoundSelectBox=function(type)
-   {
-      type=(type==="start")?"start":"end";
-       
-      var customSoundMenuItem=null;
-      if(type==="start")
-      {
-         var currentSound=common.getIdOfStartSound();
-         var box=document.getElementById("taskTimer-optionsStartSound");
-         box.addEventListener("command",taskTimerOptionsWindowInstance.startSoundChanged,false);
-         customSoundMenuItem=document.getElementById("taskTimer-optionsStartSoundCustom");
-      }
-       
-      if(type==="end")
-      {
-         var currentSound=common.getIdOfEndSound();
-         var box=document.getElementById("taskTimer-optionsEndSound");
-         document.getElementById("taskTimer-optionsEndSound").addEventListener("command",taskTimerOptionsWindowInstance.endSoundChanged,false);
-         customSoundMenuItem=document.getElementById("taskTimer-optionsEndSoundCustom");
-      }
-      
-      customSoundMenuItem.addEventListener("command", function (event) { taskTimerOptionsWindowInstance.customSoundMenuItemCommand(type); } , false);
-       
-      var sounds=box.getElementsByTagName("menuitem");
-
-      for(var i=0; i<sounds.length; i++)
-      {
-         var value=sounds[i].getAttribute("value");
-         var found=false;
-         if(value===currentSound)
-         {
-            if(type==='start') {
-               currentStartSoundValue=value;
-            }
-            else {
-               currentEndSoundValue=value;
-            }
-      
-            found=1;
-         }
-         else if(value==="custom: unset" && currentSound.match(/^custom\:.*\.wav/)) {
-            if(type==='start') {
-               currentStartSoundValue='custom';
-            }
-            else {
-               currentEndSoundValue='custom';
-            }
-      
-            sounds[i].label+=" ("+common.basename(currentSound)+")";
-            sounds[i].value=currentSound;
-            
-            found=1;
-         }
-        
-         if(found) {
-            box.selectedIndex=i;
-            break;
-         }
-      }
-   }
-   
-   this.customSoundMenuItemCommand=function(type) {
-      var fallbackValue=(type==='start') ? currentStartSoundValue : currentEndSoundValue;
-      if (fallbackValue==="custom") {
-         fallbackValue=common.getIdOfStartSound(); //retrieve full URL of custom sound
-      }
-      showCustomSoundFilePicker(type,fallbackValue);
-   }
-
-   var showCustomSoundFilePicker=function(type,fallbackValue) {
-   type=(type==="start")?"start":"end";
-   
-   var nsIFilePicker = Components.interfaces.nsIFilePicker;
-   var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-   fp.appendFilter(common.getString("options.sound.customSoundFilePicker.filter"),"*.wav");
-   fp.init(window, "TaskTimer - "+common.getString("options.sound.customSoundFilePicker.windowTitle"), nsIFilePicker.modeOpen);
-   
-   var result=fp.show();
-   if(result==0 && fp.file) {
-      //@2do check if it's possible, to check the file (really a WAV file)
-      var fullpath=fp.file.path;
-      var filename=common.basename(fullpath);
-      
-      var menuitem=document.getElementById('taskTimer-options'+((type==='start') ? 'Start' : 'End')+'SoundCustom');
-      if(menuitem.label.match(/\(.*\)$/)) {
-        menuitem.label=menuitem.label.replace(/\(.*\)$/, "("+filename+")");
-      }
-      else {
-        menuitem.label+=" ("+filename+")";
-      }
-      menuitem.value="custom: "+fullpath;
-   }
-   else {
-      var idOfSelectBox='taskTimer-options'+((type==='start') ? 'Start' : 'End')+'Sound';
-      document.getElementById(idOfSelectBox).value=fallbackValue;
-   }
-   }
-    
-   /**
-    * This public method is called when the start sound changes.
-    **/
-   this.startSoundChanged=function()
-   {
-      soundChanged("start");
-   }
-    
-   /**
-    * This public method is called when the end sound changes.
-    **/
-   this.endSoundChanged=function()
-   {
-      soundChanged("end");
-   }
-    
-   /**
-    * This private checks if some action needs to be done, when a sound select box (menulist) changes.
-    * It currently only enables or disables the preview button, depending on the choosen values.
-    * @param type soundType ("start" or "end")
-    **/
-   var soundChanged=function(type)
-   {
-      type=(type==="start")?"start":"end";
-       
-      var idOfSelectBox=null;
-      var previewButton=null;
-      if(type==="start")
-      {
-         idOfSelectBox="taskTimer-optionsStartSound";
-         previewButton=btnPreviewStartSound;
-      }
-      else
-      {
-         idOfSelectBox="taskTimer-optionsEndSound";
-         previewButton=btnPreviewEndSound;
-      }
-       
-      var selectBoxValue=document.getElementById(idOfSelectBox).value;
-      if(selectBoxValue==="none")
-      {
-         previewButton.setAttribute("disabled",true);
-      }
-      else
-      {
-         previewButton.removeAttribute("disabled");
-      }
-      
-      if(type==='start') {
-        currentStartSoundValue=selectBoxValue;
-      }
-      else {
-        currentEndSoundValue=selectBoxValue;
-      }
-   }
-    
-   /**
-    * This public method previews (plays) the start sound.
-    **/
-   this.previewStartSound=function()
-   {
-      previewSound("start");
-   }
-    
-   /**
-    * This public method previews (plays) the end sound.
-    **/
-   this.previewEndSound=function()
-   {
-      previewSound("end");
-   }
-    
-   /**
-    * This private method previews (plays) either the start or the end sound.
-    **/
-   var previewSound=function(type)
-   {
-      type=(type==="start")?"start":"end";
-   var urlObj=common.getURLtoSound(type,getValueOfSoundSelectBox(type),true);
-   sound.play(urlObj);
-   }
-   
-   /**
-    * This private method returns the sound ID of the currently selected start or end sound.
-    * @param string type ("start" or "end")
-    * @return string soundID
-    **/
-   var getValueOfSoundSelectBox=function(type)
-   {
-      type=(type==="start")?"start":"end";
-      var idOfSelectBox=((type==="start")?"taskTimer-optionsStartSound":"taskTimer-optionsEndSound");
-      return document.getElementById(idOfSelectBox).value;
-   }
 
    var saveReporting=function()
    {
@@ -709,19 +436,6 @@ function taskTimerOptionsWindow()
     **/
    var saveAlerts=function()
    {
-      var popupValue=document.getElementById("taskTimer-optionsPopupAlert").getAttribute("checked");
-      popupValue=(popupValue==="true")?true:false;
-      common.setAlert("popup",popupValue);
-       
-      var statusbarValue=document.getElementById("taskTimer-optionsStatusbarAlert").getAttribute("checked");
-      statusbarValue=(statusbarValue==="true")?true:false;
-      common.setAlert("statusbar",statusbarValue);
-       
-      var widgetValue=document.getElementById("taskTimer-optionsWidgetAlert").getAttribute("checked");
-      widgetValue=(widgetValue==="true")?true:false;
-      common.setAlert("widget",widgetValue);
-       
-      common.setWidgetAlertShowTime(parseInt(widgetShowTimeTxtField.value,10));
    }
    
    /**
@@ -737,8 +451,6 @@ function taskTimerOptionsWindow()
     **/
    var saveSounds=function()
    {
-      common.setSound("start",getValueOfSoundSelectBox("start"));
-      common.setSound("end",getValueOfSoundSelectBox("end"));
    }
 }
 

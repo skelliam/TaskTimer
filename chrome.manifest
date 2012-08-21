@@ -15,35 +15,34 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-content			tasktimer	chrome/content/ contentaccessible=yes
+content         tasktimer                                chrome/content/  contentaccessible=yes
+overlay         chrome://browser/content/browser.xul     chrome://tasktimer/content/tasktimer.xul
 
-overlay			chrome://browser/content/browser.xul	        chrome://tasktimer/content/tasktimer.xul
+#locale         tasktimer   de                           jar:chrome/taskTimer.jar!/locale/de/
+#locale         tasktimer   en-US                        jar:chrome/taskTimer.jar!/locale/en-US/
+#locale         tasktimer   fr-FR                        jar:chrome/taskTimer.jar!/locale/fr-FR/
+#locale         tasktimer   pl-PL                        jar:chrome/taskTimer.jar!/locale/pl-PL/
+#locale         tasktimer   tr-TR                        jar:chrome/taskTimer.jar!/locale/tr-TR/
+#locale         tasktimer   pt-BR                        jar:chrome/taskTimer.jar!/locale/pt-BR/
+#locale         tasktimer   be-BY                        jar:chrome/taskTimer.jar!/locale/be-BY/
+#locale         tasktimer   cs-CZ                        jar:chrome/taskTimer.jar!/locale/cs-CZ/
+#locale         tasktimer   sv-SE                        jar:chrome/taskTimer.jar!/locale/sv-SE/
+#locale         tasktimer   zh-CN                        jar:chrome/taskTimer.jar!/locale/zh-CN/
+#locale         tasktimer   sr                           jar:chrome/taskTimer.jar!/locale/sr/
 
-#locale			tasktimer	de									jar:chrome/taskTimer.jar!/locale/de/
-#locale			tasktimer	en-US 								jar:chrome/taskTimer.jar!/locale/en-US/
-#locale			tasktimer	fr-FR 								jar:chrome/taskTimer.jar!/locale/fr-FR/
-#locale			tasktimer	pl-PL 								jar:chrome/taskTimer.jar!/locale/pl-PL/
-#locale			tasktimer	tr-TR 								jar:chrome/taskTimer.jar!/locale/tr-TR/
-#locale			tasktimer	pt-BR 								jar:chrome/taskTimer.jar!/locale/pt-BR/
-#locale			tasktimer	be-BY 								jar:chrome/taskTimer.jar!/locale/be-BY/
-#locale			tasktimer	cs-CZ 								jar:chrome/taskTimer.jar!/locale/cs-CZ/
-#locale			tasktimer	sv-SE 								jar:chrome/taskTimer.jar!/locale/sv-SE/
-#locale			tasktimer	zh-CN 								jar:chrome/taskTimer.jar!/locale/zh-CN/
-#locale			tasktimer	sr 								    jar:chrome/taskTimer.jar!/locale/sr/
+#locale         tasktimer   de                           chrome/locale/de/
+locale         tasktimer   en-US                         chrome/locale/en-US/
+#locale         tasktimer   fr-FR                        chrome/locale/fr-FR/
+#locale         tasktimer   pl-PL                        chrome/locale/pl-PL/
+#locale         tasktimer   tr-TR                        chrome/locale/tr-TR/
+#locale         tasktimer   pt-BR                        chrome/locale/pt-BR/
+#locale         tasktimer   be-BY                        chrome/locale/be-BY/
+#locale         tasktimer   cs-CZ                        chrome/locale/cs-CZ/
+#locale         tasktimer   sv-SE                        chrome/locale/sv-SE/
+#locale         tasktimer   zh-CN                        chrome/locale/zh-CN/
+#locale         tasktimer   sr                           chrome/locale/sr/
 
-#locale			tasktimer	de									chrome/locale/de/
-locale			tasktimer	en-US 								chrome/locale/en-US/
-#locale			tasktimer	fr-FR 								chrome/locale/fr-FR/
-##locale			tasktimer	pl-PL								chrome/locale/pl-PL/
-#locale			tasktimer	tr-TR								chrome/locale/tr-TR/
-##locale			tasktimer	pt-BR								chrome/locale/pt-BR/
-##locale			tasktimer	be-BY								chrome/locale/be-BY/
-##locale			tasktimer	cs-CZ								chrome/locale/cs-CZ/
-#locale			tasktimer	sv-SE								chrome/locale/sv-SE/
-#locale			tasktimer	zh-CN								chrome/locale/zh-CN/
-#locale			tasktimer	sr  								chrome/locale/sr/
+skin            tasktimer   classic/1.0                  chrome/skin/
+#skin           tasktimer   classic/1.0                  jar:chrome/taskTimer.jar!/skin/
 
-skin	        tasktimer	classic/1.0	chrome/skin/
-#skin	        tasktimer	classic/1.0	jar:chrome/taskTimer.jar!/skin/
-
-style	        chrome://browser/content/browser.xul            chrome://tasktimer/skin/style.css
+style           chrome://browser/content/browser.xul            chrome://tasktimer/skin/style.css
