@@ -87,25 +87,35 @@ function taskTimer()
 
     this.testFunction=function()
     {
+       var DAYSBACK = 60;  //start report by looking back this many days
+       var STARTTIME = 7;  //report each day from this time
+       var HOURSFWD = 15;  //look forward this many hours from start time
+
        var win = Components.classes['@mozilla.org/appshell/window-mediator;1']
                      .getService(Components.interfaces.nsIWindowMediator)
                      .getMostRecentWindow('navigator:browser');
        win.gBrowser.selectedTab = win.gBrowser.addTab("chrome://tasktimer/content/summary.html");
        var newTabBrowser = win.gBrowser.getBrowserForTab(win.gBrowser.selectedTab);
+
        newTabBrowser.addEventListener("load", 
              function() { 
                 var pre = newTabBrowser.contentDocument.createElement('pre');
                 var tasks = taskDB.getDataOfAllTasks();
-                for (var i=1; i<25; i++) {
-                   pre.textContent += "\n------";
-                   var datestr = "August " + String(i) + " 2012, 7:00a";
-                   var d1 = Date.parse(datestr).valueOf()/1000;
-                   var d2 = Date.parse(datestr).addHours(15).valueOf()/1000;
-                   pre.textContent += (datestr + "\n");
+                for (var i=1; i<DAYSBACK; i++) {
+;
+                   var d1 = Date.today()
+                              .set({ hour: STARTTIME, minute: 0 })
+                              .add({ days: -DAYSBACK+i });
+                   var d2 = d1.clone();
+                   d2.addHours(HOURSFWD);
+
+                   pre.textContent += "\n------"
+                   pre.textContent += (String(d1) + " to " + String(d2) + "\n");  //debugging
                    for (var j=0; j<tasks.length; j++) {
-                      var id = j+1;
-                      var time = taskDB.getTimeWorkedOnTaskInRange(id, d1, d2);
+                      var id = j+1;  //id 0 is not valid in the database
+                      var time = taskDB.getTimeWorkedOnTaskInRange(id, d1.valueOf()/1000, d2.valueOf()/1000);
                       if (time > 0) {
+                        //the tasks[] array can hold id 0, so we need to subtract 1 from id
                         pre.textContent += (String(tasks[id-1].name) + " " + common.getTimeStringFromTime(time) + "\n");
                       }
                    }
@@ -114,6 +124,8 @@ function taskTimer()
              }, 
              true);
     }
+
+
     
     /**
      * This public method can be called to regenerate/update the tasks in task timer context menu, based on the current content of the database.
