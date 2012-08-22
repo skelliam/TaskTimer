@@ -296,14 +296,13 @@ function taskTimer()
 
         //This is the time that the counter was started.  This time is also stored in the database.
         startingTSofCurrentCountdown=common.getTimeSec()
+
         //Now this is a little tricky -- I want to fake out the timer.  If the user wants an 
         //accumulated time, I want to figure out how much time he has logged on the task so far, and
         //then offset the time by that much.
         var prefs = common.getReportingPrefs();
         if (prefs.showAccumulatedTime == true) {
-           var tsplit = prefs.showAccumulatedTimeSince.split(":");
-           var timesince = new Date();
-           timesince.setHours(tsplit[0]);
+           var timesince = Date.parse(prefs.showAccumulatedTimeSince);
            var timeontask = taskDB.getTimeWorkedOnTaskInRange(idOfCurrentSteepingTask, timesince.getTime()/1000, common.getTimeSec());
            startingTSofCurrentCountdown -= timeontask;  //offset 
         }

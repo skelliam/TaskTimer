@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://tasktimer/skin/options.css" type="text/css"?>
-<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="TaskTimer - Options">
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="TaskTimer - Options" sizemode="normal" style="width:20%;height:20%;">
 	<script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"/>
 	<script type="application/x-javascript" src="libs/sqlite-1.0.0.js"/>
 	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js"/>
@@ -10,8 +10,8 @@
 	<script type="application/x-javascript" src="chrome://tasktimer/content/options.js"/>
 	<tabbox>
 		<tabs>
-			<tab label="Task Varieties"/>
-			<tab label="Time Reporting"/>
+			<tab label="Tasks"/>
+			<tab label="Time Settings"/>
 			<tab label="TEST"/>
 		</tabs>
 		<tabpanels>
@@ -24,7 +24,7 @@
 								<label control="taskTimer-optionsNewTaskName" value="Task"/>
 								<textbox id="taskTimer-optionsNewTaskName"/>
 							</vbox>
-							<button id="taskTimer-optionsBtnAddTask" label="Add"/>
+							<button id="taskTimer-optionsBtnAddTask" label="Add" tooltiptext="Add a new task to the list"/>
 						</hbox>
 					</groupbox>
 					<groupbox>
@@ -34,12 +34,16 @@
 								<treecol label="ID" id="taskTimer-optionsTasks-idColumn" hidden="true"/>
 								<treecol label="Name" id="taskTimer-optionsTasks-taskColumn" type="text" editable="true" flex="2"/>
 								<treecol label="Last 24h: Time Spent" id="taskTimer-optionsTasks-timeColumn" type="text" editable="true" flex="1"/>
+								<treecol label="Hidden" type="checkbox" id="taskTimer-optionsTasks-hiddenColumn"/>
 							</treecols>
 							<treechildren id="taskTimer-optionsTasksTreeChildren"/>
 						</tree>
 					</groupbox>
 					<hbox align="right">
-						<button id="taskTimer-optionsBtnDelTask" label="Hide selected task" disabled="true"/>
+						<checkbox label="Show Hidden Tasks"/>
+						<button label="Rename" id="taskTimer-optionsBtnRenameTask" tooltiptext="Rename the selected task"/>
+						<button id="taskTimer-optionsBtnDelTask" label="Hide" disabled="true" tooltiptext="Hide the selected task"/>
+						<button label="Unhide" tooltiptext="Unhide the selected task" id="taskTimer-optionsBtnUnhideTask"/>
 					</hbox>
 					<groupbox align="center" orient="horizontal">
 						<caption label="Sorting"/>
@@ -59,11 +63,31 @@
 			<tabpanel id="taskTimer-reportingTab">
 				<vbox flex="1">
 					<groupbox>
-						<caption label="Time Accumulation"/>
-						<checkbox id="taskTimer-optionsShowAccumulatedTime" label="Show timer as total accumulated project time since a certain time today"/>
+						<hbox>
+							<checkbox label="Switch to idle task when Firefox is closed"/>
+						</hbox>
 						<hbox align="center">
-							<label control="taskTimer-optionsAccumulatedStartTime" value="The time should be accumulated since this time (like 8:00):"/>
+							<label value="Automatically switch to the idle task at (like 17:00, or 5:00 pm):"/>
+							<textbox/>
+						</hbox>
+					</groupbox>
+					<groupbox>
+						<caption label="Time Accumulation"/>
+						<hbox>
+							<checkbox id="taskTimer-optionsShowAccumulatedTime" label="Show timer as total accumulated project time since a certain time today"/>
+						</hbox>
+						<hbox align="center">
+							<label control="taskTimer-optionsAccumulatedStartTime" value="The time should be accumulated since this time (like 8:00):" orient="vertical"/>
 							<textbox id="taskTimer-optionsAccumulatedStartTime"/>
+						</hbox>
+					</groupbox>
+					<groupbox>
+						<caption label="Timeline"/>
+						<hbox>
+							<checkbox label="Show Timeline"/>
+						</hbox>
+						<hbox>
+							<checkbox label="Show Text"/>
 						</hbox>
 					</groupbox>
 				</vbox>
