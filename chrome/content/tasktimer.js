@@ -105,7 +105,7 @@ function taskTimer()
 ;
                    var d1 = Date.today()
                               .set({ hour: STARTTIME, minute: 0 })
-                              .add({ days: -DAYSBACK+i });
+                              .add({ days: -DAYSBACK+(i+1) });
                    var d2 = d1.clone();
                    d2.addHours(HOURSFWD);
 
