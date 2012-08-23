@@ -20,6 +20,7 @@
 					<menuitem id="tasktimer-options" label="Options..."/>
 					<menuitem id="tasktimer-cancel" label="Cancel"/>
 					<menuitem id="tasktimer-quicktimer" label="Quick Timer..."/>
+					<menuitem label="Make a note..." id="tasktimer-makenote"/>
 					<menuitem id="tasktimer-test" label="Test!"/>
 				</menupopup>
 			</toolbarbutton>

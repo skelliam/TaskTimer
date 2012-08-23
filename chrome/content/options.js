@@ -26,13 +26,18 @@ function taskTimerOptionsWindow()
    var nameTxtField=document.getElementById("taskTimer-optionsNewTaskName");
    var selSortingOrder=null; //container for select box with sorting order
    var widgetShowTimeTxtField=null;
-   var btnTEST=null;
-   var btnTEST2=null;   
+
+   //advanced tab containers
+   var mnuTasks = null;
+   var mnuTasksPopup = null;
+   var txtDateCorrection = null;
+   var lblDateValidation = null;
+   var btnInsertCorrection = null;
        
    this.init=function()
    {
       //general
-      document.addEventListener("keypress",taskTimerOptionsWindowInstance.documentKeypress,false);
+      document.addEventListener("keypress", taskTimerOptionsWindowInstance.documentKeypress,false);
       document.getElementById("taskTimer-optionsWinBtnCancel").addEventListener("command",taskTimerOptionsWindowInstance.cancelButtonCommand,false);
       document.getElementById("taskTimer-optionsWinBtnOk").addEventListener("command",taskTimerOptionsWindowInstance.okButtonCommand,false);
        
@@ -59,11 +64,34 @@ function taskTimerOptionsWindow()
       chkShowAccumulated.setAttribute("checked", prefs.showAccumulatedTime ? "true" : "false");
       txtAccumSinceTime.value = prefs.showAccumulatedTimeSince;
 
-      //TEST tab
-      btnTEST = document.getElementById("taskTimer-optionsBtnTEST");
-      btnTEST.addEventListener("command", taskTimerOptionsWindowInstance.testFunction, false); 
-      btnTEST2 = document.getElementById("taskTimer-optionsBtnTEST2");
-      btnTEST2.addEventListener("command", taskTimerOptionsWindowInstance.testFunction2, false); 
+      //Advanced tab
+      txtDateCorrection = document.getElementById("options-corr-time-txt");
+      lblDateValidation = document.getElementById("options-corr-timecheck-lbl");
+      txtDateCorrection.addEventListener("keyup", taskTimerOptionsWindowInstance.dateCheck, false);
+      mnuTasks = document.getElementById("options-corr-task-menu");
+      mnuTasksPopup = document.getElementById("options-corr-task-menupopup");
+      //btnInsertCorrection = document.getElementsByTagName("options-corr-insert-btn");
+      //btnInsertCorrection.addEventListener("command", taskTimerOptionsWindowInstance.insertCorrectionIntoDB, false);
+
+      fillTaskMenu();
+   }
+
+   this.dateCheck=function(event) {
+      //alert(txtDateCorrection.value.length);
+      if (txtDateCorrection.value.length > 0) {
+         var date = Date.parse(txtDateCorrection.value);
+         if (date != null) {
+            //input.removeClass();
+            //date_string.addClass("accept").text(date.toString("dddd, MMMM dd, yyyy h:mm:ss tt"));
+            lblDateValidation.value = date.toString("dddd, MMMM dd, yyyy h:mm:ss tt");
+         } else {
+            //input.addClass("validate_error");
+            //date_string.addClass("error").text(messages[Math.round(messages.length * Math.random())] + "...");
+            lblDateValidation.value = "Date valdation error";
+         }
+      } else {
+         //date_string.text(empty_string).addClass("empty");
+      }
    }
 
    this.testFunction=function() {
@@ -135,13 +163,7 @@ function taskTimerOptionsWindow()
 
    }
     
-    
-   /**
-    * This private method adds a task into the tasklist.
-    * @param integer ID
-    * @param string name
-    * @param integer time (in seconds)
-    **/
+
    var addTaskToTree=function(ID,name,time)
    {
       var parent=treeBody;
@@ -166,6 +188,7 @@ function taskTimerOptionsWindow()
          
       parent.appendChild(treeitem);
    }
+
 
    var removeAllTasksFromTree=function()
    {
@@ -382,10 +405,30 @@ function taskTimerOptionsWindow()
        i++;
      } while(deletedItems<selectedItems.length);
    }
+
+   var fillTaskMenu = function() {
+     var tasks=taskDB.getDataOfAllTasks();
+     for(var i in tasks)
+     {
+        var task = tasks[i];
+        addTaskToMenu(task.id, task.name);
+     }
+   }
+
+   var addTaskToMenu = function(id, name) {
+      var menuparent = mnuTasksPopup;
+      var menuitem = document.createElement("menuitem");
+      menuitem.setAttribute("key", String(id));
+      menuitem.setAttribute("label", String(name));
+      menuparent.appendChild(menuitem);
+   }
+
+   this.insertCorrectionIntoDB = function() {
+      var timesec = Date.parse(txtDateCorrection.value);
+      var timesec = timesec.valueOf()/1000;
+      //taskDB.startWorkingOnTask(, timesec);
+   }
     
-   /**
-   * This private method adds the current database content into the task list (tree).
-   **/
    var fillTreeWithDBValues=function()
    {
      var tasks=taskDB.getDataOfAllTasks();

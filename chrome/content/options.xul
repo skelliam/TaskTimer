@@ -4,6 +4,7 @@
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="TaskTimer - Options" sizemode="normal" style="width:20%;height:20%;">
 	<script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"/>
 	<script type="application/x-javascript" src="libs/sqlite-1.0.0.js"/>
+	<script type="application/x-javascript" src="libs/date.js"/>
 	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js"/>
 	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerTaskDB.js"/>
 	<script type="application/x-javascript" src="chrome://tasktimer/content/tasktimer.js"/>
@@ -12,7 +13,7 @@
 		<tabs>
 			<tab label="Tasks"/>
 			<tab label="Time Settings"/>
-			<tab label="TEST"/>
+			<tab label="Advanced"/>
 		</tabs>
 		<tabpanels>
 			<tabpanel id="taskTimer-optionsVaritiesTab">
@@ -31,19 +32,19 @@
 						<caption label="Manage existing tasks"/>
 						<tree id="taskTimer-optionsTasks" hidecolumnpicker="true" editable="true">
 							<treecols editable="true">
-								<treecol label="ID" id="taskTimer-optionsTasks-idColumn" hidden="true"/>
-								<treecol label="Name" id="taskTimer-optionsTasks-taskColumn" type="text" editable="true" flex="2"/>
+								<treecol label="ID" id="taskTimer-optionsTasks-idColumn" hidden="true" flex="0"/>
+								<treecol label="Name" id="taskTimer-optionsTasks-taskColumn" type="text" editable="true" flex="10"/>
 								<treecol label="Last 24h: Time Spent" id="taskTimer-optionsTasks-timeColumn" type="text" editable="true" flex="1"/>
-								<treecol label="Hidden" type="checkbox" id="taskTimer-optionsTasks-hiddenColumn"/>
+								<treecol label="Hidden" type="checkbox" id="taskTimer-optionsTasks-hiddenColumn" flex="1"/>
 							</treecols>
 							<treechildren id="taskTimer-optionsTasksTreeChildren"/>
 						</tree>
 					</groupbox>
 					<hbox align="right">
-						<checkbox label="Show Hidden Tasks"/>
-						<button label="Rename" id="taskTimer-optionsBtnRenameTask" tooltiptext="Rename the selected task"/>
+						<checkbox label="Show Hidden Tasks" id="options-tasks-showhidden-chk"/>
+						<button label="Rename" id="options-tasks-rename-btn" tooltiptext="Rename the selected task"/>
 						<button id="taskTimer-optionsBtnDelTask" label="Hide" disabled="true" tooltiptext="Hide the selected task"/>
-						<button label="Unhide" tooltiptext="Unhide the selected task" id="taskTimer-optionsBtnUnhideTask"/>
+						<button label="Unhide" tooltiptext="Unhide the selected task" id="options-tasks-unhide-btn"/>
 					</hbox>
 					<groupbox align="center" orient="horizontal">
 						<caption label="Sorting"/>
@@ -64,11 +65,11 @@
 				<vbox flex="1">
 					<groupbox>
 						<hbox>
-							<checkbox label="Switch to idle task when Firefox is closed"/>
+							<checkbox label="Switch to idle task when Firefox is closed" id="options-timeset-idlewhenclosed-chk"/>
 						</hbox>
 						<hbox align="center">
 							<label value="Automatically switch to the idle task at (like 17:00, or 5:00 pm):"/>
-							<textbox/>
+							<textbox id="options-timeset-idlewhen-txt"/>
 						</hbox>
 					</groupbox>
 					<groupbox>
@@ -84,18 +85,39 @@
 					<groupbox>
 						<caption label="Timeline"/>
 						<hbox>
-							<checkbox label="Show Timeline"/>
+							<checkbox label="Show Timeline" id="options-timeset-showtimeline-chk"/>
 						</hbox>
 						<hbox>
-							<checkbox label="Show Text"/>
+							<checkbox label="Show Text" id="options-timeset-showtext-chk"/>
 						</hbox>
 					</groupbox>
 				</vbox>
 			</tabpanel>
 			<tabpanel id="taskTimer-testtab">
-				<vbox>
-					<button label="TEST" id="taskTimer-optionsBtnTEST"/>
-					<button label="TEST2" id="taskTimer-optionsBtnTEST2"/>
+				<vbox flex="1">
+					<groupbox>
+						<caption label="Corrections"/>
+						<vbox orient="vertical">
+							<label value="Insert a task at a certain time to make a correction to the databse."/>
+							<hbox pack="start" dir="normal">
+								<vbox flex="1">
+									<label value="Select Task:" orient="horizontal"/>
+									<menulist flex="2" id="options-corr-task-menu">
+										<menupopup id="options-corr-task-menupopup"/>
+									</menulist>
+									<label value=" " disabled="false" hidden="false"/>
+								</vbox>
+								<vbox flex="1">
+									<label value="Enter Date/Time (i.e. &quot;Yesterday 6:00 pm&quot;):" orient="horizontal"/>
+									<textbox flex="2" id="options-corr-time-txt"/>
+									<label value="(no time entered yet)" id="options-corr-timecheck-lbl"/>
+								</vbox>
+							</hbox>
+							<hbox dir="normal" pack="end">
+								<button label="Insert Correction" id="options-corr-insert-btn"/>
+							</hbox>
+						</vbox>
+					</groupbox>
 				</vbox>
 			</tabpanel>
 		</tabpanels>
