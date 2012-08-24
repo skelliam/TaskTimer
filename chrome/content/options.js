@@ -70,8 +70,8 @@ function taskTimerOptionsWindow()
       txtDateCorrection.addEventListener("keyup", taskTimerOptionsWindowInstance.dateCheck, false);
       mnuTasks = document.getElementById("options-corr-task-menu");
       mnuTasksPopup = document.getElementById("options-corr-task-menupopup");
-      //btnInsertCorrection = document.getElementsByTagName("options-corr-insert-btn");
-      //btnInsertCorrection.addEventListener("command", taskTimerOptionsWindowInstance.insertCorrectionIntoDB, false);
+      btnInsertCorrection = document.getElementById("options-corr-insert-btn");
+      btnInsertCorrection.addEventListener("command", taskTimerOptionsWindowInstance.insertCorrectionIntoDB, false);
 
       fillTaskMenu();
    }
@@ -83,10 +83,14 @@ function taskTimerOptionsWindow()
          if (date != null) {
             //input.removeClass();
             //date_string.addClass("accept").text(date.toString("dddd, MMMM dd, yyyy h:mm:ss tt"));
+            common.removeCSSClass(lblDateValidation, "options-corr-task-timenok");
+            common.addCSSClass(lblDateValidation, "options-corr-task-timeok");
             lblDateValidation.value = date.toString("dddd, MMMM dd, yyyy h:mm:ss tt");
          } else {
             //input.addClass("validate_error");
             //date_string.addClass("error").text(messages[Math.round(messages.length * Math.random())] + "...");
+            common.removeCSSClass(lblDateValidation, "options-corr-task-timeok");
+            common.addCSSClass(lblDateValidation, "options-corr-task-timenok");
             lblDateValidation.value = "Date valdation error";
          }
       } else {
@@ -418,7 +422,7 @@ function taskTimerOptionsWindow()
    var addTaskToMenu = function(id, name) {
       var menuparent = mnuTasksPopup;
       var menuitem = document.createElement("menuitem");
-      menuitem.setAttribute("key", String(id));
+      menuitem.setAttribute("value", String(id));
       menuitem.setAttribute("label", String(name));
       menuparent.appendChild(menuitem);
    }
@@ -426,7 +430,8 @@ function taskTimerOptionsWindow()
    this.insertCorrectionIntoDB = function() {
       var timesec = Date.parse(txtDateCorrection.value);
       var timesec = timesec.valueOf()/1000;
-      //taskDB.startWorkingOnTask(, timesec);
+      taskDB.startWorkingOnTask(mnuTasks.value, timesec);
+      alert("Correction inserted into database.");
    }
     
    var fillTreeWithDBValues=function()

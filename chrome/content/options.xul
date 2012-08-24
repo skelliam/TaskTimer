@@ -108,9 +108,9 @@
 									<label value=" " disabled="false" hidden="false"/>
 								</vbox>
 								<vbox flex="1">
-									<label value="Enter Date/Time (i.e. &quot;Yesterday 6:00 pm&quot;):" orient="horizontal"/>
+									<label value="When did you start working on the task:" orient="horizontal"/>
 									<textbox flex="2" id="options-corr-time-txt"/>
-									<label value="(no time entered yet)" id="options-corr-timecheck-lbl"/>
+									<label value="(no time entered yet)" id="options-corr-timecheck-lbl" style="font-weight:bold;"/>
 								</vbox>
 							</hbox>
 							<hbox dir="normal" pack="end">

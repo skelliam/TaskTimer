@@ -44,3 +44,19 @@ window
 {
     width: 3em;
 }
+
+.options-corr-task-timeok
+{
+   color: #33CC00;
+   font-weight: bold;
+}
+
+.options-corr-task-timenok
+{
+   color: #FF0000;
+   font-weight: bold;
+}
+
+.options-corr-task-timeunk
+{
+}
