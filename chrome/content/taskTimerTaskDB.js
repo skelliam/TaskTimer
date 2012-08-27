@@ -33,7 +33,7 @@ function taskTimerTaskDB()
       /* tasks:
        *    id:    An ID for the project
        *    name:  The name of the project
-       *    hidden:  Whether or not this task should be hidden (not used anymore)
+       *    hidden:  Whether or not this task should be hidden
        */
       sqldb.execute("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, hidden INTEGER, active INTEGER)");
       
@@ -46,10 +46,9 @@ function taskTimerTaskDB()
 
       //FIXME: this is not very reliable, make this better.  Somehow I want to ENSURE that id #1 is the idle task.
       var tasks = sqldb.execute("SELECT * from tasks");
-      var query = sprintf("INSERT INTO tasks (name, active, hidden) VALUES ('%s', %d, %d)", 'Idle', 0, 0);
       if ((tasks.length == 0) || (tasks == null) || (tasks == 0)) {
+         sqldb.execute(sprintf("INSERT INTO tasks (name, active, hidden) VALUES ('%s', %d, %d)", 'Idle', 0, 0));
          alert('First run: Database is initialized!');
-         sqldb.execute(query);
       }
     }
 	
@@ -199,25 +198,24 @@ function taskTimerTaskDB()
        return tasks;
     }
 
-    this.getTimeWorkedOnTaskInRange=function(id, start, end)
+    this.getTimeWorkedOnTaskInRange=function(id, startsec, endsec)
     {
        var sum = 0;
        var oldtime = 0;
-       var records = sqldb.execute(sprintf("SELECT * FROM worktimes WHERE time > %d AND time < %d ORDER BY time", start, end));
+       var records = sqldb.execute(sprintf("SELECT * FROM worktimes WHERE time >= %d AND time <= %d ORDER BY time", startsec, endsec));
+
        for (var i=0; i<records.length; i++)
        {
-
-          if (records[i].taskid == id)  //this is the task we are interested in, and we started working on it.
+          if (records[i].taskid == id)  //this is the task we are interested in
           {
              if (oldtime > 0) {
-                //if for some reason there are double entries
+                //if there are double entries
                 sum += (records[i].time - oldtime);
              }
-             if (i == records.length) {
+             if (i == (records.length-1)) {
                 //this is the last record to process.  If it is the task we are interested in, 
-                //also add the whatever time until right this instant
-                var now = new Date().getTime()/1000;
-                sum += (now - records[i].time)
+                //also add up until the end time requested
+                sum += (endsec - records[i].time)
              }             
              oldtime = records[i].time;
           }
@@ -228,9 +226,7 @@ function taskTimerTaskDB()
                 sum += (records[i].time - oldtime);
                 oldtime = 0;
              }
-             
           }
-             
        }
        return sum;  //should be a sum of time worked on this task from start-->end
     }
@@ -265,7 +261,7 @@ function taskTimerTaskDB()
     {
        //determine what the most recent task entry was
        var stat = 0;
-       var result = sqldb.execute("SELECT MAX(time), taskid FROM worktimes");
+       var result = sqldb.execute("SELECT MAX(time), taskid FROM worktimes");  //make sure that the selection is not larger than the time now
        if (result.length > 0) {
           stat = result.taskid;
        }
