@@ -259,11 +259,11 @@ function taskTimerTaskDB()
 
     this.getMostRecentTask=function()
     {
-       //determine what the most recent task entry was
+       //get the most recent task that is less or equal to the time right now
        var stat = 0;
-       var result = sqldb.execute("SELECT MAX(time), taskid FROM worktimes");  //make sure that the selection is not larger than the time now
+       var result = sqldb.execute( sprintf("SELECT MAX(time) AS time, taskid FROM worktimes WHERE time <= %d", (new Date().getTime()/1000)) );
        if (result.length > 0) {
-          stat = result.taskid;
+          stat = result[0].taskid;
        }
        return stat;
     }
