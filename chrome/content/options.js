@@ -33,6 +33,7 @@ function taskTimerOptionsWindow()
    var txtDateCorrection = null;
    var lblDateValidation = null;
    var btnInsertCorrection = null;
+   var txtNoteCorrection = null;
        
    this.init=function()
    {
@@ -72,6 +73,7 @@ function taskTimerOptionsWindow()
       mnuTasksPopup = document.getElementById("options-corr-task-menupopup");
       btnInsertCorrection = document.getElementById("options-corr-insert-btn");
       btnInsertCorrection.addEventListener("command", taskTimerOptionsWindowInstance.insertCorrectionIntoDB, false);
+      txtNoteCorrection = document.getElementById("options-corr-note-txt");
 
       fillTaskMenu();
    }
@@ -103,11 +105,6 @@ function taskTimerOptionsWindow()
                   .getService(Components.interfaces.nsIWindowMediator)
                   .getMostRecentWindow('navigator:browser');
       win.gBrowser.selectedTab = win.gBrowser.addTab("chrome://tasktimer/content/summary.html");
-   }
-
-   this.testFunction2=function() {
-      self.okButtonCommand();
-      alert("hello");
    }
     
    /**
@@ -428,9 +425,9 @@ function taskTimerOptionsWindow()
    }
 
    this.insertCorrectionIntoDB = function() {
-      var timesec = Date.parse(txtDateCorrection.value);
-      var timesec = timesec.valueOf()/1000;
-      taskDB.startWorkingOnTask(mnuTasks.value, timesec);
+      var timesec = Date.parse(txtDateCorrection.value).valueOf()/1000;
+      var note = txtNoteCorrection.value;
+      taskDB.startWorkingOnTask(mnuTasks.value, timesec, note);
       alert("Correction inserted into database.");
    }
     

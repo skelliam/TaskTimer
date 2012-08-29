@@ -112,6 +112,11 @@
 									<textbox flex="2" id="options-corr-time-txt"/>
 									<label value="(no time entered yet)" id="options-corr-timecheck-lbl" style="font-weight:bold;"/>
 								</vbox>
+								<vbox flex="1">
+									<label value="Note (optional):"/>
+									<textbox flex="2" id="options-corr-note-txt"/>
+									<label value=" "/>
+								</vbox>
 							</hbox>
 							<hbox dir="normal" pack="end">
 								<button label="Insert Correction" id="options-corr-insert-btn"/>

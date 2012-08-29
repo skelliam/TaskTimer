@@ -17,18 +17,18 @@
 
 function taskTimerTaskDB()
 {
-    var self=this;
+   var self=this;
 
-    const common=new taskTimerCommon();
-    const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
-    const taskDB=storedPrefs.getBranch("extensions.tasktimer.tasks.");
-    const sqldb = new SQLite("tasktimer.sqlite", {location:'ProfD'});
+   const common=new taskTimerCommon();
+   const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
+   const taskDB=storedPrefs.getBranch("extensions.tasktimer.tasks.");
+   const sqldb = new SQLite("tasktimer.sqlite", {location:'ProfD'});
     
-    /**
-     * This method generates a basic preconfigured task database.
-     **/
-    this.initTaskDB=function()
-    {
+   /**
+    * This method generates a basic preconfigured task database.
+    **/
+   this.initTaskDB=function()
+   {
       //common.log("taskTimer","Initiating Task Database\n");
       /* tasks:
        *    id:    An ID for the project
@@ -42,15 +42,30 @@ function taskTimerTaskDB()
        *    start/stop:  An integer representing whether or not this entry was to start working or to stop working.
        *    taskid:       Which project ID this entry is for.
        */
-      sqldb.execute("CREATE TABLE IF NOT EXISTS worktimes (time INTEGER, taskid INTEGER)");       
+      sqldb.execute("CREATE TABLE IF NOT EXISTS worktimes (time INTEGER, taskid INTEGER, note STRING)");       
 
-      //FIXME: this is not very reliable, make this better.  Somehow I want to ENSURE that id #1 is the idle task.
+      //TODO: this is not very reliable, make this better.  Somehow I want to ENSURE that id #1 is the idle task.
       var tasks = sqldb.execute("SELECT * from tasks");
       if ((tasks.length == 0) || (tasks == null) || (tasks == 0)) {
          sqldb.execute(sprintf("INSERT INTO tasks (name, active, hidden) VALUES ('%s', %d, %d)", 'Idle', 0, 0));
          alert('First run: Database is initialized!');
       }
-    }
+      
+      //Alter tables if column doesn't exist
+      var worktimes_note = 0;
+
+      var info = sqldb.execute("PRAGMA table_info(worktimes)");
+      for (var i=0; i<info.length; i++) {
+         //Application.console.log(common.dumpObject(info[i]));
+         if (info[i].name == "note") {
+            worktimes_note = 1;
+         }
+      }
+
+      if (worktimes_note == 0) {
+         sqldb.execute("ALTER TABLE worktimes ADD COLUMN note STRING");
+      }
+   }
 	
     /**
      * This method counts the number of available tasks in the database.
@@ -268,17 +283,21 @@ function taskTimerTaskDB()
        return stat;
     }
 
-    var makeWorkEntry=function(id, time)
+    var makeWorkEntry=function(id, time, note)
     {
-       //only add an entry if it is different from the most recent one, we don't need double entries
+       //only add an entry if it is different from the most recent one, 
+       //we don't need double entries
        if (id != self.getMostRecentTask()) {
-          sqldb.execute(sprintf("INSERT INTO worktimes (taskid, time) VALUES(%s, %s)", id, parseInt(time)));
+          sqldb.execute(sprintf("INSERT INTO worktimes (taskid, time, note) VALUES(%s, %s, '%s')", id, parseInt(time), note));
        }
     }
 
-    this.startWorkingOnTask=function(id, time)
+    this.startWorkingOnTask=function(id, time, note)
     {
-        makeWorkEntry(id, time);
+       if (typeof(note) === 'undefined') {
+          note = "";
+       }
+       makeWorkEntry(id, time, note);
     }
 
     /**

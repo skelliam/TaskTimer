@@ -970,6 +970,28 @@ function taskTimerCommon()
        return parseInt(new Date().getTime()/1000);  //The standard implementation returns milliseconds, I want seconds.
     }
 
+    //dumpObject taken from: http://hg.mozilla.org/chatzilla/file/59b46c0bf716/js/lib/utils.js#l136
+    //GPL2
+    this.dumpObject=function(o, pfx, sep) 
+    { 
+        var p; 
+        var s = ""; 
+    
+        sep = (typeof sep == "undefined") ? " = " : sep; 
+        pfx = (typeof pfx == "undefined") ? "" : pfx; 
+    
+        for (p in o) 
+        { 
+            if (typeof (o[p]) != "function") 
+                s += pfx + p + sep + o[p] + "\n"; 
+            else 
+                s += pfx + p + sep + "function\n"; 
+        } 
+    
+        return s; 
+    }
+    
+
 }
 
 function taskTimerInvalidTaskNameException(msg)
