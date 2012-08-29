@@ -274,6 +274,23 @@ function taskTimer()
         time=parseInt(time);
         tasktimerCountdown.setAttribute("value", common.getTimeStringFromTime(time));
     }
+
+    //This function will update the startingTSofCurrentCountdown value, which is what the timer uses as a starting point.
+    this.refreshStartTime=function()
+    {
+        //This is the time that the counter was started.  This time is also stored in the database.
+        startingTSofCurrentCountdown=common.getTimeSec()
+
+        //Now this is a little tricky -- I want to fake out the timer.  If the user wants an 
+        //accumulated time, I want to figure out how much time he has logged on the task so far, and
+        //then offset the time by that much.
+        var prefs = common.getReportingPrefs();
+        if (prefs.showAccumulatedTime == true) {
+           var timesince = Date.parse(prefs.showAccumulatedTimeSince);
+           var timeontask = taskDB.getTimeWorkedOnTaskInRange(idOfCurrentSteepingTask, timesince.getTime()/1000, common.getTimeSec());
+           startingTSofCurrentCountdown -= timeontask;  //offset 
+        }
+    }
     
     /**
      * This public method starts the countdown for the currently choosen task.
@@ -294,18 +311,8 @@ function taskTimer()
         //Setting tootip icon
         tasktimerToolbarbutton.setAttribute("image","chrome://tasktimer/skin/bulldozer_24.png");
 
-        //This is the time that the counter was started.  This time is also stored in the database.
-        startingTSofCurrentCountdown=common.getTimeSec()
-
-        //Now this is a little tricky -- I want to fake out the timer.  If the user wants an 
-        //accumulated time, I want to figure out how much time he has logged on the task so far, and
-        //then offset the time by that much.
-        var prefs = common.getReportingPrefs();
-        if (prefs.showAccumulatedTime == true) {
-           var timesince = Date.parse(prefs.showAccumulatedTimeSince);
-           var timeontask = taskDB.getTimeWorkedOnTaskInRange(idOfCurrentSteepingTask, timesince.getTime()/1000, common.getTimeSec());
-           startingTSofCurrentCountdown -= timeontask;  //offset 
-        }
+        //refresh the start time the timer uses
+        self.refreshStartTime();
 
         //start working on the task, which means store an entry to it in the DB
         taskDB.startWorkingOnTask(idOfCurrentSteepingTask, common.getTimeSec());
