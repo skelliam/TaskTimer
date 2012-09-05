@@ -22,7 +22,6 @@ function taskTimerOptionsWindow()
     
    var tree=null; //container for the tree element (teelist)
    var treeBody=null; //container for tree body (treechildren element)
-   var deleteButton=null; //container for the task delete button
    var nameTxtField=document.getElementById("taskTimer-optionsNewTaskName");
    var selSortingOrder=null; //container for select box with sorting order
    var widgetShowTimeTxtField=null;
@@ -50,8 +49,6 @@ function taskTimerOptionsWindow()
       tree=document.getElementById("taskTimer-optionsTasks");
       tree.addEventListener("select",taskTimerOptionsWindowInstance.treeSelected,false);
       treeBody=document.getElementById("taskTimer-optionsTasksTreeChildren");
-      deleteButton=document.getElementById("taskTimer-optionsBtnDelTask");
-      deleteButton.addEventListener("command",taskTimerOptionsWindowInstance.deleteSelectedTasks,false);
        
       fillTreeWithDBValues();
        
@@ -349,7 +346,6 @@ function taskTimerOptionsWindow()
    this.treeSelected=function()
    {
       var selectedItems=getSelectedTreeIndexes();
-      deleteButton.setAttribute("disabled",((selectedItems.length>0)?"false":"true"));
    }
     
    /**
@@ -427,7 +423,7 @@ function taskTimerOptionsWindow()
    this.insertCorrectionIntoDB = function() {
       var timesec = Date.parse(txtDateCorrection.value).valueOf()/1000;
       var note = txtNoteCorrection.value;
-      taskDB.startWorkingOnTask(mnuTasks.value, timesec, note);
+      taskDB.startWorkingOnTask(mnuTasks.value, timesec, note, true);
       alert("Correction inserted into database.");
    }
     

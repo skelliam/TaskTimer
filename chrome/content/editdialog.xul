@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<hbox/>
 	<vbox>
-		<label value="label"/>
-		<textbox/>
+		<label value="Enter note to store for the current task:"/>
+		<textbox id="enternote-notevalue-txt"/>
 		<hbox pack="end">
-			<button label="button"/>
-			<button label="button"/>
+			<button label="OK" id="enternote-ok-btn" oncommand="alert(&quot;clicked&quot;);"/>
+			<button label="Cancel" id="enternote-cancel-btn"/>
 		</hbox>
 	</vbox>
 </window>

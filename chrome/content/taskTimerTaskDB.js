@@ -283,21 +283,25 @@ function taskTimerTaskDB()
        return stat;
     }
 
-    var makeWorkEntry=function(id, time, note)
+    //this function is private
+    var makeWorkEntry=function(id, time, note, force_entry)
     {
        //only add an entry if it is different from the most recent one, 
        //we don't need double entries
-       if (id != self.getMostRecentTask()) {
+       if ( (id != self.getMostRecentTask()) || (force_entry == true) ) {
           sqldb.execute(sprintf("INSERT INTO worktimes (taskid, time, note) VALUES(%s, %s, '%s')", id, parseInt(time), note));
        }
     }
 
-    this.startWorkingOnTask=function(id, time, note)
+    this.startWorkingOnTask=function(id, time, note, force_entry)
     {
        if (typeof(note) === 'undefined') {
           note = "";
        }
-       makeWorkEntry(id, time, note);
+       if (typeof(force_entry) === 'undefined') {
+          force_entry = false;
+       }
+       makeWorkEntry(id, time, note, force_entry);
     }
 
     /**

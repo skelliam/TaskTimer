@@ -42,9 +42,7 @@
 					</groupbox>
 					<hbox align="right">
 						<checkbox label="Show Hidden Tasks" id="options-tasks-showhidden-chk"/>
-						<button label="Rename" id="options-tasks-rename-btn" tooltiptext="Rename the selected task"/>
-						<button id="taskTimer-optionsBtnDelTask" label="Hide" disabled="true" tooltiptext="Hide the selected task"/>
-						<button label="Unhide" tooltiptext="Unhide the selected task" id="options-tasks-unhide-btn"/>
+						<button label="Edit" tooltiptext="Unhide the selected task" id="options-tasks-edit-btn"/>
 					</hbox>
 					<groupbox align="center" orient="horizontal">
 						<caption label="Sorting"/>
