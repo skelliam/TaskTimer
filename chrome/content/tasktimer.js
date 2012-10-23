@@ -287,6 +287,11 @@ function taskTimer()
         var prefs = common.getReportingPrefs();
         if (prefs.showAccumulatedTime == true) {
            var timesince = Date.parse(prefs.showAccumulatedTimeSince);
+           if (timesince == null) {
+              alert("The setting to show accumulated time is turned on, but there is no time value entered!\n  Setting default 8:00.");
+              prefs.showAccumulatedTimeSince = "8:00";
+              common.setReportingPrefs(prefs);  /* store the values in the db */
+           }
            var timeontask = taskDB.getTimeWorkedOnTaskInRange(idOfCurrentSteepingTask, timesince.getTime()/1000, common.getTimeSec());
            startingTSofCurrentCountdown -= timeontask;  //offset 
         }
