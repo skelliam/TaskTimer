@@ -204,6 +204,8 @@ function taskTimerOptionsWindow()
    this.okButtonCommand=function()
    {
       saveReporting();
+      saveSortingOrder();
+
       if(treeBody.getElementsByTagName("treerow").length===0)
       {
          alert(common.getString("options.validate.noTaskInList"));
@@ -227,7 +229,7 @@ function taskTimerOptionsWindow()
          if(valid)
          {
             writeTreeTasksinDB();
-            saveSortingOrder();
+
             saveReporting();
             saveAlerts();
             saveSounds();

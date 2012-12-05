@@ -205,12 +205,27 @@ function taskTimerTaskDB()
     }
 
 
-    this.getDataOfAllTasks=function(includehidden,sorting)
+    this.getDataOfAllTasks=function(includehidden, sorting)
     {
        //includehidden=((includehidden===true)?true:false);
        //TODO handle includehidden and sorting
-       var tasks = sqldb.execute("SELECT * from tasks");
-       return tasks;
+       var sql = "SELECT * from tasks ";
+       switch (sorting) {
+          case "id":
+             sql += "ORDER BY id ASC ";
+             break;
+          case "name ASC":
+             sql += "ORDER BY name ASC ";
+             break;
+          case "name DESC":
+             sql += "ORDER BY name DESC ";
+             break;
+          case "time ASC":
+          case "time DESC":
+          default:
+             break;
+       }
+       return sqldb.execute(sql);
     }
 
     this.getTimeWorkedOnTaskInRange=function(id, startsec, endsec)
