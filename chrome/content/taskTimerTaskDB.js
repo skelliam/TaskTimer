@@ -34,8 +34,10 @@ function taskTimerTaskDB()
        *    id:    An ID for the project
        *    name:  The name of the project
        *    hidden:  Whether or not this task should be hidden
+       *    projectcode:  A project code for the project
+       *    desc:  A short description of the project
        */
-      sqldb.execute("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, hidden INTEGER, active INTEGER)");
+      sqldb.execute("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, hidden INTEGER, active INTEGER, projectcode STRING, desc STRING)");
       
       /* worktimes:
        *    time:        An integer value representing time since 1/1/1970 00:00:00 in seconds (Unix style type)
@@ -51,8 +53,9 @@ function taskTimerTaskDB()
          alert('First run: Database is initialized!');
       }
       
-      //Alter tables if column doesn't exist
+      //------ Alter tables if column doesn't exist -------
       var worktimes_note = 0;
+      var tasks_projectcode = 0;
 
       var info = sqldb.execute("PRAGMA table_info(worktimes)");
       for (var i=0; i<info.length; i++) {
@@ -62,8 +65,20 @@ function taskTimerTaskDB()
          }
       }
 
+      var info = sqldb.execute("PRAGMA table_info(tasks)");
+      for (var i=0; i<info.length; i++) {
+         if (info[i].name == "projectcode") {
+            tasks_projectcode = 1;
+         }
+      }
+
       if (worktimes_note == 0) {
          sqldb.execute("ALTER TABLE worktimes ADD COLUMN note STRING");
+      }
+
+      if (tasks_projectcode == 0) {
+         sqldb.execute("ALTER TABLE tasks ADD COLUMN projectcode STRING");
+         sqldb.execute("ALTER TABLE tasks ADD COLUMN desc STRING");
       }
    }
 	
@@ -100,6 +115,17 @@ function taskTimerTaskDB()
     this.addTask=function(name,time,checked)
     {
        sqldb.execute(sprintf("INSERT INTO tasks (name, active, hidden) VALUES('%s', %d, %d)", name, (checked ? 1 : 0), 0));
+    }
+
+    /**
+     * Update an existing task
+     */
+    this.updateTask=function(id, field, newvalue)
+    {
+       var ret = null;
+       var query = sprintf("UPDATE tasks SET %s='%s' WHERE id=%d", field, newvalue, id);
+       ret = sqldb.execute(query);
+       return ret;
     }
     
     /**
@@ -200,8 +226,9 @@ function taskTimerTaskDB()
     this.getTaskData=function(id)
     {
        //Get all fields of a specific task
-       task = sqldb.execute(sprintf("SELECT * FROM tasks WHERE id=%d", id));
-       return task;       
+       var task = sqldb.execute(sprintf("SELECT * FROM tasks WHERE id=%d", id));
+       /* TODO: return error if id not found */
+       return task[0];   /* return only one task */
     }
 
 

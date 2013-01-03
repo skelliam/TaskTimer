@@ -1,17 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<groupbox>
-		<vbox align="center">
-			<hbox>
-				<label value="Name" flex="1"/>
-				<textbox flex="1"/>
-				<checkbox label="Hidden" flex="1"/>
-			</hbox>
-			<hbox>
-				<button label="OK"/>
-				<button label="Cancel"/>
-			</hbox>
-		</vbox>
-	</groupbox>
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="taskTimer - Edit Task" sizemode="normal" style="width:20%;height:20%;">
+   <script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"/>
+   <script type="application/x-javascript" src="libs/sqlite-1.0.0.js" id="sqlite"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js" id="common"/>
+   <script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerTaskDB.js" id="db"/>
+   <script type="application/x-javascript" src="chrome://tasktimer/content/tasktimer.js"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/taskedit.js" id="taskedit"/>
+	<box>
+		<groupbox flex="1">
+			<caption label="Task Properties"/>
+			<grid flex="1">
+				<columns>
+					<column/>
+					<column flex="1"/>
+				</columns>
+				<rows>
+					<row align="center">
+						<hbox pack="end">
+							<label value="Task Name:"/>
+						</hbox>
+						<hbox>
+							<textbox flex="1" id="taskprops-txtTaskName"/>
+						</hbox>
+					</row>
+					<row align="center">
+						<hbox pack="end">
+							<label value="Project Code:"/>
+						</hbox>
+						<hbox>
+							<textbox flex="1" id="taskprops-txtProjectCode"/>
+						</hbox>
+					</row>
+					<row align="center">
+						<hbox pack="end">
+							<label value="Description:"/>
+						</hbox>
+						<hbox>
+							<textbox flex="1" id="taskprops-txtDescription"/>
+						</hbox>
+					</row>
+					<row align="center">
+						<hbox pack="end">
+							<label value="Hidden:"/>
+						</hbox>
+						<hbox>
+							<checkbox id="taskprops-chkHidden"/>
+						</hbox>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+	</box>
+	<hbox align="right">
+		<button label="OK" id="taskprops-btnOK"/>
+		<button label="Cancel" id="taskprops-btnCancel"/>
+	</hbox>
 </window>

@@ -26,6 +26,9 @@ function taskTimerOptionsWindow()
    var selSortingOrder=null; //container for select box with sorting order
    var widgetShowTimeTxtField=null;
 
+   //tasks tab containers
+   var btnEditTask = null;
+
    //advanced tab containers
    var mnuTasks = null;
    var mnuTasksPopup = null;
@@ -44,6 +47,8 @@ function taskTimerOptionsWindow()
       //task types tab
       nameTxtField=document.getElementById("taskTimer-optionsNewTaskName");
       nameTxtField.addEventListener("keypress",taskTimerOptionsWindowInstance.addTxtFieldsKeypress,false);
+      btnEditTask = document.getElementById("options-tasks-edit-btn");
+      btnEditTask.addEventListener("command", taskTimerOptionsWindowInstance.openEditTaskDialog, false);      
        
       document.getElementById("taskTimer-optionsBtnAddTask").addEventListener("command",taskTimerOptionsWindowInstance.addButtonCommand,false);
       tree=document.getElementById("taskTimer-optionsTasks");
@@ -167,7 +172,7 @@ function taskTimerOptionsWindow()
       var parent=treeBody;
       var treerow=document.createElement("treerow");
       var treecell=document.createElement("treecell");
-        treecell.setAttribute("label",ID);
+      treecell.setAttribute("label",ID);
       treecell.setAttribute("editable","false");
       treerow.appendChild(treecell);
        
@@ -427,6 +432,19 @@ function taskTimerOptionsWindow()
       var note = txtNoteCorrection.value;
       taskDB.startWorkingOnTask(mnuTasks.value, timesec, note, true);
       alert("Correction inserted into database.");
+   }
+
+   /* open the edit task dialog when requested */
+   this.openEditTaskDialog = function() {
+      if (tree.currentIndex == -1) {
+         alert("You haven't selected a task.");
+      }
+      else {
+        /* open the edit task dialog, and pass it the value of the task id that is selected */
+        var selectedtaskid = tree.view.getCellText(tree.currentIndex, tree.columns.getColumnAt(0));
+        window.openDialog("chrome://tasktimer/content/taskedit.xul", "", "centerscreen,dialog",
+                          selectedtaskid);
+      }
    }
     
    var fillTreeWithDBValues=function()
