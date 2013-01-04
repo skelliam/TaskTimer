@@ -55,7 +55,7 @@ function taskTimerEditTaskWindow()
       txtTaskName.value = result.name;
       txtProjectCode.value = result.projectcode;
       txtDescription.value = result.desc;
-      chkHidden.value = result.hidden;
+      chkHidden.checked = (result.hidden ? true : false);
    }
 
    this.okButtonCommand=function() 
@@ -64,7 +64,7 @@ function taskTimerEditTaskWindow()
       taskDB.updateTask(taskID, "name", txtTaskName.value);
       taskDB.updateTask(taskID, "projectcode", txtProjectCode.value);
       taskDB.updateTask(taskID, "desc", txtDescription.value);
-      taskDB.updateTask(taskID, "hidden", chkHidden.value);
+      taskDB.updateTask(taskID, "hidden", (chkHidden.checked ? 1 : 0));
       window.close();
    }
 

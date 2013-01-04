@@ -30,12 +30,12 @@
 					</groupbox>
 					<groupbox>
 						<caption label="Manage existing tasks"/>
-						<tree id="taskTimer-optionsTasks" hidecolumnpicker="true" editable="true">
+						<tree id="taskTimer-optionsTasks" hidecolumnpicker="true" editable="false" seltype="single" enableColumnsDrag="false">
 							<treecols editable="true">
 								<treecol label="ID" id="taskTimer-optionsTasks-idColumn" hidden="true" flex="0"/>
-								<treecol label="Name" id="taskTimer-optionsTasks-taskColumn" type="text" editable="true" flex="10"/>
-								<treecol label="Last 24h: Time Spent" id="taskTimer-optionsTasks-timeColumn" type="text" editable="true" flex="1"/>
-								<treecol label="Hidden" type="checkbox" id="taskTimer-optionsTasks-hiddenColumn" flex="1"/>
+								<treecol label="Name" id="taskTimer-optionsTasks-taskColumn" type="text" editable="false" flex="10"/>
+								<treecol label="Last 24h: Time Spent" id="taskTimer-optionsTasks-timeColumn" type="text" editable="false" flex="1"/>
+								<treecol label="Hidden" type="text" id="taskTimer-optionsTasks-hiddenColumn" flex="1"/>
 							</treecols>
 							<treechildren id="taskTimer-optionsTasksTreeChildren"/>
 						</tree>

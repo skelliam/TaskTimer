@@ -28,6 +28,7 @@ function taskTimerOptionsWindow()
 
    //tasks tab containers
    var btnEditTask = null;
+   var chkShowHidden = null;
 
    //advanced tab containers
    var mnuTasks = null;
@@ -49,10 +50,13 @@ function taskTimerOptionsWindow()
       nameTxtField.addEventListener("keypress",taskTimerOptionsWindowInstance.addTxtFieldsKeypress,false);
       btnEditTask = document.getElementById("options-tasks-edit-btn");
       btnEditTask.addEventListener("command", taskTimerOptionsWindowInstance.openEditTaskDialog, false);      
+      chkShowHidden = document.getElementById("options-tasks-showhidden-chk");
+      chkShowHidden.addEventListener("click", taskTimerOptionsWindowInstance.refreshTree, false);
        
       document.getElementById("taskTimer-optionsBtnAddTask").addEventListener("command",taskTimerOptionsWindowInstance.addButtonCommand,false);
       tree=document.getElementById("taskTimer-optionsTasks");
       tree.addEventListener("select",taskTimerOptionsWindowInstance.treeSelected,false);
+      tree.addEventListener("dblclick", taskTimerOptionsWindowInstance.openEditTaskDialog, false);
       treeBody=document.getElementById("taskTimer-optionsTasksTreeChildren");
        
       fillTreeWithDBValues();
@@ -158,33 +162,41 @@ function taskTimerOptionsWindow()
      else
      {
       taskDB.addTask(taskName, 0, 0);
-      removeAllTasksFromTree();  //clear out the tree
-      fillTreeWithDBValues();    //refresh the tree
+      self.refreshTree();
       nameTxtField.value="";     //clear the inputboxes
       nameTxtField.focus();
      }
 
    }
+
+   this.refreshTree=function()
+   {
+      removeAllTasksFromTree();  //clear out the tree
+      fillTreeWithDBValues();    //refresh the tree
+   }
     
 
-   var addTaskToTree=function(ID,name,time)
+   var addTaskToTree=function(taskobj)
    {
       var parent=treeBody;
       var treerow=document.createElement("treerow");
       var treecell=document.createElement("treecell");
-      treecell.setAttribute("label",ID);
-      treecell.setAttribute("editable","false");
+
+      treecell.setAttribute("label", taskobj.id);
       treerow.appendChild(treecell);
        
       var treeNameCell=document.createElement("treecell");
-      treeNameCell.setAttribute("label",name);
-      treeNameCell.setAttribute("editable","true");
+      treeNameCell.setAttribute("label", taskobj.name);
       treerow.appendChild(treeNameCell);
        
       var treeTimeCell=document.createElement("treecell");
-      treeTimeCell.setAttribute("label",common.getTimeStringFromTime(time));
-      treeTimeCell.setAttribute("editable","true");
+      //treeTimeCell.setAttribute("label",common.getTimeStringFromTime(time));
+      treeTimeCell.setAttribute("label", "fix");
       treerow.appendChild(treeTimeCell);
+
+      var treeHiddenCell=document.createElement("treecell");
+      treeHiddenCell.setAttribute("label", (taskobj.hidden ? "YES" : ""));
+      treerow.appendChild(treeHiddenCell);
          
       var treeitem=document.createElement("treeitem");
       treeitem.appendChild(treerow);
@@ -442,8 +454,9 @@ function taskTimerOptionsWindow()
       else {
         /* open the edit task dialog, and pass it the value of the task id that is selected */
         var selectedtaskid = tree.view.getCellText(tree.currentIndex, tree.columns.getColumnAt(0));
-        window.openDialog("chrome://tasktimer/content/taskedit.xul", "", "centerscreen,dialog",
+        window.openDialog("chrome://tasktimer/content/taskedit.xul", "", "centerscreen,dialog,modal,resizable,scrollbar,dependent",
                           selectedtaskid);
+        self.refreshTree();
       }
    }
     
@@ -455,9 +468,14 @@ function taskTimerOptionsWindow()
       var task=tasks[i];
       //don't put the idle task in the tree
       if (task.id != 1) {
-         //XXX: Right now showing time for last 24 hrs.
-         var time = taskDB.getTimeWorkedOnTaskInRange(task.id, common.getTimeSec()-(24*60*60), common.getTimeSec());
-         addTaskToTree(task.id, task.name, time);  //time in seconds gets converted to string
+         if ((chkShowHidden.checked != true) && (task.hidden == true)) {
+            continue;
+         }
+         else {
+            //XXX: Right now showing time for last 24 hrs.
+            var time = taskDB.getTimeWorkedOnTaskInRange(task.id, common.getTimeSec()-(24*60*60), common.getTimeSec());
+            addTaskToTree(task);  //time in seconds gets converted to string
+         }
       }
      }
    }
