@@ -155,25 +155,28 @@ function taskTimer()
         for(i=0; i<tasks.length; i++)
         {
             var task=tasks[i];
-            var taskNode=document.createElement("menuitem");
-            taskNode.setAttribute("name","tasktimer-task");
-            taskNode.setAttribute("value",task["id"]);
-            taskNode.setAttribute("label",task["name"]);  //this is the label on the context menu
-            taskNode.setAttribute("type","radio");
-            if(task["active"] != 0)
+            if (task.hidden != true) 
             {
-                taskNode.setAttribute("checked","true");
-            }
+               var taskNode=document.createElement("menuitem");
+               taskNode.setAttribute("name","tasktimer-task");
+               taskNode.setAttribute("value",task["id"]);
+               taskNode.setAttribute("label",task["name"]);  //this is the label on the context menu
+               taskNode.setAttribute("type","radio");
+               if(task["active"] != 0)
+               {
+                   taskNode.setAttribute("checked","true");
+               }
 
-            //extract the numeric ID from the menuitem ID which should be something like 'tasktimer-task1"
-            taskNode.addEventListener("command", 
-                                     function() {
-                                                  taskTimerInstance.taskChoosen(parseInt(this.getAttribute("value")));
-                                                           
-                                                }
-                                     ,false); 
-            
-            tasktimerContextMenu.insertBefore(taskNode,endSeparator);
+               //extract the numeric ID from the menuitem ID which should be something like 'tasktimer-task1"
+               taskNode.addEventListener("command", 
+                                        function() {
+                                                     taskTimerInstance.taskChoosen(parseInt(this.getAttribute("value")));
+                                                              
+                                                   }
+                                        ,false); 
+               
+               tasktimerContextMenu.insertBefore(taskNode,endSeparator);
+            }
         }
     }
     
