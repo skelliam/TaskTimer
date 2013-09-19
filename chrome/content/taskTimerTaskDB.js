@@ -50,7 +50,7 @@ function taskTimerTaskDB()
       var tasks = sqldb.execute("SELECT * from tasks");
       if ((tasks.length == 0) || (tasks == null) || (tasks == 0)) {
          sqldb.execute(sprintf("INSERT INTO tasks (name, active, hidden) VALUES ('%s', %d, %d)", 'Idle', 0, 0));
-         alert('First run: Database is initialized!');
+         alert('Tasktimer first run: Database is initialized!');
       }
       
       //------ Alter tables if column doesn't exist -------
@@ -93,7 +93,7 @@ function taskTimerTaskDB()
     }
     
     /**
-     * This private method checks if a certain task is marked for deletion (hidden).
+     * This private method checks if a certain task is hidden.
      * @param integer taskID
      * @return bool hidden oder not?
      * @throws taskTimerInvalidTaskIDException
@@ -234,9 +234,10 @@ function taskTimerTaskDB()
 
     this.getDataOfAllTasks=function(includehidden, sorting)
     {
-       //includehidden=((includehidden===true)?true:false);
-       //TODO handle includehidden and sorting
-       var sql = "SELECT * from tasks ";
+       var sql = "SELECT * FROM tasks ";
+       if (includehidden == false) {
+          sql += "WHERE hidden=0 ";
+       }
        switch (sorting) {
           case "id":
              sql += "ORDER BY id ASC ";

@@ -423,7 +423,7 @@ function taskTimerOptionsWindow()
    }
 
    var fillTaskMenu = function() {
-     var tasks=taskDB.getDataOfAllTasks();
+     var tasks=taskDB.getDataOfAllTasks(false, "id");
      for(var i in tasks)
      {
         var task = tasks[i];
