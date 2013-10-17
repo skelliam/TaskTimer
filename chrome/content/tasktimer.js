@@ -317,7 +317,8 @@ function taskTimer()
         tasktimerCountdownBox.setAttribute("tooltiptext", tooltipText);
 
         //Setting tootip icon
-        tasktimerToolbarbutton.setAttribute("image","chrome://tasktimer/skin/bulldozer_24.png");
+        //tasktimerToolbarbutton.setAttribute("image", "chrome://tasktimer/skin/bulldozer_24.png");
+        tasktimerToolbarbutton.setAttribute("image", "data:image/png;base64," + taskDB.getIconOfCurrentTask());
 
         //refresh the start time the timer uses
         self.refreshStartTime();
@@ -380,7 +381,8 @@ function taskTimer()
        }
        else {
           tasktimerViewModeIconAndTime.setAttribute("checked", "true");
-          tasktimerToolbarbutton.setAttribute("image", "chrome://tasktimer/skin/bulldozer_24.png");
+          //tasktimerToolbarbutton.setAttribute("image", "chrome://tasktimer/skin/bulldozer_24.png");
+          tasktimerToolbarbutton.setAttribute("image", "data:image/png;base64," + taskDB.getIconOfCurrentTask());
           self.viewModeChanged();
        }
     }

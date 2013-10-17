@@ -49,7 +49,11 @@ SQLite.prototype = {
 						case 3:
 							value = statement.getUTF8String(col); break;
 						case 4:
-							value = statement.getBlob(col); break;
+							var outsize = {};
+							var outblob = {};
+							statement.getBlob(col, outsize, outblob);
+							value = outblob.value;
+							break;
 					}
 					row[colNames[col]] = value;
 				}

@@ -337,6 +337,21 @@ function taskTimerTaskDB()
        return name;
     }
 
+    this.getIconOfCurrentTask=function()
+    {
+       var iconblob = 0;
+       var iconstr = "";
+       var result = sqldb.execute("SELECT icons.iconimg from tasks, icons WHERE tasks.active==1 AND icons.id == tasks.iconid");
+
+       if (result.length>0) 
+       {
+          iconblob = result[0].iconimg;
+          for (var i=0; i<iconblob.length; i++) { iconstr += String.fromCharCode(iconblob[i]); }
+          iconstr = btoa(iconstr);
+       }
+       return iconstr;
+    }
+
     this.getMostRecentTask=function()
     {
        //get the most recent task that is less or equal to the time right now
