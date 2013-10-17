@@ -1,6 +1,8 @@
 /*
-	TaskTimer: A Firefox extension that protects you from oversteeped task.
-	Copyright (C) 2011 Philipp Söhnlein
+	TaskTimer: A Firefox extension to keep track of time spend on projects.
+   (c)2012 William Skellenger
+
+   Based on TeaTimer	Copyright (C) 2011 Philipp Söhnlein
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License version 3 as 
@@ -52,11 +54,22 @@ function taskTimerTaskDB()
          sqldb.execute(sprintf("INSERT INTO tasks (name, active, hidden) VALUES ('%s', %d, %d)", 'Idle', 0, 0));
          alert('Tasktimer first run: Database is initialized!');
       }
-      
+
+      /* icons:
+       * iconid:    An ID for the icon 
+       * iconblob:  A blob containing the icon image
+       * icondesc:  A short description of the image
+       * hidden:    Whether or not the icon is available to choose from 
+       */
+      sqldb.execute("CREATE TABLE IF NOT EXISTS icons (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, iconimg BLOB, desc TEXT, hidden INTEGER DEFAULT 0)");
+
+
       //------ Alter tables if column doesn't exist -------
       var worktimes_note = 0;
       var tasks_projectcode = 0;
+      var tasks_iconid = 0;
 
+      //discover columns in table "worktimes"
       var info = sqldb.execute("PRAGMA table_info(worktimes)");
       for (var i=0; i<info.length; i++) {
          //Application.console.log(common.dumpObject(info[i]));
@@ -65,10 +78,14 @@ function taskTimerTaskDB()
          }
       }
 
+      //discover columns in table "tasks"
       var info = sqldb.execute("PRAGMA table_info(tasks)");
       for (var i=0; i<info.length; i++) {
          if (info[i].name == "projectcode") {
             tasks_projectcode = 1;
+         }
+         if (info[i].name == "iconid") {
+            tasks_iconid = 1;
          }
       }
 
@@ -80,6 +97,11 @@ function taskTimerTaskDB()
          sqldb.execute("ALTER TABLE tasks ADD COLUMN projectcode STRING");
          sqldb.execute("ALTER TABLE tasks ADD COLUMN desc STRING");
       }
+
+      if (tasks_iconid == 0) {
+         sqldb.execute("ALTER TABLE tasks ADD COLUMN iconid INTEGER");
+      }
+
    }
 	
     /**
