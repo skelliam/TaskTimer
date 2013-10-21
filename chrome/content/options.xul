@@ -11,9 +11,10 @@
 	<script type="application/x-javascript" src="chrome://tasktimer/content/options.js"/>
 	<tabbox>
 		<tabs>
-			<tab label="Tasks"/>
+         <tab label="Tasks"/>
+         <tab label="Icons"/>
 			<tab label="Time Settings"/>
-			<tab label="Advanced"/>
+         <tab label="Advanced"/>
 		</tabs>
 		<tabpanels>
 			<tabpanel id="taskTimer-optionsVaritiesTab">
@@ -58,7 +59,11 @@
 						</menulist>
 					</groupbox>
 				</vbox>
-			</tabpanel>
+         </tabpanel>
+         <tabpanel id="taskTimer-iconsTab">
+            <vbox flex="1">
+            </vbox>
+         </tabpanel>
 			<tabpanel id="taskTimer-reportingTab">
 				<vbox flex="1">
 					<groupbox>
