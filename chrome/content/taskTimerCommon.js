@@ -20,13 +20,21 @@ function taskTimerCommon()
 {
     var debug=true;
     var self=this;
+
+    var taskDB=new taskTimerTaskDB();
+
     const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
     const taskTimerPrefs=storedPrefs.getBranch("extensions.tasktimer.");
     const alertPrefs=storedPrefs.getBranch("extensions.tasktimer.alerts.");
     const reportingPrefs=storedPrefs.getBranch("extensions.tasktimer.reporting.");
     const strings=Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle("chrome://tasktimer/locale/tasktimer.properties");
     const quitObserver=Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+
+
     quitObserver.addObserver(this,"quit-application-granted",false);
+    quitObserver.addObserver(this,"quit-application-requested",false);
+    quitObserver.addObserver(this,"quit-application",false);
+
 
     /**
      * This observer method is called, when the Firefox quits.
@@ -34,40 +42,26 @@ function taskTimerCommon()
      **/
     this.observe=function(subject,actionID,actionValue)
     {
+
+      if(actionID=="quit-application-requested")
+      {
+         //alert(actionID);
+         //alert(this.getTimeSec());
+         taskDB.startWorkingOnTask(1, this.getTimeSec(), "Browser Closed", false);  /* idle task */
+         quitObserver.removeObserver(this,"quit-application-requested");
+      }
 		if(actionID==="quit-application-granted")
 		{
-            try
-            {
-                var taskDB=new taskTimerTaskDB();
-                var hiddenTasks=taskDB.getIDsOfHiddenTasks();
-                for(var i=0; i<hiddenTasks.length; i++)
-                {
-                    try
-                    {
-                        taskDB.deleteTask(hiddenTasks[i]);
-                        self.log("Common","task with ID "+hiddenTasks[i]+" deleted.\n");
-                    }
-                    catch(e)
-                    {
-                        //it's not really a problem, if there was an error, while deleting a task, because it's still hidden. So, please forgive me, when I'm just swallowing up the error.
-                    }
-                }
-            }
-            catch(e)
-            {
-                //it's not really a problem, if there was an error, while deleting a task, because it's still hidden. So, please forgive me, when I'm just swallowing up the error.
-            }
-		    quitObserver.removeObserver(this,"quit-application-granted");
+         //alert(actionID);
+         taskDB.startWorkingOnTask(1, this.getTimeSec(), "Browser closed", false);  /* idle task */
+		   quitObserver.removeObserver(this,"quit-application-granted");
 		}
-
-        return true;
+      if(actionID=="quit-application")
+      {
+         alert(actionID);
+      }
+      return true;
     }
-
-	/*
-		=================
-		| Alert methods |
-		=================
-	*/
 
 	/**
 	 * This public method checks, if the given alarm is active (should be fired) or not.

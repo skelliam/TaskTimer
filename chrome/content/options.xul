@@ -101,7 +101,7 @@
 					<groupbox>
 						<caption label="Corrections"/>
 						<vbox orient="vertical">
-							<label value="Insert a task at a certain time to make a correction to the databse."/>
+							<label value="Insert a task at a certain time to make a correction to the database. (now-20 minutes, 12p, 12:00 etc.)"/>
 							<hbox pack="start" dir="normal">
 								<vbox flex="1">
 									<label value="Select Task:" orient="horizontal"/>

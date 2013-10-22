@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <overlay id="tasktimer-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+   <script type="application/x-javascript" src="libs/base64.js"></script>
 	<script type="application/x-javascript" src="libs/sprintf-0.7-beta1.js"/>
 	<script type="application/x-javascript" src="libs/sqlite-1.0.0.js"/>
-	<script type="application/x-javascript" src="libs/date.js"/>
-	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js"/>
+   <script type="application/x-javascript" src="libs/date.js"/>
 	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerTaskDB.js"/>
+	<script type="application/x-javascript" src="chrome://tasktimer/content/taskTimerCommon.js"/>
 	<script type="application/x-javascript" src="chrome://tasktimer/content/tasktimer.js"/>
 	<toolbar id="addon-bar">
 		<toolbaritem id="tasktimer-box">

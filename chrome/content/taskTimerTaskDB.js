@@ -21,7 +21,7 @@ function taskTimerTaskDB()
 {
    var self=this;
 
-   const common=new taskTimerCommon();
+   //const common=new taskTimerCommon();
    const storedPrefs=Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService);
    const taskDB=storedPrefs.getBranch("extensions.tasktimer.tasks.");
    const sqldb = new SQLite("tasktimer.sqlite", {location:'ProfD'});
@@ -395,7 +395,7 @@ function taskTimerTaskDB()
 		includehidden=((includehidden===true)?true:false);
 		try
 		{
-			common.validateSortingOrder(sorting);
+			//common.validateSortingOrder(sorting);
 		}
 		catch(e)
 		{

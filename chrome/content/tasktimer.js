@@ -87,7 +87,7 @@ function taskTimer()
 
     this.testFunction=function()
     {
-       var DAYSBACK = 60;  //start report by looking back this many days
+       var DAYSBACK = 5;  //start report by looking back this many days
        var STARTTIME = 7;  //report each day from this time
        var HOURSFWD = 15;  //look forward this many hours from start time
 
@@ -97,32 +97,104 @@ function taskTimer()
        win.gBrowser.selectedTab = win.gBrowser.addTab("chrome://tasktimer/content/summary.html");
        var newTabBrowser = win.gBrowser.getBrowserForTab(win.gBrowser.selectedTab);
 
-       newTabBrowser.addEventListener("load", 
-             function() { 
-                var pre = newTabBrowser.contentDocument.createElement('pre');
+
+       var makeSVG = function() {
+          var tag = arguments[0];
+          var attrs = arguments[1];
+          var el= newTabBrowser.contentDocument.createElementNS('http://www.w3.org/2000/svg', tag);
+          for (var k in attrs)
+              if (attrs.hasOwnProperty(k)) el.setAttribute(k, attrs[k]);
+          return el;
+       };
+
+       var drawArcs = function () {
+          var paper = arguments[0];
+          var pieData = arguments[1];
+          var total = pieData.reduce(function (accu, that) { return that + accu; }, 0);
+          var sectorAngleArr = pieData.map(function (v) { return 360 * v / total; });
+
+          var startAngle = 0;
+          var endAngle = 0;
+          for (var i=0; i<sectorAngleArr.length; i++){
+              startAngle = endAngle;
+              endAngle = startAngle + sectorAngleArr[i];
+
+              var x1,x2,y1,y2 ;
+
+              x1 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*startAngle/180)));
+              y1 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*startAngle/180)));
+
+              x2 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*endAngle/180)));
+              y2 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*endAngle/180)));
+
+              var d = "M200,200  L" + x1 + "," + y1 + "  A195,195 0 " + 
+                      ((endAngle-startAngle > 180) ? 1 : 0) + ",1 " + x2 + "," + y2 + " z";
+              //alert(d); // enable to see coords as they are displayed
+              var c = parseInt(i / sectorAngleArr.length * 360);
+              var arc = makeSVG("path", {d: d, fill: "hsl(" + c + ", 66%, 50%)"});
+              paper.appendChild(arc);
+              //arc.onclick = clickHandler; // This is optional, of course
+          }
+       };
+
+       var loadcallback = function() {
                 var tasks = taskDB.getDataOfAllTasks();
                 for (var i=1; i<DAYSBACK; i++) {
-;
+                   var pieData = [];                 
+                   var pieNames = [];  
+
+
+                   var obj = newTabBrowser.contentDocument.createElement('object');
+                   obj.setAttribute("type","image/svg+xml");
+                   obj.setAttribute("data", "data:image/svg+xml");
+
+                   var div = newTabBrowser.contentDocument.createElement('div');
+                   div.setAttribute("id", "con");     /* container, this is defined in html file */
+
+                   var ul = newTabBrowser.contentDocument.createElement('ul');
+
+                   var svg = newTabBrowser.contentDocument.createElement('svg');
+                   svg.setAttribute("width", "200px");
+                   svg.setAttribute("height", "200px");
+                   svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                   svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+                   svg.setAttribute("viewbox", "0 0 400 400");
+
                    var d1 = Date.today()
                               .set({ hour: STARTTIME, minute: 0 })
                               .add({ days: -DAYSBACK+(i+1) });
                    var d2 = d1.clone();
-                   d2.addHours(HOURSFWD);
 
-                   pre.textContent += "\n------"
-                   pre.textContent += (String(d1) + " to " + String(d2) + "\n");  //debugging
+                   d2.addHours(HOURSFWD);
+                   div.textContent += "\n------" + (String(d1) + " to " + String(d2) + "\n");
+
+                   /* go thru all tasks */
                    for (var j=0; j<tasks.length; j++) {
                       var id = j+1;  //id 0 is not valid in the database
                       var time = taskDB.getTimeWorkedOnTaskInRange(id, d1.valueOf()/1000, d2.valueOf()/1000);
+                      var li = newTabBrowser.contentDocument.createElement('li');  // holds bulletpoint
                       if (time > 0) {
-                        //the tasks[] array can hold id 0, so we need to subtract 1 from id
-                        pre.textContent += (String(tasks[id-1].name) + " " + common.getTimeStringFromTime(time) + "\n");
+                         //the tasks[] array can hold id 0, so we need to subtract 1 from id
+                         li.textContent = String(tasks[id-1].name) + " " + common.getTimeStringFromTime(time) + "\n";
+                         ul.appendChild(li);
+                         pieData[j] = time;
+                         pieNames[j] = tasks[id-1].name;
                       }
+                      div.innerHTML += "</ul>"
                    }
+                   alert(String(pieData));
+                   div.appendChild(ul);  //insert list of tasks into div
+                   drawArcs(svg, pieData); //generate pie chart
+                   obj.innerHTML = '<?xml version="1.0" encoding="utf-8"?>' + svg.outerHTML; //insert svg code into object
+                   div.appendChild(obj); //insert chart into div
+
+                   newTabBrowser.contentDocument.body.appendChild(div);  /* plop the div into the document */
                 }
-                newTabBrowser.contentDocument.body.appendChild(pre);
-             }, 
-             true);
+
+       }; /* var loadcallback */
+
+       /* create new tab and populate it using the above callback */
+       newTabBrowser.addEventListener("load", loadcallback, true);
     }
 
 
