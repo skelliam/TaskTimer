@@ -87,7 +87,7 @@ function taskTimer()
 
     this.testFunction=function()
     {
-       var DAYSBACK = 5;  //start report by looking back this many days
+       var DAYSBACK = 60;  //start report by looking back this many days
        var STARTTIME = 7;  //report each day from this time
        var HOURSFWD = 15;  //look forward this many hours from start time
 
@@ -177,12 +177,12 @@ function taskTimer()
                          //the tasks[] array can hold id 0, so we need to subtract 1 from id
                          li.textContent = String(tasks[id-1].name) + " " + common.getTimeStringFromTime(time) + "\n";
                          ul.appendChild(li);
-                         pieData[j] = time;
-                         pieNames[j] = tasks[id-1].name;
+                         pieData.push(time);
+                         pieNames.push(tasks[id-1].name);
                       }
                       div.innerHTML += "</ul>"
                    }
-                   alert(String(pieData));
+                   //alert(String(pieData));
                    div.appendChild(ul);  //insert list of tasks into div
                    drawArcs(svg, pieData); //generate pie chart
                    obj.innerHTML = '<?xml version="1.0" encoding="utf-8"?>' + svg.outerHTML; //insert svg code into object
