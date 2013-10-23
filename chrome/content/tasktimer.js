@@ -90,6 +90,7 @@ function taskTimer()
        var DAYSBACK = 60;  //start report by looking back this many days
        var STARTTIME = 7;  //report each day from this time
        var HOURSFWD = 15;  //look forward this many hours from start time
+       var MINTIME = 60 * 5;  //minimum time to report in sec
 
        var win = Components.classes['@mozilla.org/appshell/window-mediator;1']
                      .getService(Components.interfaces.nsIWindowMediator)
@@ -97,7 +98,7 @@ function taskTimer()
        win.gBrowser.selectedTab = win.gBrowser.addTab("chrome://tasktimer/content/summary.html");
        var newTabBrowser = win.gBrowser.getBrowserForTab(win.gBrowser.selectedTab);
 
-
+       //makeSVG and drawArcs from http://stackoverflow.com/questions/7261318/svg-chart-generation-in-javascript/15582018#15582018
        var makeSVG = function() {
           var tag = arguments[0];
           var attrs = arguments[1];
@@ -115,23 +116,32 @@ function taskTimer()
 
           var startAngle = 0;
           var endAngle = 0;
+
           for (var i=0; i<sectorAngleArr.length; i++){
               startAngle = endAngle;
               endAngle = startAngle + sectorAngleArr[i];
 
-              var x1,x2,y1,y2 ;
-
-              x1 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*startAngle/180)));
-              y1 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*startAngle/180)));
-
-              x2 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*endAngle/180)));
-              y2 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*endAngle/180)));
-
-              var d = "M200,200  L" + x1 + "," + y1 + "  A195,195 0 " + 
-                      ((endAngle-startAngle > 180) ? 1 : 0) + ",1 " + x2 + "," + y2 + " z";
-              //alert(d); // enable to see coords as they are displayed
               var c = parseInt(i / sectorAngleArr.length * 360);
-              var arc = makeSVG("path", {d: d, fill: "hsl(" + c + ", 66%, 50%)"});
+
+              if (sectorAngleArr.length > 1) {
+                 var x1,x2,y1,y2 ;
+
+                 x1 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*startAngle/180)));
+                 y1 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*startAngle/180)));
+
+                 x2 = parseInt(Math.round(200 + 195*Math.cos(Math.PI*endAngle/180)));
+                 y2 = parseInt(Math.round(200 + 195*Math.sin(Math.PI*endAngle/180)));
+
+                 var d = "M200,200  L" + x1 + "," + y1 + "  A195,195 0 " + 
+                         ((endAngle-startAngle > 180) ? 1 : 0) + ",1 " + x2 + "," + y2 + " z";
+                 //alert(d); // enable to see coords as they are displayed
+
+                 var arc = makeSVG("path", {d: d, stroke: "black", fill: "hsl(" + c + ", 66%, 50%)"});
+              }
+              else {
+                 //only one argument to drawArcs, thus we just make a large circle
+                 var arc = makeSVG("circle", {r:195, cx:200, cy:200, stroke: "black", fill: "hsl(" + c + ", 66%, 50%)"});
+              }
               paper.appendChild(arc);
               //arc.onclick = clickHandler; // This is optional, of course
           }
@@ -142,7 +152,6 @@ function taskTimer()
                 for (var i=1; i<DAYSBACK; i++) {
                    var pieData = [];                 
                    var pieNames = [];  
-
 
                    var obj = newTabBrowser.contentDocument.createElement('object');
                    obj.setAttribute("type","image/svg+xml");
@@ -158,36 +167,45 @@ function taskTimer()
                    svg.setAttribute("height", "200px");
                    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
                    svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-                   svg.setAttribute("viewbox", "0 0 400 400");
+                   svg.setAttribute("viewbox", "0 0 500 500");
+                   svg.innerHTML = '<defs><filter id="f1" x="0" y="0"><feGaussianBlur in="SourceGraphic" stdDeviation="15" /></filter></defs>';
+                   svg.appendChild(makeSVG('circle', {r: 190, cx:225, cy:215, fill: "gray", filter:"url(#f1)"}));
 
                    var d1 = Date.today()
                               .set({ hour: STARTTIME, minute: 0 })
                               .add({ days: -DAYSBACK+(i+1) });
                    var d2 = d1.clone();
-
                    d2.addHours(HOURSFWD);
-                   div.textContent += "\n------" + (String(d1) + " to " + String(d2) + "\n");
 
                    /* go thru all tasks */
                    for (var j=0; j<tasks.length; j++) {
                       var id = j+1;  //id 0 is not valid in the database
                       var time = taskDB.getTimeWorkedOnTaskInRange(id, d1.valueOf()/1000, d2.valueOf()/1000);
-                      var li = newTabBrowser.contentDocument.createElement('li');  // holds bulletpoint
-                      if (time > 0) {
+
+                      //only show the time if it is greater than some minimum (i.e. five minutes)
+                      if (time > MINTIME) {
+                         var li = newTabBrowser.contentDocument.createElement('li');  // holds bulletpoint
                          //the tasks[] array can hold id 0, so we need to subtract 1 from id
                          li.textContent = String(tasks[id-1].name) + " " + common.getTimeStringFromTime(time) + "\n";
                          ul.appendChild(li);
                          pieData.push(time);
                          pieNames.push(tasks[id-1].name);
                       }
-                      div.innerHTML += "</ul>"
                    }
-                   //alert(String(pieData));
-                   div.appendChild(ul);  //insert list of tasks into div
-                   drawArcs(svg, pieData); //generate pie chart
-                   obj.innerHTML = '<?xml version="1.0" encoding="utf-8"?>' + svg.outerHTML; //insert svg code into object
-                   div.appendChild(obj); //insert chart into div
-
+                   
+                   if (pieData.length == 0) {
+                      div.textContent += (String(d1) + " to " + String(d2));
+                      div.appendChild(newTabBrowser.contentDocument.createElement('hr'));    //insert horizonal rule
+                   }
+                   else {
+                      div.textContent += (String(d1) + " to " + String(d2));
+                      //alert(String(pieData));
+                      div.appendChild(newTabBrowser.contentDocument.createElement('hr'));    //insert horizonal rule
+                      div.appendChild(ul);    //insert list of tasks into div
+                      drawArcs(svg, pieData); //generate pie chart
+                      obj.innerHTML = '<?xml version="1.0" encoding="utf-8"?>' + svg.outerHTML; //insert svg code into object
+                      div.appendChild(obj);   //insert chart into div
+                   }
                    newTabBrowser.contentDocument.body.appendChild(div);  /* plop the div into the document */
                 }
 
